@@ -1,0 +1,27 @@
+name: training
+
+services:
+  training:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    restart: unless-stopped
+    init: true
+    read_only: true
+    ports:
+      - "127.0.0.1:8787:8787"
+      - "127.0.0.1:3080:3080"
+    environment:
+      - DSH_PROVIDER
+      - DSH_MODEL
+      - DSH_HOME=/workspace/runtime/dsh
+      - DEEPSEEK_API_KEY
+    volumes:
+      - ${FITNESS_WORKSPACE_PATH:-../.workspaces/default}:/workspace
+    tmpfs:
+      - /tmp:size=128m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 256

@@ -1,0 +1,86 @@
+schema_version: 1
+id: plan-2026-09-14
+date: 2026-09-14
+title: 虚构案例：首次动作体验
+readiness: {}
+blocks:
+  - type: strength
+    name: 动作体验
+    exercises:
+      - name: 深蹲
+        exercise_id: squat
+        sets:
+          - prescription:
+              load_selection: 以可控制的动作幅度完成；现场选择适合的难度
+              target_rpe: 6
+            reps: 8
+profile_revision: 8d8575365595aea2d33f757890babe08422b28bfbf4956ccbe8c5ca8c3ddc0a6
+source: synthetic_example
+computed_expected_stimulus:
+  pec_major_upper: 0
+  pec_major_mid: 0
+  pec_major_lower: 0
+  deltoid_anterior: 0
+  deltoid_lateral: 0
+  deltoid_posterior: 0
+  supraspinatus: 0
+  infraspinatus: 0
+  teres_minor: 0
+  subscapularis: 0
+  serratus_anterior: 0
+  trapezius_upper: 0
+  trapezius_middle: 0
+  trapezius_lower: 0
+  rhomboid_major: 0
+  levator_scapulae: 0
+  teres_major: 0
+  latissimus_dorsi: 0
+  erector_spinae_upper: 0
+  erector_spinae_lower: 0
+  biceps_long_head: 0
+  biceps_short_head: 0
+  brachialis: 0
+  triceps_long_head: 0
+  triceps_lateral_head: 0
+  triceps_medial_head: 0
+  forearm_flexors: 0
+  forearm_extensors: 0
+  brachioradialis: 0
+  pronator_teres: 0
+  supinator: 0
+  rectus_abdominis_upper: 0
+  rectus_abdominis_lower: 0
+  external_oblique: 0
+  internal_oblique: 0
+  transversus_abdominis: 0
+  quadratus_lumborum: 0
+  diaphragm: 0
+  gluteus_maximus: 0
+  gluteus_medius: 0
+  gluteus_minimus: 0
+  tensor_fasciae_latae: 0
+  iliopsoas: 0
+  sartorius: 0
+  rectus_femoris: 0
+  vastus_lateralis: 0
+  vastus_medialis: 0
+  vastus_intermedius: 0
+  adductor_longus: 0
+  adductor_magnus: 0
+  adductor_brevis: 0
+  gracilis: 0
+  pectineus: 0
+  biceps_femoris_long_head: 0
+  biceps_femoris_short_head: 0
+  semitendinosus: 0
+  semimembranosus: 0
+  gastrocnemius_medial: 0
+  gastrocnemius_lateral: 0
+  soleus: 0
+  tibialis_anterior: 0
+  extensor_digitorum_longus: 0
+  fibularis_longus: 0
+  fibularis_brevis: 0
+  tibialis_posterior: 0
+  popliteus: 0
+  sternocleidomastoid: 0

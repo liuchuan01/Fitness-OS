@@ -1,0 +1,17 @@
+schema_version: 1
+id: starter-observation
+name: 虚构案例：首次观察周
+start_date: 2026-09-14
+end_date: 2026-09-27
+outcome:
+  primary: 观察可坚持的训练节奏
+weekly_schedule:
+  - day_of_week: monday
+    slot_id: practice
+    type: strength
+    direction: 基础动作体验
+confirmation:
+  confirmed_at: 2026-09-13T08:00:00.000Z
+  source: user_confirmed
+profile_revision: 8d8575365595aea2d33f757890babe08422b28bfbf4956ccbe8c5ca8c3ddc0a6
+review: 观察两周后根据实际完成调整

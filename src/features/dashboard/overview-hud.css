@@ -1,0 +1,103 @@
+.hud-kicker {
+  display: block;
+  margin: 14px 0 10px;
+  color: var(--accent);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+}
+.hud-record-title {
+  margin: 0 0 14px;
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.65;
+}
+.hud-fact-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--muted) 10.2%, transparent);
+  font-size: 12px;
+}
+.hud-fact-row b {
+  color: var(--text);
+  font-weight: 500;
+}
+.hud-footnote {
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.8;
+}
+.hud-records,
+.hud-group-bars {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.hud-records li {
+  display: grid;
+  grid-template-columns: 38px 1fr;
+  gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--muted) 10.2%, transparent);
+  font-size: 12px;
+}
+.hud-records time {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.hud-records span {
+  color: var(--text);
+}
+.hud-group-bars {
+  display: grid;
+  gap: 12px;
+}
+.hud-group-bars li > div {
+  display: flex;
+  justify-content: space-between;
+  color: var(--text);
+  font-size: 12px;
+}
+.hud-group-bars b {
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.hud-group-bars small {
+  margin-left: 5px;
+  color: var(--muted);
+  font-size: 11px;
+}
+.hud-group-bars meter {
+  display: block;
+  width: 100%;
+  height: 4px;
+  margin-top: 7px;
+  appearance: none;
+  background: color-mix(in srgb, var(--accent) 8.63%, transparent);
+  border: 0;
+  border-radius: 2px;
+}
+.hud-group-bars meter::-webkit-meter-bar {
+  background: color-mix(in srgb, var(--accent) 8.63%, transparent);
+  border: 0;
+  height: 4px;
+}
+.hud-group-bars meter::-webkit-meter-optimum-value {
+  background: var(--accent-mid);
+}
+.hud-group-bars meter::-moz-meter-bar {
+  background: var(--accent-mid);
+}
+.body-hud-value .hud-distribution-summary {
+  font-size: 24px;
+  letter-spacing: 0;
+}
+
+.body-hud-value .hud-distribution-summary[data-empty="true"] {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--muted);
+  white-space: nowrap;
+}

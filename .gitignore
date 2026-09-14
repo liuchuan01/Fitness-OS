@@ -1,0 +1,26 @@
+node_modules/
+
+dist/
+dist-server/
+
+.npm-cache/
+.playwright-mcp/
+playwright-report/
+test-results/
+.idea/
+
+.DS_Store
+data/**/*.bak
+data/**/*.tmp
+runtime/
+.tmp/3d-muscle-work/
+
+.env
+.env.*
+!.env.example
+
+.workspaces/
+
+# 本地截图不进入公开仓库
+pic/
+docs/visual-regression/

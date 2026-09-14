@@ -1,0 +1,1411 @@
+{
+  "schema_version": 3,
+  "status": "taxonomy_contract",
+  "generated_from": {
+    "taxonomy": "muscles.md",
+    "model_manifest": "bodyparts3d-fitness-taxonomy-manifest.json"
+  },
+  "model_asset": "bodyparts3d-fitness-taxonomy-draco.glb",
+  "coverage_states": {
+    "exact": "Dedicated mesh targets represent this muscle id; exact click and highlight are allowed.",
+    "partial": "Only part of the expected geometry is present; available targets must be labeled partial.",
+    "missing": "No validated target exists; no highlight, hover, or click is allowed."
+  },
+  "interaction_policy": {
+    "exact": {
+      "highlight": true,
+      "hover": true,
+      "click": "muscle"
+    },
+    "partial": {
+      "highlight": true,
+      "hover": true,
+      "click": "region_with_partial_badge"
+    },
+    "missing": {
+      "highlight": false,
+      "hover": false,
+      "click": "none"
+    }
+  },
+  "rendering": {
+    "skin_node_prefix": "skin",
+    "muscle_node_prefix": "muscle",
+    "normalize_node_id": "remove non-alphanumeric characters and lowercase"
+  },
+  "summary": {
+    "muscle_count": 67,
+    "group_count": 18,
+    "coverage": {
+      "exact": 60,
+      "partial": 7,
+      "missing": 0
+    }
+  },
+  "groups": {
+    "chest": {
+      "label_zh": "胸部",
+      "muscle_ids": [
+        "pec_major_upper",
+        "pec_major_mid",
+        "pec_major_lower"
+      ]
+    },
+    "shoulders": {
+      "label_zh": "肩部",
+      "muscle_ids": [
+        "deltoid_anterior",
+        "deltoid_lateral",
+        "deltoid_posterior",
+        "supraspinatus",
+        "infraspinatus",
+        "teres_minor",
+        "subscapularis"
+      ]
+    },
+    "scapular": {
+      "label_zh": "肩胛带",
+      "muscle_ids": [
+        "serratus_anterior",
+        "trapezius_upper",
+        "trapezius_middle",
+        "trapezius_lower",
+        "rhomboid_major",
+        "levator_scapulae",
+        "teres_major"
+      ]
+    },
+    "back": {
+      "label_zh": "背部",
+      "muscle_ids": [
+        "latissimus_dorsi",
+        "erector_spinae_upper",
+        "erector_spinae_lower"
+      ]
+    },
+    "upper_arm_anterior": {
+      "label_zh": "上臂前侧",
+      "muscle_ids": [
+        "biceps_long_head",
+        "biceps_short_head",
+        "brachialis"
+      ]
+    },
+    "upper_arm_posterior": {
+      "label_zh": "上臂后侧",
+      "muscle_ids": [
+        "triceps_long_head",
+        "triceps_lateral_head",
+        "triceps_medial_head"
+      ]
+    },
+    "forearm": {
+      "label_zh": "前臂",
+      "muscle_ids": [
+        "forearm_flexors",
+        "forearm_extensors",
+        "brachioradialis",
+        "pronator_teres",
+        "supinator"
+      ]
+    },
+    "core": {
+      "label_zh": "核心",
+      "muscle_ids": [
+        "rectus_abdominis_upper",
+        "rectus_abdominis_lower",
+        "external_oblique",
+        "internal_oblique",
+        "transversus_abdominis",
+        "quadratus_lumborum",
+        "diaphragm"
+      ]
+    },
+    "glutes": {
+      "label_zh": "臀部",
+      "muscle_ids": [
+        "gluteus_maximus",
+        "gluteus_medius",
+        "gluteus_minimus"
+      ]
+    },
+    "hip": {
+      "label_zh": "髋部",
+      "muscle_ids": [
+        "tensor_fasciae_latae",
+        "iliopsoas",
+        "sartorius"
+      ]
+    },
+    "quadriceps": {
+      "label_zh": "股四头肌",
+      "muscle_ids": [
+        "rectus_femoris",
+        "vastus_lateralis",
+        "vastus_medialis",
+        "vastus_intermedius"
+      ]
+    },
+    "adductors": {
+      "label_zh": "内收肌群",
+      "muscle_ids": [
+        "adductor_longus",
+        "adductor_magnus",
+        "adductor_brevis",
+        "gracilis",
+        "pectineus"
+      ]
+    },
+    "hamstrings": {
+      "label_zh": "腘绳肌",
+      "muscle_ids": [
+        "biceps_femoris_long_head",
+        "biceps_femoris_short_head",
+        "semitendinosus",
+        "semimembranosus"
+      ]
+    },
+    "lower_leg_posterior": {
+      "label_zh": "小腿后侧浅层",
+      "muscle_ids": [
+        "gastrocnemius_medial",
+        "gastrocnemius_lateral",
+        "soleus"
+      ]
+    },
+    "lower_leg_anterior": {
+      "label_zh": "小腿前侧",
+      "muscle_ids": [
+        "tibialis_anterior",
+        "extensor_digitorum_longus"
+      ]
+    },
+    "lower_leg_lateral": {
+      "label_zh": "小腿外侧",
+      "muscle_ids": [
+        "fibularis_longus",
+        "fibularis_brevis"
+      ]
+    },
+    "lower_leg_deep": {
+      "label_zh": "小腿后侧深层",
+      "muscle_ids": [
+        "tibialis_posterior",
+        "popliteus"
+      ]
+    },
+    "neck": {
+      "label_zh": "颈部",
+      "muscle_ids": [
+        "sternocleidomastoid"
+      ]
+    }
+  },
+  "muscles": {
+    "pec_major_upper": {
+      "group": "chest",
+      "label_zh": "胸大肌上部 / 锁骨部",
+      "priority": "P0",
+      "expected_target_count": 2,
+      "display_mode": "normal",
+      "coverage": "exact",
+      "model_groups": [
+        "chest"
+      ],
+      "model_targets": [
+        "muscle.pec_major_upper.right",
+        "muscle.pec_major_upper.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "上斜卧推、上斜飞鸟；普通模式必须保留"
+    },
+    "pec_major_mid": {
+      "group": "chest",
+      "label_zh": "胸大肌中部 / 胸肋部",
+      "priority": "P0",
+      "expected_target_count": 2,
+      "display_mode": "normal",
+      "coverage": "exact",
+      "model_groups": [
+        "chest"
+      ],
+      "model_targets": [
+        "muscle.pec_major_mid.right",
+        "muscle.pec_major_mid.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "平板卧推、俯卧撑；胸部主显示区域"
+    },
+    "pec_major_lower": {
+      "group": "chest",
+      "label_zh": "胸大肌下部 / 腹部纤维",
+      "priority": "P0",
+      "expected_target_count": 2,
+      "display_mode": "normal",
+      "coverage": "exact",
+      "model_groups": [
+        "chest"
+      ],
+      "model_targets": [
+        "muscle.pec_major_lower.right",
+        "muscle.pec_major_lower.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "下斜卧推、双杠臂屈伸"
+    },
+    "deltoid_anterior": {
+      "group": "shoulders",
+      "label_zh": "三角肌前束",
+      "priority": "P0",
+      "expected_target_count": 2,
+      "display_mode": "normal",
+      "coverage": "exact",
+      "model_groups": [
+        "shoulders"
+      ],
+      "model_targets": [
+        "muscle.deltoid_anterior.right",
+        "muscle.deltoid_anterior.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "推举、卧推、前平举"
+    },
+    "deltoid_lateral": {
+      "group": "shoulders",
+      "label_zh": "三角肌中束",
+      "priority": "P0",
+      "expected_target_count": 2,
+      "display_mode": "normal",
+      "coverage": "exact",
+      "model_groups": [
+        "shoulders"
+      ],
+      "model_targets": [
+        "muscle.deltoid_lateral.right",
+        "muscle.deltoid_lateral.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "侧平举、肩外展；肩部视觉核心"
+    },
+    "deltoid_posterior": {
+      "group": "shoulders",
+      "label_zh": "三角肌后束",
+      "priority": "P0",
+      "expected_target_count": 2,
+      "display_mode": "normal",
+      "coverage": "exact",
+      "model_groups": [
+        "shoulders"
+      ],
+      "model_targets": [
+        "muscle.deltoid_posterior.right",
+        "muscle.deltoid_posterior.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "反向飞鸟、面拉、划船"
+    },
+    "supraspinatus": {
+      "group": "shoulders",
+      "label_zh": "冈上肌",
+      "priority": "P1",
+      "expected_target_count": 2,
+      "display_mode": "professional",
+      "coverage": "exact",
+      "model_groups": [
+        "shoulders"
+      ],
+      "model_targets": [
+        "muscle.supraspinatus.right",
+        "muscle.supraspinatus.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "肩袖肌群；肩外展启动，专业/康复模式显示"
+    },
+    "infraspinatus": {
+      "group": "shoulders",
+      "label_zh": "冈下肌",
+      "priority": "P1",
+      "expected_target_count": 2,
+      "display_mode": "professional",
+      "coverage": "exact",
+      "model_groups": [
+        "shoulders"
+      ],
+      "model_targets": [
+        "muscle.infraspinatus.right",
+        "muscle.infraspinatus.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "肩袖肌群；肩外旋"
+    },
+    "teres_minor": {
+      "group": "shoulders",
+      "label_zh": "小圆肌",
+      "priority": "P1",
+      "expected_target_count": 2,
+      "display_mode": "professional",
+      "coverage": "exact",
+      "model_groups": [
+        "shoulders"
+      ],
+      "model_targets": [
+        "muscle.teres_minor.right",
+        "muscle.teres_minor.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "肩袖肌群；肩外旋、肩稳定"
+    },
+    "subscapularis": {
+      "group": "shoulders",
+      "label_zh": "肩胛下肌",
+      "priority": "P1",
+      "expected_target_count": 2,
+      "display_mode": "professional",
+      "coverage": "exact",
+      "model_groups": [
+        "shoulders"
+      ],
+      "model_targets": [
+        "muscle.subscapularis.right",
+        "muscle.subscapularis.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "肩袖肌群；肩内旋，深层，建议半透明"
+    },
+    "serratus_anterior": {
+      "group": "scapular",
+      "label_zh": "前锯肌",
+      "priority": "P1",
+      "expected_target_count": 2,
+      "display_mode": "professional",
+      "coverage": "exact",
+      "model_groups": [
+        "scapular"
+      ],
+      "model_targets": [
+        "muscle.serratus_anterior.right",
+        "muscle.serratus_anterior.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "肩胛前伸、上旋；俯卧撑 plus、拳击、推举稳定"
+    },
+    "trapezius_upper": {
+      "group": "scapular",
+      "label_zh": "上斜方肌",
+      "priority": "P0",
+      "expected_target_count": 2,
+      "display_mode": "normal",
+      "coverage": "exact",
+      "model_groups": [
+        "scapular"
+      ],
+      "model_targets": [
+        "muscle.trapezius_upper.right",
+        "muscle.trapezius_upper.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "耸肩、硬拉稳定、颈肩区域显示"
+    },
+    "trapezius_middle": {
+      "group": "scapular",
+      "label_zh": "中斜方肌",
+      "priority": "P0",
+      "expected_target_count": 2,
+      "display_mode": "normal",
+      "coverage": "exact",
+      "model_groups": [
+        "scapular"
+      ],
+      "model_targets": [
+        "muscle.trapezius_middle.right",
+        "muscle.trapezius_middle.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "肩胛后缩；划船、面拉"
+    },
+    "trapezius_lower": {
+      "group": "scapular",
+      "label_zh": "下斜方肌",
+      "priority": "P0",
+      "expected_target_count": 2,
+      "display_mode": "normal",
+      "coverage": "exact",
+      "model_groups": [
+        "scapular"
+      ],
+      "model_targets": [
+        "muscle.trapezius_lower.right",
+        "muscle.trapezius_lower.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "肩胛下压、上旋；引体、Y raise"
+    },
+    "rhomboid_major": {
+      "group": "scapular",
+      "label_zh": "大菱形肌",
+      "priority": "P1",
+      "expected_target_count": 2,
+      "display_mode": "professional",
+      "coverage": "exact",
+      "model_groups": [
+        "scapular"
+      ],
+      "model_targets": [
+        "muscle.rhomboid_major.right",
+        "muscle.rhomboid_major.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "肩胛后缩；可与小菱形肌视觉合并"
+    },
+    "levator_scapulae": {
+      "group": "scapular",
+      "label_zh": "肩胛提肌",
+      "priority": "P1",
+      "expected_target_count": 2,
+      "display_mode": "professional",
+      "coverage": "exact",
+      "model_groups": [
+        "scapular"
+      ],
+      "model_targets": [
+        "muscle.levator_scapulae.right",
+        "muscle.levator_scapulae.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "颈肩连接、肩胛上提；从 neck 移到 scapular 更合理"
+    },
+    "teres_major": {
+      "group": "scapular",
+      "label_zh": "大圆肌",
+      "priority": "P1",
+      "expected_target_count": 2,
+      "display_mode": "professional",
+      "coverage": "exact",
+      "model_groups": [
+        "scapular"
+      ],
+      "model_targets": [
+        "muscle.teres_major.right",
+        "muscle.teres_major.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "常与背阔肌协同；引体、划船、下拉"
+    },
+    "latissimus_dorsi": {
+      "group": "back",
+      "label_zh": "背阔肌",
+      "priority": "P0",
+      "expected_target_count": 2,
+      "display_mode": "normal",
+      "coverage": "exact",
+      "model_groups": [
+        "back"
+      ],
+      "model_targets": [
+        "muscle.latissimus_dorsi.right",
+        "muscle.latissimus_dorsi.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "引体、下拉、划船；背部主显示区域"
+    },
+    "erector_spinae_upper": {
+      "group": "back",
+      "label_zh": "上段竖脊肌",
+      "priority": "P0",
+      "expected_target_count": 2,
+      "display_mode": "normal",
+      "coverage": "partial",
+      "model_groups": [
+        "back"
+      ],
+      "model_targets": [
+        "muscle.erector_spinae_upper.right",
+        "muscle.erector_spinae_upper.left"
+      ],
+      "highlightable": true,
+      "pickable": false,
+      "note": "背伸、划船、硬拉稳定 Composite fitness region from thoracic iliocostalis, longissimus and spinalis; not a single FMA structure."
+    },
+    "erector_spinae_lower": {
+      "group": "back",
+      "label_zh": "下段竖脊肌",
+      "priority": "P0",
+      "expected_target_count": 2,
+      "display_mode": "normal",
+      "coverage": "partial",
+      "model_groups": [
+        "back"
+      ],
+      "model_targets": [
+        "muscle.erector_spinae_lower.right",
+        "muscle.erector_spinae_lower.left"
+      ],
+      "highlightable": true,
+      "pickable": false,
+      "note": "硬拉、深蹲、山羊挺身 Lumborum component is real geometry but does not represent every deep lumbar extensor."
+    },
+    "biceps_long_head": {
+      "group": "upper_arm_anterior",
+      "label_zh": "肱二头肌长头",
+      "priority": "P0",
+      "expected_target_count": 2,
+      "display_mode": "normal",
+      "coverage": "exact",
+      "model_groups": [
+        "upper_arm_anterior"
+      ],
+      "model_targets": [
+        "muscle.biceps_long_head.right",
+        "muscle.biceps_long_head.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "弯举、引体辅助；建议和短头分开"
+    },
+    "biceps_short_head": {
+      "group": "upper_arm_anterior",
+      "label_zh": "肱二头肌短头",
+      "priority": "P0",
+      "expected_target_count": 2,
+      "display_mode": "normal",
+      "coverage": "exact",
+      "model_groups": [
+        "upper_arm_anterior"
+      ],
+      "model_targets": [
+        "muscle.biceps_short_head.right",
+        "muscle.biceps_short_head.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "弯举、肘屈曲；手臂前侧主显示"
+    },
+    "brachialis": {
+      "group": "upper_arm_anterior",
+      "label_zh": "肱肌",
+      "priority": "P1",
+      "expected_target_count": 2,
+      "display_mode": "professional",
+      "coverage": "exact",
+      "model_groups": [
+        "upper_arm_anterior"
+      ],
+      "model_targets": [
+        "muscle.brachialis.right",
+        "muscle.brachialis.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "肘屈曲；锤式弯举、反手弯举相关"
+    },
+    "triceps_long_head": {
+      "group": "upper_arm_posterior",
+      "label_zh": "肱三头肌长头",
+      "priority": "P0",
+      "expected_target_count": 2,
+      "display_mode": "normal",
+      "coverage": "exact",
+      "model_groups": [
+        "upper_arm_posterior"
+      ],
+      "model_targets": [
+        "muscle.triceps_long_head.right",
+        "muscle.triceps_long_head.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "过头臂屈伸、臂屈伸；跨肩关节"
+    },
+    "triceps_lateral_head": {
+      "group": "upper_arm_posterior",
+      "label_zh": "肱三头肌外侧头",
+      "priority": "P0",
+      "expected_target_count": 2,
+      "display_mode": "normal",
+      "coverage": "exact",
+      "model_groups": [
+        "upper_arm_posterior"
+      ],
+      "model_targets": [
+        "muscle.triceps_lateral_head.right",
+        "muscle.triceps_lateral_head.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "下压、窄距卧推；视觉辨识度高"
+    },
+    "triceps_medial_head": {
+      "group": "upper_arm_posterior",
+      "label_zh": "肱三头肌内侧头",
+      "priority": "P1",
+      "expected_target_count": 2,
+      "display_mode": "professional",
+      "coverage": "exact",
+      "model_groups": [
+        "upper_arm_posterior"
+      ],
+      "model_targets": [
+        "muscle.triceps_medial_head.right",
+        "muscle.triceps_medial_head.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "较深/下部；专业模式显示"
+    },
+    "forearm_flexors": {
+      "group": "forearm",
+      "label_zh": "前臂屈肌群",
+      "priority": "P0",
+      "expected_target_count": 2,
+      "display_mode": "normal",
+      "coverage": "partial",
+      "model_groups": [
+        "forearm"
+      ],
+      "model_targets": [
+        "muscle.forearm_flexors.right",
+        "muscle.forearm_flexors.left"
+      ],
+      "highlightable": true,
+      "pickable": false,
+      "note": "握力、腕弯举、拉类动作 Representative wrist and finger flexors; taxonomy id intentionally denotes a functional group."
+    },
+    "forearm_extensors": {
+      "group": "forearm",
+      "label_zh": "前臂伸肌群",
+      "priority": "P0",
+      "expected_target_count": 2,
+      "display_mode": "normal",
+      "coverage": "partial",
+      "model_groups": [
+        "forearm"
+      ],
+      "model_targets": [
+        "muscle.forearm_extensors.right",
+        "muscle.forearm_extensors.left"
+      ],
+      "highlightable": true,
+      "pickable": false,
+      "note": "反手弯举、腕伸、前臂后侧 Representative wrist and finger extensors; taxonomy id intentionally denotes a functional group."
+    },
+    "brachioradialis": {
+      "group": "forearm",
+      "label_zh": "肱桡肌",
+      "priority": "P1",
+      "expected_target_count": 2,
+      "display_mode": "professional",
+      "coverage": "exact",
+      "model_groups": [
+        "forearm"
+      ],
+      "model_targets": [
+        "muscle.brachioradialis.right",
+        "muscle.brachioradialis.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "锤式弯举、前臂外侧；视觉价值高"
+    },
+    "pronator_teres": {
+      "group": "forearm",
+      "label_zh": "旋前圆肌",
+      "priority": "P1",
+      "expected_target_count": 2,
+      "display_mode": "professional",
+      "coverage": "exact",
+      "model_groups": [
+        "forearm"
+      ],
+      "model_targets": [
+        "muscle.pronator_teres.right",
+        "muscle.pronator_teres.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "前臂旋前；适合专业动作解释"
+    },
+    "supinator": {
+      "group": "forearm",
+      "label_zh": "旋后肌",
+      "priority": "P1",
+      "expected_target_count": 2,
+      "display_mode": "professional",
+      "coverage": "exact",
+      "model_groups": [
+        "forearm"
+      ],
+      "model_targets": [
+        "muscle.supinator.right",
+        "muscle.supinator.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "前臂旋后；深层，建议专业模式"
+    },
+    "rectus_abdominis_upper": {
+      "group": "core",
+      "label_zh": "上腹直肌",
+      "priority": "P0",
+      "expected_target_count": 2,
+      "display_mode": "normal",
+      "coverage": "partial",
+      "model_groups": [
+        "core"
+      ],
+      "model_targets": [
+        "muscle.rectus_abdominis_upper.right",
+        "muscle.rectus_abdominis_upper.left"
+      ],
+      "highlightable": true,
+      "pickable": false,
+      "note": "卷腹、仰卧起坐；普通模式主显示 Derived only by clipping the real bilateral rectus abdominis meshes. Derived from real source geometry using split_real_mesh (upper)."
+    },
+    "rectus_abdominis_lower": {
+      "group": "core",
+      "label_zh": "下腹直肌",
+      "priority": "P0",
+      "expected_target_count": 2,
+      "display_mode": "normal",
+      "coverage": "partial",
+      "model_groups": [
+        "core"
+      ],
+      "model_targets": [
+        "muscle.rectus_abdominis_lower.right",
+        "muscle.rectus_abdominis_lower.left"
+      ],
+      "highlightable": true,
+      "pickable": false,
+      "note": "举腿、反向卷腹；可与上腹区分 Derived only by clipping the real bilateral rectus abdominis meshes. Derived from real source geometry using split_real_mesh (lower)."
+    },
+    "external_oblique": {
+      "group": "core",
+      "label_zh": "腹外斜肌",
+      "priority": "P0",
+      "expected_target_count": 2,
+      "display_mode": "normal",
+      "coverage": "exact",
+      "model_groups": [
+        "core"
+      ],
+      "model_targets": [
+        "muscle.external_oblique.right",
+        "muscle.external_oblique.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "旋转、侧屈、抗旋转；核心侧面主显示"
+    },
+    "internal_oblique": {
+      "group": "core",
+      "label_zh": "腹内斜肌",
+      "priority": "P1",
+      "expected_target_count": 2,
+      "display_mode": "professional",
+      "coverage": "exact",
+      "model_groups": [
+        "core"
+      ],
+      "model_targets": [
+        "muscle.internal_oblique.right",
+        "muscle.internal_oblique.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "深层旋转稳定；建议半透明"
+    },
+    "transversus_abdominis": {
+      "group": "core",
+      "label_zh": "腹横肌",
+      "priority": "P1",
+      "expected_target_count": 2,
+      "display_mode": "professional",
+      "coverage": "exact",
+      "model_groups": [
+        "core"
+      ],
+      "model_targets": [
+        "muscle.transversus_abdominis.right",
+        "muscle.transversus_abdominis.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "腹压、核心稳定；深层环绕式显示"
+    },
+    "quadratus_lumborum": {
+      "group": "core",
+      "label_zh": "腰方肌",
+      "priority": "P1",
+      "expected_target_count": 2,
+      "display_mode": "professional",
+      "coverage": "exact",
+      "model_groups": [
+        "core"
+      ],
+      "model_targets": [
+        "muscle.quadratus_lumborum.right",
+        "muscle.quadratus_lumborum.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "侧屈、抗侧屈、腰椎稳定；从 back 移到 core 更适合训练逻辑"
+    },
+    "diaphragm": {
+      "group": "core",
+      "label_zh": "膈肌",
+      "priority": "P1",
+      "expected_target_count": 1,
+      "display_mode": "professional",
+      "coverage": "exact",
+      "model_groups": [
+        "core"
+      ],
+      "model_targets": [
+        "muscle.diaphragm.center"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "新增；呼吸、腹压、核心稳定，适合专业核心训练"
+    },
+    "gluteus_maximus": {
+      "group": "glutes",
+      "label_zh": "臀大肌",
+      "priority": "P0",
+      "expected_target_count": 2,
+      "display_mode": "normal",
+      "coverage": "exact",
+      "model_groups": [
+        "glutes"
+      ],
+      "model_targets": [
+        "muscle.gluteus_maximus.right",
+        "muscle.gluteus_maximus.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "深蹲、硬拉、臀推；臀部主显示区域"
+    },
+    "gluteus_medius": {
+      "group": "glutes",
+      "label_zh": "臀中肌",
+      "priority": "P0",
+      "expected_target_count": 2,
+      "display_mode": "normal",
+      "coverage": "exact",
+      "model_groups": [
+        "glutes"
+      ],
+      "model_targets": [
+        "muscle.gluteus_medius.right",
+        "muscle.gluteus_medius.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "髋外展、单腿稳定；建议 P0"
+    },
+    "gluteus_minimus": {
+      "group": "glutes",
+      "label_zh": "臀小肌",
+      "priority": "P1",
+      "expected_target_count": 2,
+      "display_mode": "professional",
+      "coverage": "exact",
+      "model_groups": [
+        "glutes"
+      ],
+      "model_targets": [
+        "muscle.gluteus_minimus.right",
+        "muscle.gluteus_minimus.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "深层髋外展/稳定；可半透明或与臀中肌叠层"
+    },
+    "tensor_fasciae_latae": {
+      "group": "hip",
+      "label_zh": "阔筋膜张肌",
+      "priority": "P1",
+      "expected_target_count": 2,
+      "display_mode": "professional",
+      "coverage": "exact",
+      "model_groups": [
+        "hip"
+      ],
+      "model_targets": [
+        "muscle.tensor_fasciae_latae.right",
+        "muscle.tensor_fasciae_latae.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "髋屈曲、髋外展、髋内旋；侧髋显示"
+    },
+    "iliopsoas": {
+      "group": "hip",
+      "label_zh": "髂腰肌",
+      "priority": "P1",
+      "expected_target_count": 2,
+      "display_mode": "professional",
+      "coverage": "partial",
+      "model_groups": [
+        "hip"
+      ],
+      "model_targets": [
+        "muscle.iliopsoas.right",
+        "muscle.iliopsoas.left"
+      ],
+      "highlightable": true,
+      "pickable": false,
+      "note": "髋屈肌；举腿、跑步、深蹲底部控制 Fitness iliopsoas region is composed from real bilateral iliacus and psoas major meshes."
+    },
+    "sartorius": {
+      "group": "hip",
+      "label_zh": "缝匠肌",
+      "priority": "P1",
+      "expected_target_count": 2,
+      "display_mode": "professional",
+      "coverage": "exact",
+      "model_groups": [
+        "hip"
+      ],
+      "model_targets": [
+        "muscle.sartorius.right",
+        "muscle.sartorius.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "大腿前内侧斜向长肌；从 thighs_front 移到 hip/anterior_thigh 均可"
+    },
+    "rectus_femoris": {
+      "group": "quadriceps",
+      "label_zh": "股直肌",
+      "priority": "P0",
+      "expected_target_count": 2,
+      "display_mode": "normal",
+      "coverage": "exact",
+      "model_groups": [
+        "quadriceps"
+      ],
+      "model_targets": [
+        "muscle.rectus_femoris.right",
+        "muscle.rectus_femoris.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "腿屈伸、深蹲；同时参与髋屈"
+    },
+    "vastus_lateralis": {
+      "group": "quadriceps",
+      "label_zh": "股外侧肌",
+      "priority": "P0",
+      "expected_target_count": 2,
+      "display_mode": "normal",
+      "coverage": "exact",
+      "model_groups": [
+        "quadriceps"
+      ],
+      "model_targets": [
+        "muscle.vastus_lateralis.right",
+        "muscle.vastus_lateralis.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "股四头外侧；腿部视觉核心"
+    },
+    "vastus_medialis": {
+      "group": "quadriceps",
+      "label_zh": "股内侧肌",
+      "priority": "P0",
+      "expected_target_count": 2,
+      "display_mode": "normal",
+      "coverage": "exact",
+      "model_groups": [
+        "quadriceps"
+      ],
+      "model_targets": [
+        "muscle.vastus_medialis.right",
+        "muscle.vastus_medialis.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "膝稳定、VMO 区域；普通模式保留"
+    },
+    "vastus_intermedius": {
+      "group": "quadriceps",
+      "label_zh": "股中间肌",
+      "priority": "P1",
+      "expected_target_count": 2,
+      "display_mode": "professional",
+      "coverage": "exact",
+      "model_groups": [
+        "quadriceps"
+      ],
+      "model_targets": [
+        "muscle.vastus_intermedius.right",
+        "muscle.vastus_intermedius.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "深层股四头；专业模式半透明"
+    },
+    "adductor_longus": {
+      "group": "adductors",
+      "label_zh": "长收肌",
+      "priority": "P0",
+      "expected_target_count": 2,
+      "display_mode": "normal",
+      "coverage": "exact",
+      "model_groups": [
+        "adductors"
+      ],
+      "model_targets": [
+        "muscle.adductor_longus.right",
+        "muscle.adductor_longus.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "大腿内侧主显示；夹腿、相扑深蹲"
+    },
+    "adductor_magnus": {
+      "group": "adductors",
+      "label_zh": "大收肌",
+      "priority": "P0",
+      "expected_target_count": 2,
+      "display_mode": "normal",
+      "coverage": "exact",
+      "model_groups": [
+        "adductors"
+      ],
+      "model_targets": [
+        "muscle.adductor_magnus.right",
+        "muscle.adductor_magnus.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "深蹲、硬拉、髋伸/内收；建议 P0"
+    },
+    "adductor_brevis": {
+      "group": "adductors",
+      "label_zh": "短收肌",
+      "priority": "P1",
+      "expected_target_count": 2,
+      "display_mode": "professional",
+      "coverage": "exact",
+      "model_groups": [
+        "adductors"
+      ],
+      "model_targets": [
+        "muscle.adductor_brevis.right",
+        "muscle.adductor_brevis.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "可与长收肌叠层；专业模式"
+    },
+    "gracilis": {
+      "group": "adductors",
+      "label_zh": "股薄肌",
+      "priority": "P1",
+      "expected_target_count": 2,
+      "display_mode": "professional",
+      "coverage": "exact",
+      "model_groups": [
+        "adductors"
+      ],
+      "model_targets": [
+        "muscle.gracilis.right",
+        "muscle.gracilis.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "大腿内侧细长肌；跑步、内收辅助"
+    },
+    "pectineus": {
+      "group": "adductors",
+      "label_zh": "耻骨肌",
+      "priority": "P1",
+      "expected_target_count": 2,
+      "display_mode": "professional",
+      "coverage": "exact",
+      "model_groups": [
+        "adductors"
+      ],
+      "model_targets": [
+        "muscle.pectineus.right",
+        "muscle.pectineus.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "髋内收/髋屈；可作为髋屈肌别名"
+    },
+    "biceps_femoris_long_head": {
+      "group": "hamstrings",
+      "label_zh": "股二头肌长头",
+      "priority": "P0",
+      "expected_target_count": 2,
+      "display_mode": "normal",
+      "coverage": "exact",
+      "model_groups": [
+        "hamstrings"
+      ],
+      "model_targets": [
+        "muscle.biceps_femoris_long_head.right",
+        "muscle.biceps_femoris_long_head.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "腘绳肌外侧；硬拉、腿弯举"
+    },
+    "biceps_femoris_short_head": {
+      "group": "hamstrings",
+      "label_zh": "股二头肌短头",
+      "priority": "P1",
+      "expected_target_count": 2,
+      "display_mode": "professional",
+      "coverage": "exact",
+      "model_groups": [
+        "hamstrings"
+      ],
+      "model_targets": [
+        "muscle.biceps_femoris_short_head.right",
+        "muscle.biceps_femoris_short_head.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "外侧深层；专业模式"
+    },
+    "semitendinosus": {
+      "group": "hamstrings",
+      "label_zh": "半腱肌",
+      "priority": "P0",
+      "expected_target_count": 2,
+      "display_mode": "normal",
+      "coverage": "exact",
+      "model_groups": [
+        "hamstrings"
+      ],
+      "model_targets": [
+        "muscle.semitendinosus.right",
+        "muscle.semitendinosus.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "腘绳肌内侧；腿弯举、硬拉"
+    },
+    "semimembranosus": {
+      "group": "hamstrings",
+      "label_zh": "半膜肌",
+      "priority": "P1",
+      "expected_target_count": 2,
+      "display_mode": "professional",
+      "coverage": "exact",
+      "model_groups": [
+        "hamstrings"
+      ],
+      "model_targets": [
+        "muscle.semimembranosus.right",
+        "muscle.semimembranosus.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "内侧深层；可与半腱肌叠层"
+    },
+    "gastrocnemius_medial": {
+      "group": "lower_leg_posterior",
+      "label_zh": "腓肠肌内侧头",
+      "priority": "P0",
+      "expected_target_count": 2,
+      "display_mode": "normal",
+      "coverage": "exact",
+      "model_groups": [
+        "lower_leg_posterior"
+      ],
+      "model_targets": [
+        "muscle.gastrocnemius_medial.right",
+        "muscle.gastrocnemius_medial.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "小腿后侧内侧；站姿提踵"
+    },
+    "gastrocnemius_lateral": {
+      "group": "lower_leg_posterior",
+      "label_zh": "腓肠肌外侧头",
+      "priority": "P0",
+      "expected_target_count": 2,
+      "display_mode": "normal",
+      "coverage": "exact",
+      "model_groups": [
+        "lower_leg_posterior"
+      ],
+      "model_targets": [
+        "muscle.gastrocnemius_lateral.right",
+        "muscle.gastrocnemius_lateral.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "小腿后侧外侧；站姿提踵"
+    },
+    "soleus": {
+      "group": "lower_leg_posterior",
+      "label_zh": "比目鱼肌",
+      "priority": "P0",
+      "expected_target_count": 2,
+      "display_mode": "normal",
+      "coverage": "exact",
+      "model_groups": [
+        "lower_leg_posterior"
+      ],
+      "model_targets": [
+        "muscle.soleus.right",
+        "muscle.soleus.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "坐姿提踵、耐力跑；建议 P0"
+    },
+    "tibialis_anterior": {
+      "group": "lower_leg_anterior",
+      "label_zh": "胫骨前肌",
+      "priority": "P0",
+      "expected_target_count": 2,
+      "display_mode": "normal",
+      "coverage": "exact",
+      "model_groups": [
+        "lower_leg_anterior"
+      ],
+      "model_targets": [
+        "muscle.tibialis_anterior.right",
+        "muscle.tibialis_anterior.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "勾脚、跑步、深蹲稳定；小腿前侧主显示"
+    },
+    "extensor_digitorum_longus": {
+      "group": "lower_leg_anterior",
+      "label_zh": "趾长伸肌",
+      "priority": "P1",
+      "expected_target_count": 2,
+      "display_mode": "professional",
+      "coverage": "exact",
+      "model_groups": [
+        "lower_leg_anterior"
+      ],
+      "model_targets": [
+        "muscle.extensor_digitorum_longus.right",
+        "muscle.extensor_digitorum_longus.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "小腿前外侧；足背伸/伸趾"
+    },
+    "fibularis_longus": {
+      "group": "lower_leg_lateral",
+      "label_zh": "腓骨长肌",
+      "priority": "P1",
+      "expected_target_count": 2,
+      "display_mode": "professional",
+      "coverage": "exact",
+      "model_groups": [
+        "lower_leg_lateral"
+      ],
+      "model_targets": [
+        "muscle.fibularis_longus.right",
+        "muscle.fibularis_longus.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "足外翻、足弓稳定；跑步/足踝专业模式"
+    },
+    "fibularis_brevis": {
+      "group": "lower_leg_lateral",
+      "label_zh": "腓骨短肌",
+      "priority": "P1",
+      "expected_target_count": 2,
+      "display_mode": "professional",
+      "coverage": "exact",
+      "model_groups": [
+        "lower_leg_lateral"
+      ],
+      "model_targets": [
+        "muscle.fibularis_brevis.right",
+        "muscle.fibularis_brevis.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "小腿外侧下段；足外翻"
+    },
+    "tibialis_posterior": {
+      "group": "lower_leg_deep",
+      "label_zh": "胫骨后肌",
+      "priority": "P1",
+      "expected_target_count": 2,
+      "display_mode": "professional",
+      "coverage": "exact",
+      "model_groups": [
+        "lower_leg_deep"
+      ],
+      "model_targets": [
+        "muscle.tibialis_posterior.right",
+        "muscle.tibialis_posterior.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "足弓稳定、足内翻；从 P2 上调到 P1"
+    },
+    "popliteus": {
+      "group": "lower_leg_deep",
+      "label_zh": "腘肌",
+      "priority": "P1",
+      "expected_target_count": 2,
+      "display_mode": "professional",
+      "coverage": "exact",
+      "model_groups": [
+        "lower_leg_deep"
+      ],
+      "model_targets": [
+        "muscle.popliteus.right",
+        "muscle.popliteus.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "新增；膝关节稳定/解锁，适合专业腿部模型"
+    },
+    "sternocleidomastoid": {
+      "group": "neck",
+      "label_zh": "胸锁乳突肌",
+      "priority": "P1",
+      "expected_target_count": 2,
+      "display_mode": "professional",
+      "coverage": "exact",
+      "model_groups": [
+        "neck"
+      ],
+      "model_targets": [
+        "muscle.sternocleidomastoid.right",
+        "muscle.sternocleidomastoid.left"
+      ],
+      "highlightable": true,
+      "pickable": true,
+      "note": "颈部前外侧，头颈旋转；专业模式显示"
+    }
+  }
+}

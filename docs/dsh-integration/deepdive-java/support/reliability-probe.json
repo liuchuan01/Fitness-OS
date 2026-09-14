@@ -1,0 +1,33 @@
+{
+  "results": [
+    {
+      "instant": "01:05:00",
+      "status": "failed",
+      "retryAttempt": 1,
+      "retryAt": "2026-06-20T01:06:00.000Z",
+      "completedCursor": null
+    },
+    {
+      "instant": "01:06:01",
+      "status": "failed",
+      "retryAttempt": 2,
+      "retryAt": "2026-06-20T01:11:01.000Z",
+      "completedCursor": null
+    },
+    {
+      "instant": "01:11:02",
+      "status": "failed",
+      "retryAttempt": null,
+      "retryAt": null,
+      "completedCursor": null
+    },
+    {
+      "instant": "01:12:03",
+      "status": "failed",
+      "retryAttempt": 1,
+      "retryAt": "2026-06-20T01:13:03.000Z",
+      "completedCursor": null
+    }
+  ],
+  "runFiles": 4
+}

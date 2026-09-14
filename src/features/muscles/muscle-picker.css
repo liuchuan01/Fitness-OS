@@ -1,0 +1,221 @@
+.muscle-explorer {
+  position: relative;
+}
+.body-3d-toolbar .explorer-trigger,
+.body-3d-fallback .explorer-trigger {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  min-height: 44px;
+  padding: 0 15px;
+  border-radius: 30px;
+  color: var(--text);
+  font-size: 12px;
+  cursor: pointer;
+}
+.explorer-symbol {
+  color: var(--accent-mid);
+  font-size: 21px;
+}
+.explorer-panel {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 14px);
+  right: 0;
+  width: 316px;
+  max-height: min(540px, calc(100dvh - 180px));
+  display: flex;
+  flex-direction: column;
+  padding: 18px;
+  overflow: hidden;
+  border-radius: 20px;
+  text-align: left;
+}
+.explorer-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--accent-mid);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+}
+.body-3d-toolbar .explorer-heading button,
+.explorer-heading button {
+  min-height: 44px;
+  width: 44px;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font-size: 21px;
+  cursor: pointer;
+}
+.explorer-path {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 14px;
+  font-size: 13px;
+}
+.body-3d-toolbar .explorer-path button,
+.explorer-path button {
+  padding: 0;
+  min-height: 44px;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 13px;
+}
+.explorer-path > span {
+  color: var(--muted);
+}
+.explorer-path strong {
+  color: var(--text);
+  font-weight: 500;
+}
+.explorer-description {
+  margin: 4px 0 18px;
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+.explorer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+  min-height: 0;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--muted) transparent;
+}
+.body-3d-toolbar .explorer-grid button,
+.explorer-grid button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 7px;
+  min-height: 92px;
+  padding: 11px 9px;
+  border: 1px solid color-mix(in srgb, var(--muted) 10.98%, transparent);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--raised) 21.96%, transparent);
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+}
+.explorer-index {
+  color: var(--muted);
+  font-family: monospace;
+  font-size: 11px;
+}
+.explorer-grid strong {
+  font-size: 14px;
+  font-weight: 500;
+}
+.explorer-grid small {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+.explorer-grid button:hover,
+.explorer-grid button:focus-visible,
+.body-3d-toolbar .explorer-grid button:hover,
+.body-3d-toolbar .explorer-grid button:focus-visible {
+  border-color: color-mix(in srgb, var(--accent-mid) 43.92%, transparent);
+  background: color-mix(in srgb, var(--muted) 20%, transparent);
+  color: var(--text);
+}
+.explorer-muscles {
+  overflow: auto;
+  min-height: 0;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--muted) transparent;
+}
+.body-3d-toolbar .explorer-muscles button,
+.explorer-muscles button {
+  display: grid;
+  grid-template-columns: 23px 1fr 12px;
+  align-items: center;
+  width: 100%;
+  min-height: 48px;
+  gap: 8px;
+  padding: 10px 8px;
+  border: 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--muted) 13.33%, transparent);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text);
+  text-align: left;
+  font-size: 12px;
+  line-height: 1.7;
+  cursor: pointer;
+}
+.explorer-muscles button:hover {
+  background: color-mix(in srgb, var(--muted) 20%, transparent);
+}
+.explorer-muscles button[aria-pressed="true"] {
+  color: var(--selection);
+  background: color-mix(in srgb, var(--selection) 8%, var(--surface));
+  box-shadow: inset 2px 0 var(--selection);
+}
+.explorer-footer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 16px;
+  padding-top: 13px;
+  border-top: 1px solid color-mix(in srgb, var(--muted) 14.51%, transparent);
+  color: var(--accent-mid);
+  font-size: 11px;
+}
+.explorer-footer i {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent-mid);
+}
+.explorer-footer > span {
+  margin-left: auto;
+}
+.muscle-explorer button:focus-visible {
+  outline: 2px solid var(--accent-mid);
+  outline-offset: 2px;
+}
+@media (max-width: 700px) {
+  .explorer-panel {
+    position: fixed;
+    top: 122px;
+    right: 12px;
+    width: min(316px, calc(100vw - 24px));
+    max-height: calc(100dvh - 154px);
+    padding: 16px;
+  }
+  .body-3d-toolbar .explorer-trigger {
+    padding: 0 12px;
+    gap: 8px;
+    min-height: 44px;
+  }
+}
+
+.explorer-trigger-compact {
+  display: none;
+}
+@media (max-width: 700px) {
+  .explorer-trigger .explorer-trigger-label,
+  .explorer-trigger > svg:last-child {
+    display: none;
+  }
+  .explorer-trigger .explorer-trigger-compact {
+    display: inline;
+  }
+  .body-stage .canvas-context {
+    max-width: calc(100% - 242px);
+  }
+  .body-stage .canvas-context strong {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

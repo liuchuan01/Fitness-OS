@@ -1,0 +1,23 @@
+schema_version: 1
+user:
+  name: 示例人物林小禾
+  training_experience: 初次尝试规律力量训练
+goals:
+  primary: 建立可持续的训练习惯
+training_constraints:
+  sessions_per_week: 2
+  max_session_min: 30
+  equipment:
+    - 弹力带
+    - 训练垫
+  location: 家中
+  reported_limitations:
+    - 示例人物报告不适时暂停并调整
+preferences:
+  warmup: 先进行简单动态活动
+unknowns:
+  - 当前体重未测量
+  - 历史训练重量未知
+confirmation:
+  confirmed_at: 2026-09-13T08:00:00.000Z
+  source: user_confirmed

@@ -1,0 +1,10 @@
+schema_version: 1
+rpe_base: 0.6
+rpe_step: 0.09
+default_rpe: 7
+default_bodyweight_factor: 0.65
+secondary_stimulus_factor: 0.75
+primary_recovery_factor: 0.65
+secondary_recovery_factor: 0.45
+stimulus_normalization_divisor: 20
+recovery_normalization_divisor: 25

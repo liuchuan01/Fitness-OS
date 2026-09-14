@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "source": {
+    "name": "BodyParts3D v3.0 / 20110915",
+    "repository": "https://github.com/Kevin-Mattheus-Moerman/BodyParts3D",
+    "repository_revision": "f0eeb6e843380cfe6b83797cf8c3e1af74de5e61",
+    "canonical_index": "assets/BodyParts3D_data/parts_list_e.txt",
+    "license": "CC BY-SA 2.1 Japan",
+    "attribution": "BodyParts3D, (c) The Database Center for Life Science licensed under CC Attribution-Share Alike 2.1 Japan"
+  },
+  "muscles": {
+    "pec_major_upper": { "source_targets": ["FMA34690", "FMA34691"], "planned_coverage": "exact" },
+    "pec_major_mid": { "source_targets": ["FMA79979", "FMA79980"], "planned_coverage": "exact" },
+    "pec_major_lower": { "source_targets": ["FMA45874", "FMA45875"], "planned_coverage": "exact" },
+    "deltoid_anterior": { "source_targets": ["FMA34680", "FMA34681"], "planned_coverage": "exact" },
+    "deltoid_lateral": { "source_targets": ["FMA34682", "FMA34683"], "planned_coverage": "exact" },
+    "deltoid_posterior": { "source_targets": ["FMA34684", "FMA34685"], "planned_coverage": "exact" },
+    "supraspinatus": { "source_targets": ["FMA32544", "FMA32545"], "planned_coverage": "exact", "display_mode": "professional" },
+    "infraspinatus": { "source_targets": ["FMA32547", "FMA32548"], "planned_coverage": "exact", "display_mode": "professional" },
+    "teres_minor": { "source_targets": ["FMA32553", "FMA32554"], "planned_coverage": "exact", "display_mode": "professional" },
+    "subscapularis": { "source_targets": ["FMA13414", "FMA13415"], "planned_coverage": "exact", "display_mode": "professional" },
+    "serratus_anterior": { "source_targets": ["FMA13398", "FMA13399"], "planned_coverage": "exact", "display_mode": "professional" },
+    "trapezius_upper": { "source_targets": ["FMA33586", "FMA33587"], "planned_coverage": "exact" },
+    "trapezius_middle": { "source_targets": ["FMA33584", "FMA33585"], "planned_coverage": "exact" },
+    "trapezius_lower": { "source_targets": ["FMA33581", "FMA33583"], "planned_coverage": "exact" },
+    "rhomboid_major": { "source_targets": ["FMA13381", "FMA13382"], "planned_coverage": "exact", "display_mode": "professional" },
+    "levator_scapulae": { "source_targets": ["FMA32540", "FMA32541"], "planned_coverage": "exact", "display_mode": "professional" },
+    "teres_major": { "source_targets": ["FMA32551", "FMA32552"], "planned_coverage": "exact", "display_mode": "professional" },
+    "latissimus_dorsi": { "source_targets": ["FMA13358", "FMA13359"], "planned_coverage": "exact" },
+    "erector_spinae_upper": {
+      "source_targets": ["FMA22742", "FMA22743", "FMA22751", "FMA22753", "FMA22779", "FMA22780"],
+      "planned_coverage": "partial",
+      "note": "Composite fitness region from thoracic iliocostalis, longissimus and spinalis; not a single FMA structure."
+    },
+    "erector_spinae_lower": {
+      "source_targets": ["FMA22740", "FMA22741"],
+      "planned_coverage": "partial",
+      "note": "Lumborum component is real geometry but does not represent every deep lumbar extensor."
+    },
+    "biceps_long_head": { "source_targets": ["FMA37686", "FMA37687"], "planned_coverage": "exact" },
+    "biceps_short_head": { "source_targets": ["FMA37684", "FMA37685"], "planned_coverage": "exact" },
+    "brachialis": { "source_targets": ["FMA37668", "FMA37669"], "planned_coverage": "exact", "display_mode": "professional" },
+    "triceps_long_head": { "source_targets": ["FMA37699", "FMA37700"], "planned_coverage": "exact" },
+    "triceps_lateral_head": { "source_targets": ["FMA37697", "FMA37698"], "planned_coverage": "exact" },
+    "triceps_medial_head": { "source_targets": ["FMA37695", "FMA37696"], "planned_coverage": "exact", "display_mode": "professional" },
+    "forearm_flexors": {
+      "source_targets": ["FMA38460", "FMA38461", "FMA38479", "FMA38480", "FMA38617", "FMA38618", "FMA38619", "FMA38620", "FMA38638", "FMA38639", "FMA38640", "FMA38641"],
+      "planned_coverage": "partial",
+      "note": "Representative wrist and finger flexors; taxonomy id intentionally denotes a functional group."
+    },
+    "forearm_extensors": {
+      "source_targets": ["FMA38495", "FMA38496", "FMA38498", "FMA38499", "FMA38501", "FMA38502", "BP44", "BP45", "BP46", "BP47"],
+      "planned_coverage": "partial",
+      "note": "Representative wrist and finger extensors; taxonomy id intentionally denotes a functional group."
+    },
+    "brachioradialis": { "source_targets": ["FMA38486", "FMA38487"], "planned_coverage": "exact", "display_mode": "professional" },
+    "pronator_teres": { "source_targets": ["FMA38560", "FMA38561", "FMA38562", "FMA38563"], "planned_coverage": "exact", "display_mode": "professional" },
+    "supinator": { "source_targets": ["FMA38513", "FMA38514"], "planned_coverage": "exact", "display_mode": "professional" },
+    "rectus_abdominis_upper": {
+      "source_targets": ["FMA13377", "FMA13378"],
+      "planned_coverage": "partial",
+      "derivation": { "type": "split_real_mesh", "axis": "z", "region": "upper" },
+      "note": "Derived only by clipping the real bilateral rectus abdominis meshes."
+    },
+    "rectus_abdominis_lower": {
+      "source_targets": ["FMA13377", "FMA13378"],
+      "planned_coverage": "partial",
+      "derivation": { "type": "split_real_mesh", "axis": "z", "region": "lower" },
+      "note": "Derived only by clipping the real bilateral rectus abdominis meshes."
+    },
+    "external_oblique": { "source_targets": ["FMA13336", "FMA13337"], "planned_coverage": "exact" },
+    "internal_oblique": { "source_targets": ["FMA13892", "FMA13893"], "planned_coverage": "exact", "display_mode": "professional" },
+    "transversus_abdominis": { "source_targets": ["FMA22344", "FMA22345"], "planned_coverage": "exact", "display_mode": "professional" },
+    "quadratus_lumborum": { "source_targets": ["FMA22348", "FMA22349"], "planned_coverage": "exact", "display_mode": "professional" },
+    "diaphragm": { "source_targets": ["FMA13295"], "planned_coverage": "exact", "display_mode": "professional" },
+    "gluteus_maximus": { "source_targets": ["FMA22328", "FMA22329"], "planned_coverage": "exact" },
+    "gluteus_medius": { "source_targets": ["FMA22330", "FMA22331"], "planned_coverage": "exact" },
+    "gluteus_minimus": { "source_targets": ["FMA22332", "FMA22333"], "planned_coverage": "exact", "display_mode": "professional" },
+    "tensor_fasciae_latae": { "source_targets": ["FMA22425", "FMA22426"], "planned_coverage": "exact", "display_mode": "professional" },
+    "iliopsoas": {
+      "source_targets": ["FMA22322", "FMA22323", "FMA22342", "FMA22343"],
+      "planned_coverage": "partial",
+      "display_mode": "professional",
+      "note": "Fitness iliopsoas region is composed from real bilateral iliacus and psoas major meshes."
+    },
+    "sartorius": { "source_targets": ["FMA22354", "FMA22355"], "planned_coverage": "exact", "display_mode": "professional" },
+    "rectus_femoris": { "source_targets": ["FMA38928", "FMA38929"], "planned_coverage": "exact" },
+    "vastus_lateralis": { "source_targets": ["FMA38930", "FMA38931"], "planned_coverage": "exact" },
+    "vastus_medialis": { "source_targets": ["FMA38932", "FMA38933"], "planned_coverage": "exact" },
+    "vastus_intermedius": { "source_targets": ["FMA38934", "FMA38935"], "planned_coverage": "exact", "display_mode": "professional" },
+    "adductor_longus": { "source_targets": ["FMA22456", "FMA22457"], "planned_coverage": "exact" },
+    "adductor_magnus": { "source_targets": ["FMA22459", "FMA22460"], "planned_coverage": "exact" },
+    "adductor_brevis": { "source_targets": ["FMA22452", "FMA22454"], "planned_coverage": "exact", "display_mode": "professional" },
+    "gracilis": { "source_targets": ["FMA43883", "FMA43884"], "planned_coverage": "exact", "display_mode": "professional" },
+    "pectineus": { "source_targets": ["FMA22450", "FMA22451"], "planned_coverage": "exact", "display_mode": "professional" },
+    "biceps_femoris_long_head": { "source_targets": ["FMA45888", "FMA45889"], "planned_coverage": "exact" },
+    "biceps_femoris_short_head": { "source_targets": ["FMA45891", "FMA45892"], "planned_coverage": "exact", "display_mode": "professional" },
+    "semitendinosus": { "source_targets": ["FMA22358", "FMA22359"], "planned_coverage": "exact" },
+    "semimembranosus": { "source_targets": ["FMA22448", "FMA22449"], "planned_coverage": "exact", "display_mode": "professional" },
+    "gastrocnemius_medial": { "source_targets": ["FMA45957", "FMA45958"], "planned_coverage": "exact" },
+    "gastrocnemius_lateral": { "source_targets": ["FMA45960", "FMA45961"], "planned_coverage": "exact" },
+    "soleus": { "source_targets": ["FMA22558", "FMA22559"], "planned_coverage": "exact" },
+    "tibialis_anterior": { "source_targets": ["FMA22544", "FMA22545"], "planned_coverage": "exact" },
+    "extensor_digitorum_longus": { "source_targets": ["FMA22548", "FMA22549"], "planned_coverage": "exact", "display_mode": "professional" },
+    "fibularis_longus": { "source_targets": ["FMA22552", "FMA22553"], "planned_coverage": "exact", "display_mode": "professional" },
+    "fibularis_brevis": { "source_targets": ["FMA22554", "FMA22555"], "planned_coverage": "exact", "display_mode": "professional" },
+    "tibialis_posterior": { "source_targets": ["FMA65018", "FMA65019"], "planned_coverage": "exact", "display_mode": "professional" },
+    "popliteus": { "source_targets": ["FMA22591", "FMA22592"], "planned_coverage": "exact", "display_mode": "professional" },
+    "sternocleidomastoid": { "source_targets": ["FMA13408", "FMA13409"], "planned_coverage": "exact", "display_mode": "professional" }
+  }
+}

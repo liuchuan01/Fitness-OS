@@ -1,0 +1,349 @@
+pull_up:
+  primary:
+    latissimus_dorsi: 1
+    biceps_long_head: 0.25
+    biceps_short_head: 0.2
+    brachialis: 0.15
+    trapezius_upper: 0.08
+    trapezius_middle: 0.09
+    trapezius_lower: 0.08
+  secondary:
+    deltoid_posterior: 0.4
+    rectus_abdominis_upper: 0.1
+    rectus_abdominis_lower: 0.08
+    external_oblique: 0.06
+    internal_oblique: 0.06
+
+lat_pulldown:
+  primary:
+    latissimus_dorsi: 1
+    biceps_long_head: 0.23
+    biceps_short_head: 0.18
+    brachialis: 0.14
+    trapezius_middle: 0.1
+    trapezius_lower: 0.1
+  secondary:
+    deltoid_posterior: 0.35
+    rectus_abdominis_upper: 0.09
+    rectus_abdominis_lower: 0.07
+    external_oblique: 0.045
+    internal_oblique: 0.045
+
+romanian_deadlift:
+  primary:
+    biceps_femoris_long_head: 0.3
+    biceps_femoris_short_head: 0.15
+    semitendinosus: 0.28
+    semimembranosus: 0.27
+    gluteus_maximus: 0.6
+    gluteus_medius: 0.15
+    gluteus_minimus: 0.05
+    erector_spinae_lower: 0.45
+  secondary:
+    rectus_abdominis_upper: 0.08
+    rectus_abdominis_lower: 0.07
+    external_oblique: 0.07
+    internal_oblique: 0.06
+    transversus_abdominis: 0.07
+    trapezius_upper: 0.05
+    trapezius_middle: 0.05
+    trapezius_lower: 0.05
+
+split_squat:
+  primary:
+    rectus_femoris: 0.25
+    vastus_lateralis: 0.25
+    vastus_medialis: 0.25
+    vastus_intermedius: 0.2
+    gluteus_maximus: 0.5
+    gluteus_medius: 0.2
+    gluteus_minimus: 0.05
+  secondary:
+    biceps_femoris_long_head: 0.11
+    biceps_femoris_short_head: 0.05
+    semitendinosus: 0.1
+    semimembranosus: 0.09
+    rectus_abdominis_upper: 0.06
+    rectus_abdominis_lower: 0.05
+    external_oblique: 0.045
+    internal_oblique: 0.045
+
+plank:
+  primary:
+    rectus_abdominis_upper: 0.2
+    rectus_abdominis_lower: 0.2
+    external_oblique: 0.15
+    internal_oblique: 0.15
+    transversus_abdominis: 0.2
+    quadratus_lumborum: 0.1
+  secondary:
+    gluteus_maximus: 0.15
+    gluteus_medius: 0.05
+    erector_spinae_lower: 0.15
+
+horizontal_press:
+  primary:
+    pec_major_mid: 1
+    pec_major_upper: 0.35
+    pec_major_lower: 0.25
+  secondary:
+    deltoid_anterior: 0.45
+    triceps_long_head: 0.25
+    triceps_lateral_head: 0.35
+    triceps_medial_head: 0.25
+    serratus_anterior: 0.15
+
+incline_press:
+  primary:
+    pec_major_upper: 1
+    pec_major_mid: 0.45
+  secondary:
+    deltoid_anterior: 0.5
+    triceps_long_head: 0.25
+    triceps_lateral_head: 0.35
+    triceps_medial_head: 0.25
+
+horizontal_row:
+  primary:
+    latissimus_dorsi: 0.7
+    trapezius_middle: 0.45
+    rhomboid_major: 0.4
+    deltoid_posterior: 0.35
+  secondary:
+    biceps_long_head: 0.25
+    biceps_short_head: 0.25
+    brachialis: 0.2
+    trapezius_lower: 0.2
+
+assisted_pull_up:
+  primary:
+    latissimus_dorsi: 1
+    teres_major: 0.25
+  secondary:
+    biceps_long_head: 0.3
+    biceps_short_head: 0.25
+    brachialis: 0.2
+    deltoid_posterior: 0.25
+    trapezius_lower: 0.2
+
+deadlift:
+  primary:
+    gluteus_maximus: 0.7
+    biceps_femoris_long_head: 0.3
+    semitendinosus: 0.3
+    semimembranosus: 0.3
+    erector_spinae_lower: 0.5
+  secondary:
+    adductor_magnus: 0.2
+    forearm_flexors: 0.15
+    trapezius_upper: 0.15
+
+single_leg_deadlift:
+  primary:
+    gluteus_maximus: 0.7
+    gluteus_medius: 0.3
+    biceps_femoris_long_head: 0.3
+    semitendinosus: 0.3
+    semimembranosus: 0.3
+  secondary:
+    erector_spinae_lower: 0.25
+    external_oblique: 0.15
+    internal_oblique: 0.15
+
+squat:
+  primary:
+    rectus_femoris: 0.3
+    vastus_lateralis: 0.35
+    vastus_medialis: 0.35
+    vastus_intermedius: 0.25
+    gluteus_maximus: 0.45
+  secondary:
+    adductor_magnus: 0.2
+    erector_spinae_lower: 0.15
+    gastrocnemius_medial: 0.1
+    gastrocnemius_lateral: 0.1
+
+wide_squat:
+  primary:
+    gluteus_maximus: 0.55
+    adductor_magnus: 0.4
+    adductor_longus: 0.25
+    vastus_lateralis: 0.25
+    vastus_medialis: 0.25
+  secondary:
+    rectus_femoris: 0.2
+    semitendinosus: 0.15
+    semimembranosus: 0.15
+
+step_up:
+  primary:
+    gluteus_maximus: 0.55
+    gluteus_medius: 0.25
+    rectus_femoris: 0.25
+    vastus_lateralis: 0.3
+    vastus_medialis: 0.3
+  secondary:
+    biceps_femoris_long_head: 0.15
+    gastrocnemius_medial: 0.12
+    gastrocnemius_lateral: 0.12
+
+overhead_press:
+  primary:
+    deltoid_anterior: 0.8
+    deltoid_lateral: 0.55
+  secondary:
+    triceps_long_head: 0.3
+    triceps_lateral_head: 0.35
+    triceps_medial_head: 0.25
+    trapezius_upper: 0.25
+    serratus_anterior: 0.2
+
+lateral_raise:
+  primary:
+    deltoid_lateral: 1
+    supraspinatus: 0.25
+  secondary:
+    deltoid_anterior: 0.15
+    trapezius_upper: 0.2
+
+upright_row:
+  primary:
+    deltoid_lateral: 0.65
+    trapezius_upper: 0.55
+  secondary:
+    deltoid_anterior: 0.25
+    supraspinatus: 0.15
+    biceps_long_head: 0.2
+    biceps_short_head: 0.2
+
+hip_abduction:
+  primary:
+    gluteus_medius: 0.85
+    gluteus_minimus: 0.45
+    tensor_fasciae_latae: 0.45
+  secondary:
+    gluteus_maximus: 0.15
+
+hip_adduction:
+  primary:
+    adductor_longus: 0.6
+    adductor_magnus: 0.55
+    adductor_brevis: 0.45
+    gracilis: 0.25
+    pectineus: 0.2
+  secondary: {}
+
+leg_curl:
+  primary:
+    biceps_femoris_long_head: 0.55
+    biceps_femoris_short_head: 0.45
+    semitendinosus: 0.55
+    semimembranosus: 0.55
+  secondary:
+    gastrocnemius_medial: 0.15
+    gastrocnemius_lateral: 0.15
+    gluteus_maximus: 0.1
+
+leg_press:
+  primary:
+    rectus_femoris: 0.55
+    vastus_lateralis: 0.7
+    vastus_medialis: 0.7
+    vastus_intermedius: 0.55
+    gluteus_maximus: 0.45
+  secondary:
+    adductor_magnus: 0.2
+    biceps_femoris_long_head: 0.1
+    semitendinosus: 0.1
+    semimembranosus: 0.1
+    gastrocnemius_medial: 0.1
+    gastrocnemius_lateral: 0.1
+
+rear_delt_pull:
+  primary:
+    deltoid_posterior: 0.8
+    trapezius_middle: 0.55
+    rhomboid_major: 0.45
+  secondary:
+    infraspinatus: 0.3
+    teres_minor: 0.25
+    trapezius_lower: 0.25
+
+dip:
+  primary:
+    pec_major_lower: 0.75
+    triceps_long_head: 0.45
+    triceps_lateral_head: 0.5
+  secondary:
+    pec_major_mid: 0.35
+    deltoid_anterior: 0.25
+
+triceps_pressdown:
+  primary:
+    triceps_lateral_head: 0.8
+    triceps_medial_head: 0.65
+    triceps_long_head: 0.4
+  secondary: {}
+
+hammer_curl:
+  primary:
+    brachialis: 0.8
+    brachioradialis: 0.7
+    biceps_long_head: 0.4
+    biceps_short_head: 0.3
+  secondary:
+    forearm_flexors: 0.2
+
+biceps_curl:
+  primary:
+    biceps_long_head: 0.8
+    biceps_short_head: 0.8
+    brachialis: 0.5
+  secondary:
+    brachioradialis: 0.25
+    forearm_flexors: 0.15
+
+leg_extension:
+  primary:
+    rectus_femoris: 0.7
+    vastus_lateralis: 0.8
+    vastus_medialis: 0.8
+    vastus_intermedius: 0.7
+  secondary: {}
+
+leg_raise:
+  primary:
+    rectus_abdominis_lower: 0.7
+    iliopsoas: 0.65
+  secondary:
+    rectus_abdominis_upper: 0.25
+    transversus_abdominis: 0.25
+
+side_plank:
+  primary:
+    external_oblique: 0.65
+    internal_oblique: 0.65
+    quadratus_lumborum: 0.5
+    transversus_abdominis: 0.4
+  secondary:
+    gluteus_medius: 0.35
+
+cross_body_crunch:
+  primary:
+    rectus_abdominis_upper: 0.6
+    rectus_abdominis_lower: 0.4
+    external_oblique: 0.45
+    internal_oblique: 0.45
+  secondary:
+    iliopsoas: 0.2
+
+squat_press:
+  primary:
+    gluteus_maximus: 0.4
+    vastus_lateralis: 0.3
+    vastus_medialis: 0.3
+    deltoid_anterior: 0.35
+    deltoid_lateral: 0.25
+  secondary:
+    triceps_lateral_head: 0.2
+    rectus_abdominis_upper: 0.15

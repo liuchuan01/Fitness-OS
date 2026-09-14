@@ -1,0 +1,171 @@
+schema_version: 1
+id: workout_2026-06-16
+date: 2026-06-16
+title: Lower Body / 髋主导
+bodyweight_kg: 70
+readiness:
+  fatigue: 6
+  sleep_quality: 6
+  soreness: 5
+  mood: 6
+blocks:
+  - type: strength
+    name: 下肢
+    exercises:
+      - name: 保加利亚分腿蹲
+        exercise_id: split_squat
+        sets:
+          - weight_kg: 18
+            reps: 10
+            rpe: 7
+          - weight_kg: 18
+            reps: 10
+            rpe: 8
+      - name: 罗马尼亚硬拉
+        exercise_id: romanian_deadlift
+        sets:
+          - weight_kg: 50
+            reps: 10
+            rpe: 7
+          - weight_kg: 50
+            reps: 8
+            rpe: 8
+computed:
+  total_sets: 4
+  total_volume_kg: 1602
+  stimulus:
+    pec_major_upper: 0
+    pec_major_mid: 0
+    pec_major_lower: 0
+    deltoid_anterior: 0
+    deltoid_lateral: 0
+    deltoid_posterior: 0
+    supraspinatus: 0
+    infraspinatus: 0
+    teres_minor: 0
+    subscapularis: 0
+    serratus_anterior: 0
+    trapezius_upper: 2
+    trapezius_middle: 2
+    trapezius_lower: 2
+    rhomboid_major: 0
+    levator_scapulae: 0
+    teres_major: 0
+    latissimus_dorsi: 0
+    erector_spinae_upper: 0
+    erector_spinae_lower: 26
+    biceps_long_head: 0
+    biceps_short_head: 0
+    brachialis: 0
+    triceps_long_head: 0
+    triceps_lateral_head: 0
+    triceps_medial_head: 0
+    forearm_flexors: 0
+    forearm_extensors: 0
+    brachioradialis: 0
+    pronator_teres: 0
+    supinator: 0
+    rectus_abdominis_upper: 4
+    rectus_abdominis_lower: 4
+    external_oblique: 4
+    internal_oblique: 3
+    transversus_abdominis: 3
+    quadratus_lumborum: 0
+    diaphragm: 0
+    gluteus_maximus: 46
+    gluteus_medius: 13
+    gluteus_minimus: 4
+    tensor_fasciae_latae: 0
+    iliopsoas: 0
+    sartorius: 0
+    rectus_femoris: 6
+    vastus_lateralis: 6
+    vastus_medialis: 6
+    vastus_intermedius: 5
+    adductor_longus: 0
+    adductor_magnus: 0
+    adductor_brevis: 0
+    gracilis: 0
+    pectineus: 0
+    biceps_femoris_long_head: 19
+    biceps_femoris_short_head: 9
+    semitendinosus: 18
+    semimembranosus: 17
+    gastrocnemius_medial: 0
+    gastrocnemius_lateral: 0
+    soleus: 0
+    tibialis_anterior: 0
+    extensor_digitorum_longus: 0
+    fibularis_longus: 0
+    fibularis_brevis: 0
+    tibialis_posterior: 0
+    popliteus: 0
+    sternocleidomastoid: 0
+  recovery_load:
+    pec_major_upper: 0
+    pec_major_mid: 0
+    pec_major_lower: 0
+    deltoid_anterior: 0
+    deltoid_lateral: 0
+    deltoid_posterior: 0
+    supraspinatus: 0
+    infraspinatus: 0
+    teres_minor: 0
+    subscapularis: 0
+    serratus_anterior: 0
+    trapezius_upper: 1
+    trapezius_middle: 1
+    trapezius_lower: 1
+    rhomboid_major: 0
+    levator_scapulae: 0
+    teres_major: 0
+    latissimus_dorsi: 0
+    erector_spinae_upper: 0
+    erector_spinae_lower: 13
+    biceps_long_head: 0
+    biceps_short_head: 0
+    brachialis: 0
+    triceps_long_head: 0
+    triceps_lateral_head: 0
+    triceps_medial_head: 0
+    forearm_flexors: 0
+    forearm_extensors: 0
+    brachioradialis: 0
+    pronator_teres: 0
+    supinator: 0
+    rectus_abdominis_upper: 2
+    rectus_abdominis_lower: 2
+    external_oblique: 2
+    internal_oblique: 2
+    transversus_abdominis: 1
+    quadratus_lumborum: 0
+    diaphragm: 0
+    gluteus_maximus: 24
+    gluteus_medius: 7
+    gluteus_minimus: 2
+    tensor_fasciae_latae: 0
+    iliopsoas: 0
+    sartorius: 0
+    rectus_femoris: 3
+    vastus_lateralis: 3
+    vastus_medialis: 3
+    vastus_intermedius: 2
+    adductor_longus: 0
+    adductor_magnus: 0
+    adductor_brevis: 0
+    gracilis: 0
+    pectineus: 0
+    biceps_femoris_long_head: 10
+    biceps_femoris_short_head: 5
+    semitendinosus: 9
+    semimembranosus: 9
+    gastrocnemius_medial: 0
+    gastrocnemius_lateral: 0
+    soleus: 0
+    tibialis_anterior: 0
+    extensor_digitorum_longus: 0
+    fibularis_longus: 0
+    fibularis_brevis: 0
+    tibialis_posterior: 0
+    popliteus: 0
+    sternocleidomastoid: 0

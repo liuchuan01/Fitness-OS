@@ -1,0 +1,110 @@
+schema_version: 1
+id: plan_2026-06-20_pull
+date: 2026-06-20
+title: Pull Day / 引体向上强化
+bodyweight_kg: 70
+readiness:
+  fatigue: 5
+  sleep_quality: 7
+  soreness: 3
+  mood: 7
+blocks:
+  - type: strength
+    name: 主训练
+    exercises:
+      - name: 引体向上
+        exercise_id: pull_up
+        sets:
+          - reps: 5
+            rpe: 7
+            bodyweight_factor: 0.7
+          - reps: 5
+            rpe: 8
+            bodyweight_factor: 0.7
+      - name: 高位下拉
+        exercise_id: lat_pulldown
+        sets:
+          - weight_kg: 35
+            reps: 10
+            rpe: 7
+          - weight_kg: 35
+            reps: 8
+            rpe: 8
+source: ai_generated
+user_intent: 今天想练背，只有40分钟，腰有点累
+ai_stimulus_intent:
+  target:
+    latissimus_dorsi: high
+    biceps_long_head: medium
+    biceps_short_head: medium
+    deltoid_posterior: medium
+  avoid:
+    erector_spinae_lower: high_load
+computed_expected_stimulus:
+  pec_major_upper: 0
+  pec_major_mid: 0
+  pec_major_lower: 0
+  deltoid_anterior: 0
+  deltoid_lateral: 0
+  deltoid_posterior: 20
+  supraspinatus: 0
+  infraspinatus: 0
+  teres_minor: 0
+  subscapularis: 0
+  serratus_anterior: 0
+  trapezius_upper: 2
+  trapezius_middle: 7
+  trapezius_lower: 6
+  rhomboid_major: 0
+  levator_scapulae: 0
+  teres_major: 0
+  latissimus_dorsi: 71
+  erector_spinae_upper: 0
+  erector_spinae_lower: 0
+  biceps_long_head: 17
+  biceps_short_head: 13
+  brachialis: 10
+  triceps_long_head: 0
+  triceps_lateral_head: 0
+  triceps_medial_head: 0
+  forearm_flexors: 0
+  forearm_extensors: 0
+  brachioradialis: 0
+  pronator_teres: 0
+  supinator: 0
+  rectus_abdominis_upper: 5
+  rectus_abdominis_lower: 4
+  external_oblique: 3
+  internal_oblique: 3
+  transversus_abdominis: 0
+  quadratus_lumborum: 0
+  diaphragm: 0
+  gluteus_maximus: 0
+  gluteus_medius: 0
+  gluteus_minimus: 0
+  tensor_fasciae_latae: 0
+  iliopsoas: 0
+  sartorius: 0
+  rectus_femoris: 0
+  vastus_lateralis: 0
+  vastus_medialis: 0
+  vastus_intermedius: 0
+  adductor_longus: 0
+  adductor_magnus: 0
+  adductor_brevis: 0
+  gracilis: 0
+  pectineus: 0
+  biceps_femoris_long_head: 0
+  biceps_femoris_short_head: 0
+  semitendinosus: 0
+  semimembranosus: 0
+  gastrocnemius_medial: 0
+  gastrocnemius_lateral: 0
+  soleus: 0
+  tibialis_anterior: 0
+  extensor_digitorum_longus: 0
+  fibularis_longus: 0
+  fibularis_brevis: 0
+  tibialis_posterior: 0
+  popliteus: 0
+  sternocleidomastoid: 0

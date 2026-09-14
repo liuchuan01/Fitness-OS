@@ -1,0 +1,738 @@
+{
+  "version": "1.0-bodyparts3d-fitness-taxonomy",
+  "runtime": "static-glb-draco",
+  "status": "local-taxonomy-candidate",
+  "assets": {
+    "combined_draco": "bodyparts3d-fitness-taxonomy-draco.glb"
+  },
+  "skin_targets": [
+    "skin.bodyparts3d.full.no_genitals"
+  ],
+  "targets": {
+    "pec_major_upper": [
+      "muscle.pec_major_upper.right",
+      "muscle.pec_major_upper.left"
+    ],
+    "pec_major_mid": [
+      "muscle.pec_major_mid.right",
+      "muscle.pec_major_mid.left"
+    ],
+    "pec_major_lower": [
+      "muscle.pec_major_lower.right",
+      "muscle.pec_major_lower.left"
+    ],
+    "deltoid_anterior": [
+      "muscle.deltoid_anterior.right",
+      "muscle.deltoid_anterior.left"
+    ],
+    "deltoid_lateral": [
+      "muscle.deltoid_lateral.right",
+      "muscle.deltoid_lateral.left"
+    ],
+    "deltoid_posterior": [
+      "muscle.deltoid_posterior.right",
+      "muscle.deltoid_posterior.left"
+    ],
+    "supraspinatus": [
+      "muscle.supraspinatus.right",
+      "muscle.supraspinatus.left"
+    ],
+    "infraspinatus": [
+      "muscle.infraspinatus.right",
+      "muscle.infraspinatus.left"
+    ],
+    "teres_minor": [
+      "muscle.teres_minor.right",
+      "muscle.teres_minor.left"
+    ],
+    "subscapularis": [
+      "muscle.subscapularis.right",
+      "muscle.subscapularis.left"
+    ],
+    "serratus_anterior": [
+      "muscle.serratus_anterior.right",
+      "muscle.serratus_anterior.left"
+    ],
+    "trapezius_upper": [
+      "muscle.trapezius_upper.right",
+      "muscle.trapezius_upper.left"
+    ],
+    "trapezius_middle": [
+      "muscle.trapezius_middle.right",
+      "muscle.trapezius_middle.left"
+    ],
+    "trapezius_lower": [
+      "muscle.trapezius_lower.right",
+      "muscle.trapezius_lower.left"
+    ],
+    "rhomboid_major": [
+      "muscle.rhomboid_major.right",
+      "muscle.rhomboid_major.left"
+    ],
+    "levator_scapulae": [
+      "muscle.levator_scapulae.right",
+      "muscle.levator_scapulae.left"
+    ],
+    "teres_major": [
+      "muscle.teres_major.right",
+      "muscle.teres_major.left"
+    ],
+    "latissimus_dorsi": [
+      "muscle.latissimus_dorsi.right",
+      "muscle.latissimus_dorsi.left"
+    ],
+    "erector_spinae_upper": [
+      "muscle.erector_spinae_upper.right",
+      "muscle.erector_spinae_upper.left"
+    ],
+    "erector_spinae_lower": [
+      "muscle.erector_spinae_lower.right",
+      "muscle.erector_spinae_lower.left"
+    ],
+    "biceps_long_head": [
+      "muscle.biceps_long_head.right",
+      "muscle.biceps_long_head.left"
+    ],
+    "biceps_short_head": [
+      "muscle.biceps_short_head.right",
+      "muscle.biceps_short_head.left"
+    ],
+    "brachialis": [
+      "muscle.brachialis.right",
+      "muscle.brachialis.left"
+    ],
+    "triceps_long_head": [
+      "muscle.triceps_long_head.right",
+      "muscle.triceps_long_head.left"
+    ],
+    "triceps_lateral_head": [
+      "muscle.triceps_lateral_head.right",
+      "muscle.triceps_lateral_head.left"
+    ],
+    "triceps_medial_head": [
+      "muscle.triceps_medial_head.right",
+      "muscle.triceps_medial_head.left"
+    ],
+    "forearm_flexors": [
+      "muscle.forearm_flexors.right",
+      "muscle.forearm_flexors.left"
+    ],
+    "forearm_extensors": [
+      "muscle.forearm_extensors.right",
+      "muscle.forearm_extensors.left"
+    ],
+    "brachioradialis": [
+      "muscle.brachioradialis.right",
+      "muscle.brachioradialis.left"
+    ],
+    "pronator_teres": [
+      "muscle.pronator_teres.right",
+      "muscle.pronator_teres.left"
+    ],
+    "supinator": [
+      "muscle.supinator.right",
+      "muscle.supinator.left"
+    ],
+    "rectus_abdominis_upper": [
+      "muscle.rectus_abdominis_upper.right",
+      "muscle.rectus_abdominis_upper.left"
+    ],
+    "rectus_abdominis_lower": [
+      "muscle.rectus_abdominis_lower.right",
+      "muscle.rectus_abdominis_lower.left"
+    ],
+    "external_oblique": [
+      "muscle.external_oblique.right",
+      "muscle.external_oblique.left"
+    ],
+    "internal_oblique": [
+      "muscle.internal_oblique.right",
+      "muscle.internal_oblique.left"
+    ],
+    "transversus_abdominis": [
+      "muscle.transversus_abdominis.right",
+      "muscle.transversus_abdominis.left"
+    ],
+    "quadratus_lumborum": [
+      "muscle.quadratus_lumborum.right",
+      "muscle.quadratus_lumborum.left"
+    ],
+    "diaphragm": [
+      "muscle.diaphragm.center"
+    ],
+    "gluteus_maximus": [
+      "muscle.gluteus_maximus.right",
+      "muscle.gluteus_maximus.left"
+    ],
+    "gluteus_medius": [
+      "muscle.gluteus_medius.right",
+      "muscle.gluteus_medius.left"
+    ],
+    "gluteus_minimus": [
+      "muscle.gluteus_minimus.right",
+      "muscle.gluteus_minimus.left"
+    ],
+    "tensor_fasciae_latae": [
+      "muscle.tensor_fasciae_latae.right",
+      "muscle.tensor_fasciae_latae.left"
+    ],
+    "iliopsoas": [
+      "muscle.iliopsoas.right",
+      "muscle.iliopsoas.left"
+    ],
+    "sartorius": [
+      "muscle.sartorius.right",
+      "muscle.sartorius.left"
+    ],
+    "rectus_femoris": [
+      "muscle.rectus_femoris.right",
+      "muscle.rectus_femoris.left"
+    ],
+    "vastus_lateralis": [
+      "muscle.vastus_lateralis.right",
+      "muscle.vastus_lateralis.left"
+    ],
+    "vastus_medialis": [
+      "muscle.vastus_medialis.right",
+      "muscle.vastus_medialis.left"
+    ],
+    "vastus_intermedius": [
+      "muscle.vastus_intermedius.right",
+      "muscle.vastus_intermedius.left"
+    ],
+    "adductor_longus": [
+      "muscle.adductor_longus.right",
+      "muscle.adductor_longus.left"
+    ],
+    "adductor_magnus": [
+      "muscle.adductor_magnus.right",
+      "muscle.adductor_magnus.left"
+    ],
+    "adductor_brevis": [
+      "muscle.adductor_brevis.right",
+      "muscle.adductor_brevis.left"
+    ],
+    "gracilis": [
+      "muscle.gracilis.right",
+      "muscle.gracilis.left"
+    ],
+    "pectineus": [
+      "muscle.pectineus.right",
+      "muscle.pectineus.left"
+    ],
+    "biceps_femoris_long_head": [
+      "muscle.biceps_femoris_long_head.right",
+      "muscle.biceps_femoris_long_head.left"
+    ],
+    "biceps_femoris_short_head": [
+      "muscle.biceps_femoris_short_head.right",
+      "muscle.biceps_femoris_short_head.left"
+    ],
+    "semitendinosus": [
+      "muscle.semitendinosus.right",
+      "muscle.semitendinosus.left"
+    ],
+    "semimembranosus": [
+      "muscle.semimembranosus.right",
+      "muscle.semimembranosus.left"
+    ],
+    "gastrocnemius_medial": [
+      "muscle.gastrocnemius_medial.right",
+      "muscle.gastrocnemius_medial.left"
+    ],
+    "gastrocnemius_lateral": [
+      "muscle.gastrocnemius_lateral.right",
+      "muscle.gastrocnemius_lateral.left"
+    ],
+    "soleus": [
+      "muscle.soleus.right",
+      "muscle.soleus.left"
+    ],
+    "tibialis_anterior": [
+      "muscle.tibialis_anterior.right",
+      "muscle.tibialis_anterior.left"
+    ],
+    "extensor_digitorum_longus": [
+      "muscle.extensor_digitorum_longus.right",
+      "muscle.extensor_digitorum_longus.left"
+    ],
+    "fibularis_longus": [
+      "muscle.fibularis_longus.right",
+      "muscle.fibularis_longus.left"
+    ],
+    "fibularis_brevis": [
+      "muscle.fibularis_brevis.right",
+      "muscle.fibularis_brevis.left"
+    ],
+    "tibialis_posterior": [
+      "muscle.tibialis_posterior.right",
+      "muscle.tibialis_posterior.left"
+    ],
+    "popliteus": [
+      "muscle.popliteus.right",
+      "muscle.popliteus.left"
+    ],
+    "sternocleidomastoid": [
+      "muscle.sternocleidomastoid.right",
+      "muscle.sternocleidomastoid.left"
+    ]
+  },
+  "source_files": {
+    "skin": "FMA7163.stl",
+    "pec_major_upper": [
+      "FMA34690.stl",
+      "FMA34691.stl"
+    ],
+    "pec_major_mid": [
+      "FMA79979.stl",
+      "FMA79980.stl"
+    ],
+    "pec_major_lower": [
+      "FMA45874.stl",
+      "FMA45875.stl"
+    ],
+    "deltoid_anterior": [
+      "FMA34680.stl",
+      "FMA34681.stl"
+    ],
+    "deltoid_lateral": [
+      "FMA34682.stl",
+      "FMA34683.stl"
+    ],
+    "deltoid_posterior": [
+      "FMA34684.stl",
+      "FMA34685.stl"
+    ],
+    "supraspinatus": [
+      "FMA32544.stl",
+      "FMA32545.stl"
+    ],
+    "infraspinatus": [
+      "FMA32547.stl",
+      "FMA32548.stl"
+    ],
+    "teres_minor": [
+      "FMA32553.stl",
+      "FMA32554.stl"
+    ],
+    "subscapularis": [
+      "FMA13414.stl",
+      "FMA13415.stl"
+    ],
+    "serratus_anterior": [
+      "FMA13398.stl",
+      "FMA13399.stl"
+    ],
+    "trapezius_upper": [
+      "FMA33586.stl",
+      "FMA33587.stl"
+    ],
+    "trapezius_middle": [
+      "FMA33584.stl",
+      "FMA33585.stl"
+    ],
+    "trapezius_lower": [
+      "FMA33581.stl",
+      "FMA33583.stl"
+    ],
+    "rhomboid_major": [
+      "FMA13381.stl",
+      "FMA13382.stl"
+    ],
+    "levator_scapulae": [
+      "FMA32540.stl",
+      "FMA32541.stl"
+    ],
+    "teres_major": [
+      "FMA32551.stl",
+      "FMA32552.stl"
+    ],
+    "latissimus_dorsi": [
+      "FMA13358.stl",
+      "FMA13359.stl"
+    ],
+    "erector_spinae_upper": [
+      "FMA22742.stl",
+      "FMA22743.stl",
+      "FMA22751.stl",
+      "FMA22753.stl",
+      "FMA22779.stl",
+      "FMA22780.stl"
+    ],
+    "erector_spinae_lower": [
+      "FMA22740.stl",
+      "FMA22741.stl"
+    ],
+    "biceps_long_head": [
+      "FMA37686.stl",
+      "FMA37687.stl"
+    ],
+    "biceps_short_head": [
+      "FMA37684.stl",
+      "FMA37685.stl"
+    ],
+    "brachialis": [
+      "FMA37668.stl",
+      "FMA37669.stl"
+    ],
+    "triceps_long_head": [
+      "FMA37699.stl",
+      "FMA37700.stl"
+    ],
+    "triceps_lateral_head": [
+      "FMA37697.stl",
+      "FMA37698.stl"
+    ],
+    "triceps_medial_head": [
+      "FMA37695.stl",
+      "FMA37696.stl"
+    ],
+    "forearm_flexors": [
+      "FMA38460.stl",
+      "FMA38461.stl",
+      "FMA38479.stl",
+      "FMA38480.stl",
+      "FMA38617.stl",
+      "FMA38618.stl",
+      "FMA38619.stl",
+      "FMA38620.stl",
+      "FMA38638.stl",
+      "FMA38639.stl",
+      "FMA38640.stl",
+      "FMA38641.stl"
+    ],
+    "forearm_extensors": [
+      "FMA38495.stl",
+      "FMA38496.stl",
+      "FMA38498.stl",
+      "FMA38499.stl",
+      "FMA38501.stl",
+      "FMA38502.stl",
+      "BP44.stl",
+      "BP45.stl",
+      "BP46.stl",
+      "BP47.stl"
+    ],
+    "brachioradialis": [
+      "FMA38486.stl",
+      "FMA38487.stl"
+    ],
+    "pronator_teres": [
+      "FMA38560.stl",
+      "FMA38561.stl",
+      "FMA38562.stl",
+      "FMA38563.stl"
+    ],
+    "supinator": [
+      "FMA38513.stl",
+      "FMA38514.stl"
+    ],
+    "rectus_abdominis_upper": [
+      "FMA13377.stl",
+      "FMA13378.stl"
+    ],
+    "rectus_abdominis_lower": [
+      "FMA13377.stl",
+      "FMA13378.stl"
+    ],
+    "external_oblique": [
+      "FMA13336.stl",
+      "FMA13337.stl"
+    ],
+    "internal_oblique": [
+      "FMA13892.stl",
+      "FMA13893.stl"
+    ],
+    "transversus_abdominis": [
+      "FMA22344.stl",
+      "FMA22345.stl"
+    ],
+    "quadratus_lumborum": [
+      "FMA22348.stl",
+      "FMA22349.stl"
+    ],
+    "diaphragm": [
+      "FMA13295.stl"
+    ],
+    "gluteus_maximus": [
+      "FMA22328.stl",
+      "FMA22329.stl"
+    ],
+    "gluteus_medius": [
+      "FMA22330.stl",
+      "FMA22331.stl"
+    ],
+    "gluteus_minimus": [
+      "FMA22332.stl",
+      "FMA22333.stl"
+    ],
+    "tensor_fasciae_latae": [
+      "FMA22425.stl",
+      "FMA22426.stl"
+    ],
+    "iliopsoas": [
+      "FMA22322.stl",
+      "FMA22323.stl",
+      "FMA22342.stl",
+      "FMA22343.stl"
+    ],
+    "sartorius": [
+      "FMA22354.stl",
+      "FMA22355.stl"
+    ],
+    "rectus_femoris": [
+      "FMA38928.stl",
+      "FMA38929.stl"
+    ],
+    "vastus_lateralis": [
+      "FMA38930.stl",
+      "FMA38931.stl"
+    ],
+    "vastus_medialis": [
+      "FMA38932.stl",
+      "FMA38933.stl"
+    ],
+    "vastus_intermedius": [
+      "FMA38934.stl",
+      "FMA38935.stl"
+    ],
+    "adductor_longus": [
+      "FMA22456.stl",
+      "FMA22457.stl"
+    ],
+    "adductor_magnus": [
+      "FMA22459.stl",
+      "FMA22460.stl"
+    ],
+    "adductor_brevis": [
+      "FMA22452.stl",
+      "FMA22454.stl"
+    ],
+    "gracilis": [
+      "FMA43883.stl",
+      "FMA43884.stl"
+    ],
+    "pectineus": [
+      "FMA22450.stl",
+      "FMA22451.stl"
+    ],
+    "biceps_femoris_long_head": [
+      "FMA45888.stl",
+      "FMA45889.stl"
+    ],
+    "biceps_femoris_short_head": [
+      "FMA45891.stl",
+      "FMA45892.stl"
+    ],
+    "semitendinosus": [
+      "FMA22358.stl",
+      "FMA22359.stl"
+    ],
+    "semimembranosus": [
+      "FMA22448.stl",
+      "FMA22449.stl"
+    ],
+    "gastrocnemius_medial": [
+      "FMA45957.stl",
+      "FMA45958.stl"
+    ],
+    "gastrocnemius_lateral": [
+      "FMA45960.stl",
+      "FMA45961.stl"
+    ],
+    "soleus": [
+      "FMA22558.stl",
+      "FMA22559.stl"
+    ],
+    "tibialis_anterior": [
+      "FMA22544.stl",
+      "FMA22545.stl"
+    ],
+    "extensor_digitorum_longus": [
+      "FMA22548.stl",
+      "FMA22549.stl"
+    ],
+    "fibularis_longus": [
+      "FMA22552.stl",
+      "FMA22553.stl"
+    ],
+    "fibularis_brevis": [
+      "FMA22554.stl",
+      "FMA22555.stl"
+    ],
+    "tibialis_posterior": [
+      "FMA65018.stl",
+      "FMA65019.stl"
+    ],
+    "popliteus": [
+      "FMA22591.stl",
+      "FMA22592.stl"
+    ],
+    "sternocleidomastoid": [
+      "FMA13408.stl",
+      "FMA13409.stl"
+    ]
+  },
+  "coverage": {
+    "pec_major_upper": "exact",
+    "pec_major_mid": "exact",
+    "pec_major_lower": "exact",
+    "deltoid_anterior": "exact",
+    "deltoid_lateral": "exact",
+    "deltoid_posterior": "exact",
+    "supraspinatus": "exact",
+    "infraspinatus": "exact",
+    "teres_minor": "exact",
+    "subscapularis": "exact",
+    "serratus_anterior": "exact",
+    "trapezius_upper": "exact",
+    "trapezius_middle": "exact",
+    "trapezius_lower": "exact",
+    "rhomboid_major": "exact",
+    "levator_scapulae": "exact",
+    "teres_major": "exact",
+    "latissimus_dorsi": "exact",
+    "erector_spinae_upper": "partial",
+    "erector_spinae_lower": "partial",
+    "biceps_long_head": "exact",
+    "biceps_short_head": "exact",
+    "brachialis": "exact",
+    "triceps_long_head": "exact",
+    "triceps_lateral_head": "exact",
+    "triceps_medial_head": "exact",
+    "forearm_flexors": "partial",
+    "forearm_extensors": "partial",
+    "brachioradialis": "exact",
+    "pronator_teres": "exact",
+    "supinator": "exact",
+    "rectus_abdominis_upper": "partial",
+    "rectus_abdominis_lower": "partial",
+    "external_oblique": "exact",
+    "internal_oblique": "exact",
+    "transversus_abdominis": "exact",
+    "quadratus_lumborum": "exact",
+    "diaphragm": "exact",
+    "gluteus_maximus": "exact",
+    "gluteus_medius": "exact",
+    "gluteus_minimus": "exact",
+    "tensor_fasciae_latae": "exact",
+    "iliopsoas": "partial",
+    "sartorius": "exact",
+    "rectus_femoris": "exact",
+    "vastus_lateralis": "exact",
+    "vastus_medialis": "exact",
+    "vastus_intermedius": "exact",
+    "adductor_longus": "exact",
+    "adductor_magnus": "exact",
+    "adductor_brevis": "exact",
+    "gracilis": "exact",
+    "pectineus": "exact",
+    "biceps_femoris_long_head": "exact",
+    "biceps_femoris_short_head": "exact",
+    "semitendinosus": "exact",
+    "semimembranosus": "exact",
+    "gastrocnemius_medial": "exact",
+    "gastrocnemius_lateral": "exact",
+    "soleus": "exact",
+    "tibialis_anterior": "exact",
+    "extensor_digitorum_longus": "exact",
+    "fibularis_longus": "exact",
+    "fibularis_brevis": "exact",
+    "tibialis_posterior": "exact",
+    "popliteus": "exact",
+    "sternocleidomastoid": "exact"
+  },
+  "display_modes": {
+    "pec_major_upper": "normal",
+    "pec_major_mid": "normal",
+    "pec_major_lower": "normal",
+    "deltoid_anterior": "normal",
+    "deltoid_lateral": "normal",
+    "deltoid_posterior": "normal",
+    "supraspinatus": "professional",
+    "infraspinatus": "professional",
+    "teres_minor": "professional",
+    "subscapularis": "professional",
+    "serratus_anterior": "professional",
+    "trapezius_upper": "normal",
+    "trapezius_middle": "normal",
+    "trapezius_lower": "normal",
+    "rhomboid_major": "professional",
+    "levator_scapulae": "professional",
+    "teres_major": "professional",
+    "latissimus_dorsi": "normal",
+    "erector_spinae_upper": "normal",
+    "erector_spinae_lower": "normal",
+    "biceps_long_head": "normal",
+    "biceps_short_head": "normal",
+    "brachialis": "professional",
+    "triceps_long_head": "normal",
+    "triceps_lateral_head": "normal",
+    "triceps_medial_head": "professional",
+    "forearm_flexors": "normal",
+    "forearm_extensors": "normal",
+    "brachioradialis": "professional",
+    "pronator_teres": "professional",
+    "supinator": "professional",
+    "rectus_abdominis_upper": "normal",
+    "rectus_abdominis_lower": "normal",
+    "external_oblique": "normal",
+    "internal_oblique": "professional",
+    "transversus_abdominis": "professional",
+    "quadratus_lumborum": "professional",
+    "diaphragm": "professional",
+    "gluteus_maximus": "normal",
+    "gluteus_medius": "normal",
+    "gluteus_minimus": "professional",
+    "tensor_fasciae_latae": "professional",
+    "iliopsoas": "professional",
+    "sartorius": "professional",
+    "rectus_femoris": "normal",
+    "vastus_lateralis": "normal",
+    "vastus_medialis": "normal",
+    "vastus_intermedius": "professional",
+    "adductor_longus": "normal",
+    "adductor_magnus": "normal",
+    "adductor_brevis": "professional",
+    "gracilis": "professional",
+    "pectineus": "professional",
+    "biceps_femoris_long_head": "normal",
+    "biceps_femoris_short_head": "professional",
+    "semitendinosus": "normal",
+    "semimembranosus": "professional",
+    "gastrocnemius_medial": "normal",
+    "gastrocnemius_lateral": "normal",
+    "soleus": "normal",
+    "tibialis_anterior": "normal",
+    "extensor_digitorum_longus": "professional",
+    "fibularis_longus": "professional",
+    "fibularis_brevis": "professional",
+    "tibialis_posterior": "professional",
+    "popliteus": "professional",
+    "sternocleidomastoid": "professional"
+  },
+  "sources": {
+    "name": "BodyParts3D v3.0 / 20110915",
+    "repository": "https://github.com/Kevin-Mattheus-Moerman/BodyParts3D",
+    "canonical_index": "assets/BodyParts3D_data/parts_list_e.txt",
+    "license": "CC BY-SA 2.1 Japan",
+    "attribution": "BodyParts3D, (c) The Database Center for Life Science licensed under CC Attribution-Share Alike 2.1 Japan"
+  },
+  "stats": {
+    "glb_bytes": 2286024,
+    "mesh_objects": 134,
+    "muscle_objects": 133,
+    "vertices": 74685,
+    "polygons": 149022,
+    "skin_polygons": 29702,
+    "muscle_polygons": 119320,
+    "armatures": 0,
+    "genital_region_flattened": true
+  },
+  "known_limits": [
+    "BodyParts3D v3 is a single male anatomy model.",
+    "CC BY-SA 2.1 Japan attribution and share-alike obligations apply.",
+    "Rectus abdominis upper/lower targets are geometric splits of real source meshes.",
+    "Composite fitness regions remain marked partial in the contract."
+  ]
+}

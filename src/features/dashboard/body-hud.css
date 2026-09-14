@@ -1,0 +1,212 @@
+.body-stage .body-hud {
+  z-index: 5;
+}
+.body-hud .body-hud-card {
+  position: absolute;
+  width: clamp(130px, 19%, 206px);
+  padding: 15px 16px;
+  border-radius: 13px;
+  transition:
+    background 180ms ease,
+    border-color 180ms ease;
+  pointer-events: auto;
+}
+.body-hud .hud-recovery {
+  top: 20%;
+  left: 26px;
+}
+.body-hud .hud-load {
+  top: 24%;
+  right: 26px;
+  text-align: left;
+}
+.body-stage:has(.agent-chat-launcher) .body-hud .hud-volume,
+.body-hud .hud-volume {
+  bottom: 21%;
+  left: 26px;
+}
+.body-stage:has(.agent-chat-launcher) .body-hud .hud-stimulus,
+.body-hud .hud-stimulus {
+  bottom: 21%;
+  right: 26px;
+}
+.body-hud-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 0.045em;
+}
+.body-hud-value {
+  margin-top: 13px;
+  color: var(--text);
+}
+.body-hud-value > strong {
+  font-size: clamp(28px, 2.5vw, 40px);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.055em;
+  font-variant-numeric: tabular-nums;
+}
+.body-hud-value small {
+  margin-left: 8px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.body-hud-value em {
+  padding: 0 10px;
+  color: var(--muted);
+  font-size: 23px;
+  font-style: normal;
+}
+.body-hud-value .hud-date {
+  font-size: clamp(16px, 1.6vw, 22px);
+  letter-spacing: -0.015em;
+  white-space: nowrap;
+}
+.body-hud-value .hud-action-name {
+  display: block;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.body-hud-detail {
+  margin: 9px 0 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.7;
+}
+@media (max-width: 1100px) {
+  .body-stage .body-hud .body-hud-card {
+    width: 28%;
+    max-width: 166px;
+    padding: 8px;
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .body-stage .body-hud .hud-recovery {
+    top: 24%;
+    left: 8px;
+  }
+  .body-stage .body-hud .hud-load {
+    top: 24%;
+    right: 8px;
+  }
+  .body-stage:has(.agent-chat-launcher) .body-hud .hud-volume,
+  .body-stage:has(.agent-chat-launcher) .body-hud .hud-stimulus {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .body-stage:has(.agent-chat-launcher) .body-hud .hud-volume {
+    bottom: 27%;
+    left: 8px;
+  }
+  .body-stage:has(.agent-chat-launcher) .body-hud .hud-stimulus {
+    bottom: 27%;
+    right: 8px;
+  }
+  .body-hud-value > strong {
+    font-size: 28px;
+  }
+  .body-hud-value .hud-action-name {
+    font-size: 12px;
+  }
+  .body-hud-value .hud-date {
+    font-size: 13px;
+  }
+  .body-hud-heading {
+    font-size: 11px;
+  }
+  .body-hud-detail {
+    font-size: 11px;
+  }
+  .body-hud-value em {
+    padding: 0 5px;
+    font-size: 17px;
+  }
+  .muscle-focused.detail-open .body-hud {
+    height: calc(52dvh - 60px);
+  }
+  .muscle-focused.detail-open .body-hud .hud-recovery,
+  .muscle-focused.detail-open .body-hud .hud-load {
+    top: 36%;
+  }
+  .muscle-focused.detail-open .body-stage .body-hud .hud-volume,
+  .muscle-focused.detail-open .body-stage .body-hud .hud-stimulus {
+    bottom: 8%;
+  }
+}
+
+.body-hud .body-hud-card[data-expanded="true"] {
+  width: clamp(220px, 25%, 280px);
+  z-index: 6;
+}
+.body-hud-detail:not([hidden]) {
+  border-top: 1px solid color-mix(in srgb, var(--muted) 10.2%, transparent);
+  margin-top: 16px;
+  padding-top: 8px;
+  max-height: 240px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+@media (max-width: 1100px) {
+  .body-stage .body-hud .body-hud-card[data-expanded="true"] {
+    width: min(248px, calc(100% - 28px));
+    max-width: none;
+  }
+  .body-hud-detail:not([hidden]) {
+    max-height: min(220px, 28dvh);
+  }
+}
+.body-hud-summary {
+  -webkit-tap-highlight-color: transparent;
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.body-hud-summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 6px;
+  border-radius: 4px;
+}
+.body-hud-card[data-expanded="false"] .hud-action-name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+@media (prefers-reduced-motion: reduce) {
+  .body-hud .body-hud-card {
+    transition: none;
+  }
+}
+
+.body-hud .body-hud-card::after {
+  display: none;
+}
+
+@media (max-width: 1100px) and (max-height: 700px) {
+  .muscle-focused.detail-open .body-hud-value {
+    margin-top: 8px;
+  }
+  .muscle-focused.detail-open .body-hud-value > strong {
+    font-size: 24px;
+  }
+  .muscle-focused.detail-open .body-hud-value .hud-date {
+    font-size: 13px;
+  }
+  .muscle-focused.detail-open .body-hud-value .hud-action-name {
+    font-size: 12px;
+  }
+}

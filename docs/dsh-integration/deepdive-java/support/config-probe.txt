@@ -1,0 +1,14 @@
+- id: agent-instructions
+  name: '@deepseek-ai/dsh-agent-instructions'
+  config:
+    instructionFileCandidates:
+      - AGENTS.md
+  disabled: true
+# == @deepseek-ai/dsh-base
+
+- id: agent-presets
+  name: '@deepseek-ai/dsh-agent-presets'
+  config:
+    default: standard
+# == /tmp/dsh-config-probe-Dw9Zg6/profiles/fitness/cordis.patch.yml
+

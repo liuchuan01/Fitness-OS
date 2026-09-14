@@ -1,0 +1,127 @@
+.body-3d-shell .body-3d-toolbar {
+  align-items: center;
+}
+.body-3d-shell .body-projection-label {
+  max-width: min(440px, 65%);
+  line-height: 1.7;
+}
+.body-3d-shell .selection-panel {
+  border-color: color-mix(in srgb, var(--accent) 25%, transparent);
+}
+@media (max-width: 767px) {
+  .body-3d-shell .body-3d-toolbar {
+    gap: 4px;
+  }
+  .body-3d-shell .explorer-trigger {
+    min-height: 44px;
+    gap: 6px;
+    padding: 0 8px;
+  }
+  .body-3d-shell .body-projection-label {
+    max-width: calc(100% - 24px);
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .body-stage:has(.explorer-open) .agent-chat-launcher,
+  .body-stage:has(.explorer-open) .mobile-insight-trigger {
+    visibility: hidden;
+  }
+}
+
+/* Product structure stays shared; the palette follows the active theme. */
+.body-3d-shell {
+  background:
+    radial-gradient(
+      ellipse at 46% 44%,
+      color-mix(in srgb, var(--accent) 6%, transparent),
+      transparent 53%
+    ),
+    radial-gradient(
+      ellipse at 65% 62%,
+      color-mix(in srgb, var(--selection) 3%, transparent),
+      transparent 46%
+    ),
+    var(--canvas);
+}
+.body-3d-shell::before {
+  display: none;
+}
+.body-3d-shell .body-3d-toolbar button:not(.glass-card) {
+  min-width: 44px;
+  min-height: 44px;
+  border-color: color-mix(in srgb, var(--muted) 18%, transparent);
+  background: color-mix(in srgb, var(--surface) 84%, transparent);
+  color: var(--muted);
+}
+.body-3d-shell .body-3d-toolbar button:hover,
+.body-3d-shell .body-3d-toolbar button[aria-pressed="true"] {
+  border-color: color-mix(in srgb, var(--accent) 42%, transparent);
+  color: var(--accent);
+}
+.body-3d-shell .body-3d-toolbar button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.body-3d-shell .body-3d-hud {
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  backdrop-filter: none;
+}
+.body-3d-shell .selection-panel {
+  border-color: color-mix(in srgb, var(--selection) 28%, transparent);
+  color: var(--text);
+}
+.body-3d-shell .body-projection-label {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.45;
+}
+.body-projection-title {
+  font-weight: 500;
+}
+.body-projection-keys,
+.body-projection-keys > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.body-projection-keys {
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  font-size: 11px;
+}
+.projection-swatch {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+.projection-primary {
+  background: var(--accent);
+}
+.projection-secondary {
+  background: var(--selection-mid);
+}
+.projection-focus {
+  background: var(--selection);
+}
+.projection-warning {
+  background: linear-gradient(90deg, var(--red), var(--purple));
+}
+.projection-load {
+  width: 22px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--blue), var(--orange));
+}
+@media (max-width: 767px) {
+  .body-3d-shell .body-projection-label {
+    font-size: 11px;
+    gap: 4px;
+  }
+}

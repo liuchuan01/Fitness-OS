@@ -1,0 +1,88 @@
+@property --glass-edge-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 135deg;
+}
+:where(.glass-card) {
+  position: relative;
+}
+.glass-card {
+  --glass-fill: color-mix(in srgb, var(--glass) 72%, transparent);
+  --glass-blur: 20px;
+  --glass-edge-opacity: 0.38;
+  --glass-shadow: var(--shadow-panel);
+  isolation: isolate;
+  border: 1px solid var(--border);
+  border-radius: var(--glass-radius, 16px);
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--accent) 3%, transparent),
+      transparent 45%,
+      color-mix(in srgb, var(--selection) 2%, transparent)
+    ),
+    var(--glass-fill);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(115%);
+  backdrop-filter: blur(var(--glass-blur)) saturate(115%);
+  box-shadow: var(--glass-shadow);
+}
+.glass-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--glass-edge-angle),
+    transparent 8%,
+    var(--accent-mid) 20%,
+    transparent 35% 58%,
+    var(--selection-mid) 72%,
+    transparent 88%
+  );
+  -webkit-mask:
+    linear-gradient(var(--text) 0 0) content-box,
+    linear-gradient(var(--text) 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(var(--text) 0 0) content-box,
+    linear-gradient(var(--text) 0 0);
+  mask-composite: exclude;
+  opacity: var(--glass-edge-opacity);
+  pointer-events: none;
+}
+.glass-card:is(:hover, :focus-within, [open], [data-expanded="true"])::before {
+  animation: glass-edge-drift 18s linear infinite;
+}
+.glass-card--quiet {
+  --glass-fill: color-mix(in srgb, var(--glass) 52%, transparent);
+  --glass-blur: 12px;
+  --glass-edge-opacity: 0.22;
+  --glass-shadow: none;
+}
+.glass-card--quiet[data-expanded="true"] {
+  --glass-fill: color-mix(in srgb, var(--glass-raised) 90%, transparent);
+  --glass-blur: 20px;
+  --glass-edge-opacity: 0.38;
+  --glass-shadow: var(--shadow-panel);
+}
+:root[data-theme="graphite"] .glass-card::before {
+  animation: none;
+  opacity: 0.16;
+}
+@keyframes glass-edge-drift {
+  to {
+    --glass-edge-angle: 495deg;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .glass-card::before {
+    animation: none !important;
+  }
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass-card {
+    --glass-fill: var(--glass-raised);
+  }
+}

@@ -1,0 +1,42 @@
+- id: agent-instructions
+  config:
+    instructionFileCandidates: [AGENTS.md]
+
+- id: ui-layout
+  disabled: true
+
+- id: ui-sidebar
+  disabled: true
+
+- id: ui-brand-official
+  disabled: true
+
+- id: ui-settings-general
+  disabled: true
+
+- id: ui-settings-models
+  disabled: true
+
+- id: ui-settings-plugin-inventory
+  disabled: true
+
+- id: ui-settings-plugins
+  disabled: true
+
+- id: session-log-download
+  disabled: true
+
+- id: webserver
+  config:
+    host: "__FITNESS_DSH_BIND_HOST__"
+    port: !!js ctx.webStartup.port ?? 3080
+    compression: gzip
+    compressionLevel: 1
+    compressionThresholdBytes: 1024
+
+- insert:
+    - id: fitness-automation-bridge
+      name: "@ai-fitness-os/dsh-fitness-automation-bridge"
+
+    - id: ui-fitness-surface
+      name: "@ai-fitness-os/dsh-fitness-surface"

@@ -1,0 +1,192 @@
+schema_version: 1
+id: workout_2026-06-19
+date: 2026-06-19
+title: Pull Day / 引体向上强化
+bodyweight_kg: 70
+readiness:
+  fatigue: 5
+  sleep_quality: 7
+  soreness: 3
+  mood: 7
+blocks:
+  - type: mobility
+    name: 热身
+    exercises:
+      - name: 胸椎伸展
+        sets:
+          - duration_sec: 30
+            rpe: 5
+  - type: strength
+    name: 主训练
+    exercises:
+      - name: 引体向上
+        exercise_id: pull_up
+        sets:
+          - reps: 6
+            rpe: 7
+            bodyweight_factor: 0.7
+          - reps: 5
+            rpe: 8
+            bodyweight_factor: 0.7
+      - name: 罗马尼亚硬拉
+        exercise_id: romanian_deadlift
+        sets:
+          - weight_kg: 60
+            reps: 8
+            rpe: 7
+          - weight_kg: 65
+            reps: 6
+            rpe: 8
+  - type: accessory
+    name: 辅助
+    exercises:
+      - name: 平板支撑
+        exercise_id: plank
+        sets:
+          - reps: 1
+            rpe: 6
+            bodyweight_factor: 0.25
+            duration_sec: 60
+          - reps: 1
+            rpe: 7
+            bodyweight_factor: 0.25
+            duration_sec: 45
+computed:
+  total_sets: 7
+  total_volume_kg: 1832
+  stimulus:
+    pec_major_upper: 0
+    pec_major_mid: 0
+    pec_major_lower: 0
+    deltoid_anterior: 0
+    deltoid_lateral: 0
+    deltoid_posterior: 10
+    supraspinatus: 0
+    infraspinatus: 0
+    teres_minor: 0
+    subscapularis: 0
+    serratus_anterior: 0
+    trapezius_upper: 5
+    trapezius_middle: 5
+    trapezius_lower: 5
+    rhomboid_major: 0
+    levator_scapulae: 0
+    teres_major: 0
+    latissimus_dorsi: 34
+    erector_spinae_upper: 0
+    erector_spinae_lower: 25
+    biceps_long_head: 9
+    biceps_short_head: 7
+    brachialis: 5
+    triceps_long_head: 0
+    triceps_lateral_head: 0
+    triceps_medial_head: 0
+    forearm_flexors: 0
+    forearm_extensors: 0
+    brachioradialis: 0
+    pronator_teres: 0
+    supinator: 0
+    rectus_abdominis_upper: 6
+    rectus_abdominis_lower: 5
+    external_oblique: 5
+    internal_oblique: 4
+    transversus_abdominis: 3
+    quadratus_lumborum: 0
+    diaphragm: 0
+    gluteus_maximus: 33
+    gluteus_medius: 8
+    gluteus_minimus: 3
+    tensor_fasciae_latae: 0
+    iliopsoas: 0
+    sartorius: 0
+    rectus_femoris: 0
+    vastus_lateralis: 0
+    vastus_medialis: 0
+    vastus_intermedius: 0
+    adductor_longus: 0
+    adductor_magnus: 0
+    adductor_brevis: 0
+    gracilis: 0
+    pectineus: 0
+    biceps_femoris_long_head: 17
+    biceps_femoris_short_head: 8
+    semitendinosus: 15
+    semimembranosus: 15
+    gastrocnemius_medial: 0
+    gastrocnemius_lateral: 0
+    soleus: 0
+    tibialis_anterior: 0
+    extensor_digitorum_longus: 0
+    fibularis_longus: 0
+    fibularis_brevis: 0
+    tibialis_posterior: 0
+    popliteus: 0
+    sternocleidomastoid: 0
+  recovery_load:
+    pec_major_upper: 0
+    pec_major_mid: 0
+    pec_major_lower: 0
+    deltoid_anterior: 0
+    deltoid_lateral: 0
+    deltoid_posterior: 5
+    supraspinatus: 0
+    infraspinatus: 0
+    teres_minor: 0
+    subscapularis: 0
+    serratus_anterior: 0
+    trapezius_upper: 2
+    trapezius_middle: 3
+    trapezius_lower: 2
+    rhomboid_major: 0
+    levator_scapulae: 0
+    teres_major: 0
+    latissimus_dorsi: 18
+    erector_spinae_upper: 0
+    erector_spinae_lower: 13
+    biceps_long_head: 4
+    biceps_short_head: 4
+    brachialis: 3
+    triceps_long_head: 0
+    triceps_lateral_head: 0
+    triceps_medial_head: 0
+    forearm_flexors: 0
+    forearm_extensors: 0
+    brachioradialis: 0
+    pronator_teres: 0
+    supinator: 0
+    rectus_abdominis_upper: 3
+    rectus_abdominis_lower: 3
+    external_oblique: 2
+    internal_oblique: 2
+    transversus_abdominis: 2
+    quadratus_lumborum: 0
+    diaphragm: 0
+    gluteus_maximus: 17
+    gluteus_medius: 4
+    gluteus_minimus: 1
+    tensor_fasciae_latae: 0
+    iliopsoas: 0
+    sartorius: 0
+    rectus_femoris: 0
+    vastus_lateralis: 0
+    vastus_medialis: 0
+    vastus_intermedius: 0
+    adductor_longus: 0
+    adductor_magnus: 0
+    adductor_brevis: 0
+    gracilis: 0
+    pectineus: 0
+    biceps_femoris_long_head: 9
+    biceps_femoris_short_head: 4
+    semitendinosus: 8
+    semimembranosus: 8
+    gastrocnemius_medial: 0
+    gastrocnemius_lateral: 0
+    soleus: 0
+    tibialis_anterior: 0
+    extensor_digitorum_longus: 0
+    fibularis_longus: 0
+    fibularis_brevis: 0
+    tibialis_posterior: 0
+    popliteus: 0
+    sternocleidomastoid: 0

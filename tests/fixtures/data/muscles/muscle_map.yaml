@@ -1,0 +1,82 @@
+pull_up:
+  primary:
+    latissimus_dorsi: 1
+    biceps_long_head: 0.25
+    biceps_short_head: 0.2
+    brachialis: 0.15
+    trapezius_upper: 0.08
+    trapezius_middle: 0.09
+    trapezius_lower: 0.08
+  secondary:
+    deltoid_posterior: 0.4
+    rectus_abdominis_upper: 0.1
+    rectus_abdominis_lower: 0.08
+    external_oblique: 0.06
+    internal_oblique: 0.06
+
+lat_pulldown:
+  primary:
+    latissimus_dorsi: 1
+    biceps_long_head: 0.23
+    biceps_short_head: 0.18
+    brachialis: 0.14
+    trapezius_middle: 0.1
+    trapezius_lower: 0.1
+  secondary:
+    deltoid_posterior: 0.35
+    rectus_abdominis_upper: 0.09
+    rectus_abdominis_lower: 0.07
+    external_oblique: 0.045
+    internal_oblique: 0.045
+
+romanian_deadlift:
+  primary:
+    biceps_femoris_long_head: 0.3
+    biceps_femoris_short_head: 0.15
+    semitendinosus: 0.28
+    semimembranosus: 0.27
+    gluteus_maximus: 0.6
+    gluteus_medius: 0.15
+    gluteus_minimus: 0.05
+    erector_spinae_lower: 0.45
+  secondary:
+    rectus_abdominis_upper: 0.08
+    rectus_abdominis_lower: 0.07
+    external_oblique: 0.07
+    internal_oblique: 0.06
+    transversus_abdominis: 0.07
+    trapezius_upper: 0.05
+    trapezius_middle: 0.05
+    trapezius_lower: 0.05
+
+split_squat:
+  primary:
+    rectus_femoris: 0.25
+    vastus_lateralis: 0.25
+    vastus_medialis: 0.25
+    vastus_intermedius: 0.2
+    gluteus_maximus: 0.5
+    gluteus_medius: 0.2
+    gluteus_minimus: 0.05
+  secondary:
+    biceps_femoris_long_head: 0.11
+    biceps_femoris_short_head: 0.05
+    semitendinosus: 0.1
+    semimembranosus: 0.09
+    rectus_abdominis_upper: 0.06
+    rectus_abdominis_lower: 0.05
+    external_oblique: 0.045
+    internal_oblique: 0.045
+
+plank:
+  primary:
+    rectus_abdominis_upper: 0.2
+    rectus_abdominis_lower: 0.2
+    external_oblique: 0.15
+    internal_oblique: 0.15
+    transversus_abdominis: 0.2
+    quadratus_lumborum: 0.1
+  secondary:
+    gluteus_maximus: 0.15
+    gluteus_medius: 0.05
+    erector_spinae_lower: 0.15
