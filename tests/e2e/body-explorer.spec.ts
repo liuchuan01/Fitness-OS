@@ -143,15 +143,16 @@ test("starts without playback controls even with reduced motion, and restores HU
   await expect(detail).toBeHidden();
 });
 
-test("toggles glass HUD details by touch on a phone", async ({ browser }, testInfo) => {
+test("toggles glass HUD details by touch on a phone", async ({ browser, baseURL }, testInfo) => {
   const mobile = await browser.newContext({
+    baseURL,
     viewport: { width: 390, height: 844 },
     isMobile: true,
     hasTouch: true
   });
   const touchPage = await mobile.newPage();
   await touchPage.clock.setFixedTime(new Date("2026-06-21T12:00:00Z"));
-  await touchPage.goto("http://127.0.0.1:5178/");
+  await touchPage.goto("/");
   await expect(touchPage.getByLabel("3D model status")).toContainText("Model ready", {
     timeout: 20_000
   });

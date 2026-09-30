@@ -283,3 +283,16 @@
 @media (prefers-reduced-motion: reduce) {
   .body-hud-overview .body-hud-surface { animation: none; }
 }
+
+/* Focus gathers the four existing facts into one rail inside the body canvas. */
+@media (min-width: 1101px) {
+  .body-stage .body-hud.body-hud-focused[data-focus-rail="true"] .body-hud-card {
+    left: auto;
+    right: 26px;
+    bottom: auto;
+  }
+  .body-stage .body-hud-focused[data-focus-rail="true"] .hud-recovery { top: 18%; }
+  .body-stage .body-hud-focused[data-focus-rail="true"] .hud-load { top: 35%; }
+  .body-stage .body-hud-focused[data-focus-rail="true"] .hud-volume { top: 52%; }
+  .body-stage .body-hud-focused[data-focus-rail="true"] .hud-stimulus { top: 69%; }
+}

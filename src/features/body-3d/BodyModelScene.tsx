@@ -205,28 +205,6 @@ export function BodyModelScene({
   );
 }
 
-export function CameraReset({ resetToken }: { resetToken: number }) {
-  const camera = useThree((state) => state.camera);
-  const controls = useThree((state) => state.controls) as unknown as
-    | { target: Vector3; update: () => void }
-    | undefined;
-  const viewportWidth = useThree((state) => state.size.width);
-  const viewportHeight = useThree((state) => state.size.height);
-
-  useEffect(() => {
-    const distance = viewportWidth < 700 ? 10 : 7.8;
-    const targetY = viewportWidth < 700 && viewportHeight > 500 ? -0.45 : 0.1;
-    camera.position.set(0, targetY + 0.15, distance);
-    camera.lookAt(0, targetY, 0);
-    if (controls) {
-      controls.target.set(0, targetY, 0);
-      controls.update();
-    }
-  }, [camera, controls, resetToken, viewportWidth, viewportHeight]);
-
-  return null;
-}
-
 function normalizeModelId(value: string) {
   return value.replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
 }

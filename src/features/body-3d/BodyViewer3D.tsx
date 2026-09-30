@@ -12,7 +12,8 @@ import { MusclePicker } from "../muscles/MusclePicker";
 import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
-import { BodyModelScene, CameraReset } from "./BodyModelScene";
+import { FocusCameraRig } from "./FocusCameraRig";
+import { BodyModelScene } from "./BodyModelScene";
 import type { MuscleId } from "../../../shared/fitness/index";
 import type { BodyViewer3DProps, Manifest, ModelContract, ModelMeta } from "./types";
 
@@ -65,9 +66,10 @@ export function BodyViewer3D({
   const [resetToken, setResetToken] = useState(0);
   const [webglReady] = useState(canUseWebGL);
   const [modelReady, setModelReady] = useState(false);
+  const [transitioning, setTransitioning] = useState(false);
   const [professionalMode, setProfessionalMode] = useState(false);
   const rotating =
-    modelReady && motion.visible && !motion.dragging && !exploring && !selectedMuscle;
+    modelReady && motion.visible && !motion.dragging && !exploring && !selectedMuscle && !transitioning;
   const externallySelected = useMemo(
     () =>
       new Set([
@@ -156,6 +158,7 @@ export function BodyViewer3D({
       className={`body-3d-shell ${exploring ? "explorer-open" : ""}`}
       data-motion={rotating ? "rotating" : "paused"}
       data-body-theme={theme.id}
+      data-focus-motion={transitioning ? "moving" : "idle"}
     >
       <div className="body-3d-toolbar" aria-label="3D body controls">
         <MusclePicker value={selectedMuscle} onChange={onMuscleSelect} onExplore={onExplore} />
@@ -220,7 +223,7 @@ export function BodyViewer3D({
             ) : null}
           </Suspense>
         </BodyMotion>
-        <CameraReset resetToken={resetToken} />
+        <FocusCameraRig selected={selectedMuscle} ready={modelReady} reducedMotion={motion.reducedMotion} resetToken={resetToken} onTransition={setTransitioning} />
         <OrbitControls
           enableDamping
           onStart={() => motion.setDragging(true)}

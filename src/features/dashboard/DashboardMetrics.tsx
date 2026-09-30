@@ -1,3 +1,4 @@
+import { useHudFocusTransition } from "./useHudFocusTransition";
 import { HudCard } from "./HudCard";
 import { OverviewHud } from "./OverviewHud";
 import type { DailyWorkout, DashboardResponse } from "../../api/client";
@@ -16,10 +17,12 @@ type DashboardMetricsProps = {
 };
 
 export function DashboardMetrics({ mode, dashboard, dailyWorkout, focus }: DashboardMetricsProps) {
+  const hudRef = useHudFocusTransition(Boolean(focus));
   const history = focus?.history;
   const placeholder = focus?.status === "error" ? "暂不可用" : "读取中";
   return (
     <div
+      ref={hudRef}
       className={`dashboard-hud body-hud ${focus ? "body-hud-focused" : mode === "overview" ? "body-hud-overview" : ""}`}
       aria-label={focus ? "肌肉概览 HUD" : mode === "overview" ? "首页身体数据" : "当日训练 HUD"}
     >
