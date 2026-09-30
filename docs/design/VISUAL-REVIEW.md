@@ -174,3 +174,21 @@ VISUAL_THEME=graphite VISUAL_OUTPUT=test-results/visual-regression/main-themes/g
 截图位于 `test-results/appearance-settings-sectio-ace2c-rrow-screens-in-both-themes-chromium/{Neon,Graphite}-{1440,390,320}-{界面外观,教练偏好,自动计划,模型连接}.png`，不提交图片。设置页无运行时 3D，自转与肌肉材质未改；本轮未重复主站四模式完整 3D 审图。
 
 验证：lint、lint:design、lint:architecture、typecheck、完整 build 通过；52 项单元／组件测试通过，最终密钥直达与表单调整后聚焦复验 13 项通过。6 项相关 E2E 通过，覆盖主题持久化与非法存储回退、两主题三尺寸四分区、键盘 Enter 与 reduced-motion、教练／调度独立保存及跨分区草稿保留、密钥直达及未提交密钥保留、返回首页。E2E 凭据使用 mock，保存隔离于浏览器请求；未向个人凭据存储写测试密钥，也未运行自动计划或真实模型。既有 Three 分包大小与测试多实例提示仍存在；不将本轮界面验证当作真实 Host、完整 AA 或生产发布验收。
+
+### 设置页 DeepSeek Harness 品牌说明
+
+按用户要求，模型连接标题改为 DeepSeek Harness，配官方鲸鱼标识；副标题明确“原生支持”，并附 DSH 开源 Agent 运行框架简介及官方项目链接。API Key 名称和凭据行为保持原契约。图形路径源自上游固定 revision，比例保持不变，采用主题正文色；来源、品牌使用边界与完整 MIT 许可记录在 `THIRD-PARTY-NOTICES.md`。
+
+已实际审阅 Neon 1440×900、390×844 和 Graphite 320×844 的模型连接截图：标题、logo、简介和保存操作清晰，窄屏自然换行，无横向溢出。图片沿用上述设置页测试输出路径，仍为待用户审阅版本。lint、设计 token 检查、架构检查、typecheck、完整 build、3 项密钥组件测试与 2 项设置页 E2E 通过；构建保留既有 Three 分包体积提示。未触发真实模型或自动任务。
+
+### DSH 原生默认模型与思考强度
+
+按用户要求在 DeepSeek Harness 分区增加“模型与思考”：默认模型和思考强度从实际 Host 的原生目录与能力读取，不使用 Fitness 固定名单；模型设置和密钥分开保存，提示默认值适用于新对话与新建自动任务会话，已有会话保留原选择。手机字段纵向排列，长模型名称保留足够空间；表单自然滚动，保存按钮位于各自区域末尾。
+
+真实本地 `npm run dev` 的页面已打开，读取到安装版 DSH 的四个 DeepSeek 目录项及原生思考档位，页面无运行错误。Neon / Graphite 在 1440×900、390×844 均无横向溢出；实际审阅桌面、手机上半部和滚动至底部的截图，确认模型字段、说明和两组保存操作可读可达。真实页面截图位于 `test-results/model-preferences-live/{Neon,Graphite}-{1440,390}{,-bottom}.png`；隔离固定目录的三尺寸四分区截图沿用设置页 E2E 路径。截图为待用户审阅，不等于完整 AA 或主站四模式重新验收。
+
+验证：lint、lint:design、lint:architecture、typecheck、完整 build 和 55 项单元／组件测试通过。7 项相关集成覆盖通过（原生安装 Host、本地 fixture 请求、API 转发、自动任务 bridge、首次凭据与读失败恢复），包括实际设置落盘、revision 冲突、外部编辑监听、其他 namespace 保留、旧会话模型稳定、新自动任务使用新选择、Host 重启后配置保留。7 项相关 E2E 覆盖通过，包含动态模型／档位选择、切换分区保留草稿、刷新保留设置、无思考能力时清除旧强度、与密钥独立保存；新增下拉框显式可访问名称后复验选择流程和三尺寸审图通过。首次凭据集成中遗留的 summary 定位已改为现有直达分区入口后复验通过。
+
+所有写入与实际 fixture 请求在临时隔离工作区验证，真实本地页面仅读取配置，没有替用户修改个人模型默认值或密钥，也未发起真实 DeepSeek 请求。原生模型设置的详细接口、生效范围和文件归属以 `DSH-FITNESS-INTEGRATION.md` 为准。保留既有 Three 包体积及单元测试多实例提示，未执行完整生产部署验收。
+
+推送前已接入远端新增的 DSH Host 诊断日志，模型偏好与凭据接口的 503 日志分别显示准确路径及 bridge 类型。合并后 lint、设计／架构检查、typecheck、完整 build 及 7 项受影响集成测试复验通过，包含 Host 日志脱敏、模型接口错误转发、原生 Host 默认选择和重启持久化。

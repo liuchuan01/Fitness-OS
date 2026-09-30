@@ -2,6 +2,8 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
 import { DeepSeekSettings } from "./DeepSeekSettings";
 
+vi.mock("./ModelPreferences", () => ({ ModelPreferences: () => null }));
+
 afterEach(() => {
   cleanup();
   vi.unstubAllGlobals();
@@ -39,7 +41,7 @@ it("allows first-key recovery after a failed status read", async () => {
     )
   );
   render(<DeepSeekSettings />);
-  fireEvent.click(screen.getByText("DeepSeek"));
+  fireEvent.click(screen.getByText("DeepSeek Harness"));
   await screen.findByText("密钥状态暂不可用");
   const input = screen.getByLabelText("DeepSeek API Key");
   expect(input).toBeEnabled();
@@ -60,7 +62,7 @@ it("keeps environment-managed credentials read-only", async () => {
     )
   );
   render(<DeepSeekSettings />);
-  fireEvent.click(screen.getByText("DeepSeek"));
+  fireEvent.click(screen.getByText("DeepSeek Harness"));
   await screen.findByText("已配置密钥");
   expect(screen.getByLabelText("DeepSeek API Key")).toBeDisabled();
   expect(screen.getByRole("button", { name: "保存模型密钥" })).toBeDisabled();

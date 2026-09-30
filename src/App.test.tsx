@@ -1,3 +1,4 @@
+import { modelPreferencesFixture } from "../tests/fixtures/model-preferences";
 import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { subscribeDataChanges } from "./api/data-sync";
@@ -76,6 +77,9 @@ describe("App", () => {
       "fetch",
       vi.fn(async (input: RequestInfo | URL) => {
         const url = String(input);
+
+        if (url.endsWith("/api/model/preferences"))
+          return Response.json({ ok: true, preferences: modelPreferencesFixture() });
 
         if (url.endsWith("/api/model/settings")) {
           return Response.json({

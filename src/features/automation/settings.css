@@ -265,3 +265,89 @@
   border-radius: 6px;
   font-size: 12px;
 }
+
+.settings-card-heading h3 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.dsh-mark {
+  flex-shrink: 0;
+  color: var(--text);
+}
+.settings-card-content .dsh-intro {
+  font-size: 12px;
+  line-height: 1.8;
+  margin: -12px 0 20px;
+}
+.dsh-intro a {
+  color: var(--accent-mid);
+  text-underline-offset: 3px;
+  white-space: nowrap;
+}
+.dsh-intro a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+@media (max-width: 359px) {
+  .settings-card-heading:has(.dsh-mark) h3 {
+    font-size: 18px;
+    gap: 8px;
+  }
+}
+
+.model-preferences {
+  margin-bottom: 28px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+}
+.model-preferences-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.model-preferences-heading h4 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+}
+.settings-page .model-preferences-heading button {
+  color: var(--muted);
+  background: transparent;
+  border-color: transparent;
+}
+.settings-card-content .model-preferences-hint {
+  margin: 8px 0 18px;
+  font-size: 12px;
+}
+.settings-page .model-preferences footer {
+  border: 0;
+  padding-top: 0;
+  margin-top: 18px;
+}
+.model-preferences select {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: 9px;
+  background: var(--canvas);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+}
+.model-preferences select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+.model-preferences select:disabled {
+  opacity: 0.6;
+}
+
+@media (max-width: 767px) {
+  .model-preferences .automation-fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

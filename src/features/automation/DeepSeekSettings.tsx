@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { getModelSettings, saveModelSettings } from "../../api/client";
 import type { ModelSettings } from "../../api/model-settings-schemas";
 import { ApiError } from "../../api/http";
+import { ModelPreferences } from "./ModelPreferences";
+import { DshMark } from "./DshMark";
 import { SettingsCard } from "./SettingsCard";
 
 export function DeepSeekSettings() {
@@ -48,9 +50,16 @@ export function DeepSeekSettings() {
   }, []);
   return (
     <SettingsCard
-      title="DeepSeek"
-      description={model?.configured ? "密钥已配置 · 对话与自动计划" : "连接你的训练教练"}
+      title="DeepSeek Harness"
+      mark={<DshMark />}
+      description="原生支持 · 训练教练与自动计划由 DeepSeek Harness 驱动"
     >
+      <p className="dsh-intro">
+        DSH 是 DeepSeek 开源的 Agent 运行框架，在本应用中承载教练对话、工具调用与自动任务。{" "}
+        <a href="https://github.com/deepseek-ai/deepseek-harness" target="_blank" rel="noreferrer">
+          了解 DSH
+        </a>
+      </p>
       <p className="settings-connection-state" role="status">
         {modelLoading
           ? "正在读取密钥状态…"
@@ -61,6 +70,7 @@ export function DeepSeekSettings() {
             : "密钥状态暂不可用"}
       </p>
       {model?.writable === false ? <p>当前密钥由启动环境提供，请在启动环境中修改。</p> : null}
+      <ModelPreferences />
       <form
         onSubmit={(event) => {
           event.preventDefault();

@@ -162,7 +162,7 @@ export function createLocalService(options: LocalServiceOptions) {
 
     if (
       (request.method === "GET" || request.method === "PUT") &&
-      url.pathname === "/api/model/settings"
+      ["/api/model/settings", "/api/model/preferences"].includes(url.pathname)
     ) {
       response.setHeader("Cache-Control", "no-store");
       try {
@@ -178,7 +178,11 @@ export function createLocalService(options: LocalServiceOptions) {
         }
         if (dshWebHost.status().status !== "ready")
           throw new Error("模型配置服务尚未就绪，请稍后重试。");
-        const result = await fetch(`http://127.0.0.1:${dshPort}/fitness-model-settings`, {
+        const bridgePath =
+          url.pathname === "/api/model/preferences"
+            ? "fitness-model-preferences"
+            : "fitness-model-settings";
+        const result = await fetch(`http://127.0.0.1:${dshPort}/${bridgePath}`, {
           method: request.method,
           headers: { "Content-Type": "application/json", "x-fitness-bridge-secret": bridgeSecret },
           body,
@@ -188,7 +192,7 @@ export function createLocalService(options: LocalServiceOptions) {
       } catch {
         const hostStatus = dshWebHost.status();
         console.error(
-          `[Fitness] ${request.method} /api/model/settings unavailable: Host ${hostStatus.status}; credential bridge request failed`
+          `[Fitness] ${request.method} ${url.pathname} unavailable: Host ${hostStatus.status}; ${url.pathname === "/api/model/preferences" ? "model preferences" : "credential"} bridge request failed`
         );
         writeJson(response, 503, { ok: false, error: "模型配置服务暂时不可用，请稍后重试。" });
       }

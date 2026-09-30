@@ -86,11 +86,7 @@ it.each([false, true])(
           }
         });
       }
-      await page.goto(`${webUrl}#/settings`);
-      await page
-        .locator("summary")
-        .filter({ has: page.getByRole("heading", { name: "DeepSeek", exact: true }) })
-        .click();
+      await page.goto(`${webUrl}#/settings?section=connection`);
       const input = page.getByLabel("DeepSeek API Key");
       await browserExpect(input).toBeEnabled({ timeout: 25000 });
       await browserExpect(
@@ -114,7 +110,6 @@ it.each([false, true])(
         "test-only-empty-workspace-key"
       );
       await page.reload();
-      await page.locator("summary").filter({ hasText: "CONNECTION" }).click();
       await browserExpect(page.getByText("已配置密钥", { exact: true })).toBeVisible({
         timeout: 25000
       });

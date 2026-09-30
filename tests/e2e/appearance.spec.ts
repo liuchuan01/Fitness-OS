@@ -1,7 +1,11 @@
+import { modelPreferencesFixture } from "../fixtures/model-preferences";
 import { expect, test, type Page } from "@playwright/test";
 
 const appearanceKey = "fitness:appearance:v1";
 async function mockCredentials(page: Page) {
+  await page.route("**/api/model/preferences", (route) =>
+    route.fulfill({ json: { ok: true, preferences: modelPreferencesFixture() } })
+  );
   await page.route("**/api/model/settings", (route) =>
     route.fulfill({
       json: {
@@ -136,4 +140,41 @@ test("credential link opens connection and section switching retains key draft",
   await expect(input).toHaveValue("test-only-unsaved");
   await page.getByRole("button", { name: "返回训练首页" }).click();
   await expect(page.getByLabel("Body dashboard")).toBeVisible();
+});
+
+test("model preferences use live capabilities and persist independently of credentials", async ({
+  page
+}) => {
+  await mockCredentials(page);
+  let preferences = modelPreferencesFixture();
+  await page.route("**/api/model/preferences", async (route) => {
+    if (route.request().method() === "PUT") {
+      const { revision, ...selection } = route.request().postDataJSON();
+      expect(revision).toBe(preferences.revision);
+      preferences = { ...preferences, selection, revision: revision + 1 };
+    }
+    await route.fulfill({ json: { ok: true, preferences } });
+  });
+  await page.goto("/#/settings?section=connection");
+  await page.getByLabel("DeepSeek API Key").fill("test-only-unsaved-key");
+  await page.getByLabel("默认模型", { exact: true }).selectOption({ label: "DSH 测试 Pro" });
+  await expect(page.getByLabel("思考强度").locator("option")).toHaveText([
+    "模型默认（低）",
+    "低",
+    "最高"
+  ]);
+  await page.getByLabel("思考强度").selectOption("max");
+  await openSection(page, "教练偏好");
+  await openSection(page, "模型连接");
+  await expect(page.getByLabel("思考强度")).toHaveValue("max");
+  await page.getByRole("button", { name: "保存模型设置", exact: true }).click();
+  await expect(page.getByText(/默认模型已保存/)).toBeVisible();
+  await expect(page.getByLabel("DeepSeek API Key")).toHaveValue("test-only-unsaved-key");
+  await page.reload();
+  await expect(page.getByLabel("思考强度")).toHaveValue("max");
+  await page.getByLabel("默认模型", { exact: true }).selectOption({ label: "DSH 测试 Plain" });
+  await expect(page.getByLabel("思考强度")).toBeDisabled();
+  await page.getByRole("button", { name: "保存模型设置", exact: true }).click();
+  await expect(page.getByText(/默认模型已保存/)).toBeVisible();
+  expect(preferences.selection.reasoningEffort).toBeUndefined();
 });
