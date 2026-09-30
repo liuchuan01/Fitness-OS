@@ -99,6 +99,10 @@
 .settings-card-content > p:first-child {
   margin-top: 0;
 }
+.motion-coach-import { display: grid; gap: 12px; line-height: 1.6; }
+.motion-coach-import p { margin: 0; }
+.motion-coach-import label { display: grid; gap: 8px; }
+.motion-coach-import input[type="file"] { max-width: 100%; min-width: 0; }
 .settings-card-content .agent-instructions-field,
 .settings-card-content .automation-toggle {
   margin-top: 0;

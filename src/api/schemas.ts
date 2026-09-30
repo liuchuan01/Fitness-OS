@@ -1,4 +1,5 @@
 import { setSchema, planSetSchema } from "../../shared/fitness/schema";
+import { motionCoachSourceSchema } from "../../shared/fitness/motion-coach";
 import { z } from "zod";
 import { muscleIds } from "../../shared/muscle-taxonomy";
 
@@ -37,6 +38,7 @@ const exerciseSchema = z.object({
   id: z.string(),
   name: z.string(),
   sets: z.array(setSchema),
+  source: motionCoachSourceSchema.optional(),
   primaryMuscles: z.array(muscleVisualStateSchema.shape.muscleId),
   secondaryMuscles: z.array(muscleVisualStateSchema.shape.muscleId)
 });

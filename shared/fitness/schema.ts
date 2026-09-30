@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { muscleIds, muscleLabels } from "../muscle-taxonomy.js";
 import { calendarDateSchema } from "./profile-schema.js";
+import { motionCoachSourceSchema } from "./motion-coach.js";
 import type { MuscleId } from "../muscle-taxonomy.js";
 
 export { muscleIds, muscleLabels };
@@ -26,7 +27,7 @@ const setFieldsSchema = z.object({
   reps: z.number().int().positive().optional(),
   rpe: z.number().min(1).max(10).optional(),
   bodyweight_factor: z.number().positive().optional(),
-  duration_sec: z.number().int().positive().optional()
+  duration_sec: z.number().positive().optional()
 });
 const hasRepsOrDuration = (set: { reps?: number; duration_sec?: number }) =>
   set.reps != null || set.duration_sec != null;
@@ -50,6 +51,7 @@ export const planSetSchema = setFieldsSchema
 export const exerciseSchema = z.object({
   name: z.string().min(1),
   exercise_id: z.string().min(1).optional(),
+  source: motionCoachSourceSchema.optional(),
   sets: z.array(setSchema).default([])
 });
 

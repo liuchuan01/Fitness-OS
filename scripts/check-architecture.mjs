@@ -24,7 +24,7 @@ for (const rule of rules) {
 
 for await (const file of glob("{src,server,shared}/**/*.{ts,tsx}", { cwd: root })) {
   const content = await readFile(file, "utf8");
-  const path = relative(root, file);
+  const path = relative(root, file).replaceAll("\\", "/");
 
   if (path.startsWith("src/") && /from\s+["'][^"']*server\//.test(content)) {
     violations.push(`${path}: 前端不得导入 server`);

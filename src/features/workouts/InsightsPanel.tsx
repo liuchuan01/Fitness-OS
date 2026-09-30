@@ -193,7 +193,7 @@ function DailyWorkoutPanel({
                 >
                   <span className="exercise-title">
                     <strong>{exercise.name}</strong>
-                    <small>{formatSetSummary(exercise.sets)}</small>
+                    <small>{formatSetSummary(exercise)}</small>
                   </span>
                   {exercise.primaryMuscles.length > 0 ? (
                     <span className="exercise-targets">
@@ -201,7 +201,9 @@ function DailyWorkoutPanel({
                     </span>
                   ) : (
                     <span className="exercise-targets secondary">
-                      恢复 / 活动动作，不计肌肉刺激
+                      {exercise.source?.system === "ai-motion-coach"
+                        ? "摄像头动作记录，未估算肌肉刺激"
+                        : "恢复 / 活动动作，不计肌肉刺激"}
                     </span>
                   )}
                   {exercise.secondaryMuscles.length > 0 ? (
@@ -223,7 +225,17 @@ function formatMuscles(muscles: MuscleId[]) {
   return muscles.map((muscle) => muscleLabels[muscle]).join("、");
 }
 
-function formatSetSummary(sets: DailyWorkout["blocks"][number]["exercises"][number]["sets"]) {
+function formatSetSummary(exercise: DailyWorkout["blocks"][number]["exercises"][number]) {
+  const source = exercise.source;
+  if (source?.system === "ai-motion-coach") {
+    if (source.exercise === "plank")
+      return `保持 ${(source.hold?.heldMs ?? 0) / 1000} 秒 · 最长 ${(source.hold?.bestMs ?? 0) / 1000} 秒`;
+    if (source.exercise === "dumbbell_curl")
+      return `左手 ${source.arm_counts?.left ?? 0} 次 · 右手 ${source.arm_counts?.right ?? 0} 次 · 共 ${source.rep_count} 次（每只手各计一次） · 重量未记录`;
+    const unit = source.twist_count_unit === "sides" ? "（左、右每侧各计一次）" : "";
+    return `${source.rep_count} 次${unit} · ${source.attempt_count} 次尝试`;
+  }
+  const sets = exercise.sets;
   if (sets.length === 0) return "未记录组数";
   const first = sets[0];
   const load =

@@ -174,7 +174,7 @@ export class DshWebHost {
         symlinkSync(
           join(this.options.profileSource, name.replace("dsh-fitness-", "")),
           target,
-          "dir"
+          process.platform === "win32" ? "junction" : "dir"
         );
       }
     }

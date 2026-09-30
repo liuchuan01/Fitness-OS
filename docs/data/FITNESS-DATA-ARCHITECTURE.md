@@ -42,6 +42,18 @@ runtime/automation/runs/                  结构化运行记录（不提交）
 
 计划不是 workout；模型草案不是正式计划；Agent 进程退出不是业务成功；Scheduler 的 `last_run` 不是某一份训练数据。这些状态必须始终分开。
 
+### AI Motion Coach 本地记录导入
+
+教练从原浏览器导出 `ai-motion-coach-history` v1 JSON；每条记录保留原始 `id`、手机本地日期、动作、结束时间、组内时长、完成与尝试次数、逐次观察，以及平板毫秒时长。俄罗斯转体只接受明确的 `sides`（左、右每侧各一次）单位；旧版左右组数须由教练导出前按其既有迁移规则换算，不在 Fitness OS 猜测。
+
+Fitness 本地服务校验整个文件后，按记录 `id` 在全部正式 workout 中去重；同一天的新记录追加到该日 `motion_coach` 分区，原有计划来源、重量等事实不覆盖。即使完成次数为零，也保留带原始编号的动作条目，确保再次导入会跳过。已有日文件先备份再原子替换，新日文件只创建不覆盖；部分日期写入失败后可重试，已成功的编号不会重复写入。
+
+哑铃弯举使用 `dumbbell_curl`：每只手完成弯起并放回各计一次，双手同时一轮共两次。v1 文件增加可选 `curlCountUnit: arm_reps`、`armCounts: {left, right}` 和逐次 `side`；弯举记录必须明确单位，左右合计必须等于 `repCount`。导入 `source` 保存 `curl_count_unit`、`arm_counts` 和逐次左右侧，不转换为双手轮数。左右指人体解剖侧，不是镜像画面侧。动作名称不表示已识别哑铃或重量；重量、RPE 和肌肉刺激仍保持未知。旧五类运动文件兼容。
+
+Windows 文件路径使用平台路径函数匹配日期文件；YAML／API 的业务相对路径统一使用 `/`，防止导入成功但详情返回 404 或文件校验误报。导入 API 回归需同时读取当天详情。
+
+导入的每条记录在动作 `source` 中保留原始事实；正次数映射到 `reps`，平板 `heldMs / 1000` 映射到可带小数的 `duration_sec`，同时保存原始毫秒。没有重量、体重、RPE 或 readiness 的来源就保持缺失；`motion_coach` 分区不推算肌肉刺激或训练重量，混合日的总体训练量标为未知。导入不等于动作质量认证，也不代表自动同步、远端发布或线上数据写入。
+
 ## 3. DSH 的可写边界
 
 DSH workspace 指向 training 数据工作区。Agent 根据 `AGENTS.md` 读取 profile、program、最近 workout、metrics、肌肉规则和目标日期文件；它可以提出并写入允许的业务 draft，但不能：

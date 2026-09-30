@@ -56,6 +56,7 @@ export type ExerciseViewModel = {
   id: string;
   name: string;
   sets: Array<z.infer<typeof setSchema>>;
+  source?: Workout["blocks"][number]["exercises"][number]["source"];
   primaryMuscles: MuscleId[];
   secondaryMuscles: MuscleId[];
 };
@@ -222,6 +223,7 @@ export function buildDailyWorkoutView(
           id: exerciseViewId(workout, blockIndex, index),
           name: exercise.name,
           sets: exercise.sets,
+          source: exercise.source,
           primaryMuscles: Object.keys(targets.primary) as MuscleId[],
           secondaryMuscles: Object.keys(targets.secondary) as MuscleId[]
         };

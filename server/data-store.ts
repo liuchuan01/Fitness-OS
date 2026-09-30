@@ -17,7 +17,7 @@ import {
   realpath,
   lstat
 } from "node:fs/promises";
-import { dirname, join, relative, resolve } from "node:path";
+import { basename, dirname, join, relative as nativeRelative, resolve, sep } from "node:path";
 import { parse, stringify } from "yaml";
 import {
   buildDashboardProjection,
@@ -34,6 +34,7 @@ import {
 
 import { z } from "zod";
 import { resolveWorkspacePaths } from "./workspace.js";
+import { motionCoachExercise, motionCoachExportSchema } from "../shared/fitness/motion-coach.js";
 import {
   assertProfileRevision,
   validateOnboardingData,
@@ -104,6 +105,81 @@ export type ValidationSummary = {
   workouts: number;
 };
 
+export type MotionCoachImportResult = { imported: number; skipped: number; dates: string[] };
+
+// Business references use forward slashes in YAML and API payloads on every platform.
+function relative(from: string, to: string): string {
+  return nativeRelative(from, to).split(sep).join("/");
+}
+
+let motionCoachImportQueue: Promise<void> = Promise.resolve();
+
+export function importMotionCoachHistory(
+  options: FitnessDataStoreOptions,
+  input: unknown
+): Promise<MotionCoachImportResult> {
+  const run = motionCoachImportQueue.then(() => importMotionCoachHistorySerial(options, input));
+  motionCoachImportQueue = run.then(() => undefined, () => undefined);
+  return run;
+}
+
+async function importMotionCoachHistorySerial(
+  options: FitnessDataStoreOptions,
+  input: unknown
+): Promise<MotionCoachImportResult> {
+  if (options.readOnly) throw new Error("Import requires a writable fitness workspace");
+  const payload = motionCoachExportSchema.parse(input);
+  const files = await listYamlFiles(join(options.dataRoot, "workouts"));
+  const existing = new Map<string, Workout>();
+  const ids = new Set<string>();
+  for (const file of files) {
+    const workout = await readYaml(file, workoutSchema, "workout");
+    existing.set(workout.date, workout);
+    for (const block of workout.blocks)
+      for (const exercise of block.exercises)
+        if (exercise.source?.system === "ai-motion-coach") ids.add(exercise.source.record_id);
+  }
+
+  const additions = new Map<string, ReturnType<typeof motionCoachExercise>[]>();
+  let skipped = 0;
+  for (const session of payload.sessions) {
+    if (ids.has(session.id)) {
+      skipped += 1;
+      continue;
+    }
+    ids.add(session.id);
+    const day = additions.get(session.localDate) ?? [];
+    day.push(motionCoachExercise(session));
+    additions.set(session.localDate, day);
+  }
+  if (additions.size === 0) return { imported: 0, skipped, dates: [] };
+
+  const { muscleMap, stimulusRules } = await readCalculationInputs(options);
+  const dates = [...additions.keys()].sort();
+  for (const date of dates) {
+    const previous = existing.get(date);
+    const blocks = previous ? structuredClone(previous.blocks) : [];
+    let block = blocks.find((item) => item.type === "motion_coach" && item.name === "AI Motion Coach");
+    if (!block) {
+      block = { type: "motion_coach", name: "AI Motion Coach", exercises: [] };
+      blocks.push(block);
+    }
+    block.exercises.push(...additions.get(date)!);
+    const draft = workoutSchema.parse(previous
+      ? { ...previous, blocks, computed: undefined }
+      : { schema_version: 1, id: `workout_${date}`, date, title: "AI Motion Coach 训练", readiness: {}, blocks });
+    const workout = workoutSchema.parse({
+      ...draft,
+      computed: calculateStimulus(draft, muscleMap, stimulusRules)
+    });
+    const file = join(options.dataRoot, "workouts", date.slice(0, 4), `${date}.yaml`);
+    await assertSafeParent(options.dataRoot, file);
+    if (previous) await writeYamlAtomic(file, workout);
+    else await writeYamlNew(file, workout);
+  }
+  return { imported: payload.sessions.length - skipped, skipped, dates };
+}
+
 async function readCalculationInputs(options: FitnessDataStoreOptions) {
   const resourcesRoot = options.resourcesRoot ?? resolveWorkspacePaths().resourcesRoot;
   const manifestFile = join(options.dataRoot, "manifest.yaml");
@@ -139,7 +215,7 @@ export async function getPlanForDate(
 
   const { muscleMap, stimulusRules } = await readCalculationInputs(options);
   const planFiles = await listYamlFiles(join(options.dataRoot, "plans"));
-  const matchingFile = planFiles.find((file) => file.endsWith(`/${date}.generated.yaml`));
+  const matchingFile = planFiles.find((file) => basename(file) === `${date}.generated.yaml`);
   if (!matchingFile) return undefined;
 
   const { plan, hasForbiddenFields } = await readPlanYaml(matchingFile);
@@ -371,7 +447,7 @@ export async function getDailyWorkout(
 ): Promise<DailyWorkoutViewModel | undefined> {
   const { muscleMap, stimulusRules } = await readCalculationInputs(options);
   const workoutFiles = await listYamlFiles(join(options.dataRoot, "workouts"));
-  const matchingFile = workoutFiles.find((file) => file.endsWith(`/${date}.yaml`));
+  const matchingFile = workoutFiles.find((file) => basename(file) === `${date}.yaml`);
   if (!matchingFile) return undefined;
   const workout = await readYaml(matchingFile, workoutSchema, "workout");
   return buildDailyWorkoutView(workout, muscleMap, stimulusRules);

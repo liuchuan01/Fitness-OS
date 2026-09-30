@@ -60,6 +60,11 @@ export function calculateStimulus(
       for (const set of exercise.sets) {
         totalSets += 1;
 
+        if (block.type === "motion_coach") {
+          missingSets += 1;
+          continue;
+        }
+
         if (
           ((block.type === "strength" || block.type === "accessory") &&
             set.reps != null &&
@@ -118,6 +123,10 @@ export function calculateWorkoutTotals(
     for (const exercise of block.exercises) {
       for (const set of exercise.sets) {
         totalSets += 1;
+        if (block.type === "motion_coach") {
+          missingSets += 1;
+          continue;
+        }
         if (
           ((block.type === "strength" || block.type === "accessory") &&
             set.reps != null &&

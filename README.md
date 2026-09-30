@@ -67,6 +67,8 @@ my-fitness-workspace/
 
 从旧版升级且已有训练数据时，请先备份，再按[迁移与恢复说明](docs/dsh-integration/LOCAL-DEVELOPMENT.md#其他机器升级时保留记录)操作；个人数据不会随应用代码自动同步。
 
+从 AI Motion Coach 带入记录：在原来训练的手机、原浏览器打开“训练记录”，选择“导出全部训练记录”，保存 JSON 文件；然后在 Fitness OS 的“配置后台 → 训练记录导入”选择该文件。导入会报告新增与重复跳过数量；多次选同一文件不会按同一记录编号重复记账。仅迁入原有次数、保持时长和计数单位，不补写重量或主观强度。文件选择只发给当前 Fitness OS 本地服务，不会自动上传到线上网站；导入前仍建议备份个人 `fitness/`。
+
 ## 开发与文档
 
 前端使用 React、TypeScript、Vite 和 Three.js；本地 Node.js 服务负责 YAML 校验、计算与文件写入，DSH 负责 Agent 会话。

@@ -12,6 +12,7 @@ import { readAgentSettings, saveAgentSettings } from "./agent-settings.js";
 import {
   buildDashboardFromFiles,
   finishWorkoutFromPlan,
+  importMotionCoachHistory,
   getDailyWorkout,
   getMuscleHistoryFromFiles,
   getPlanForDate,
@@ -269,6 +270,16 @@ export function createLocalService(options: LocalServiceOptions) {
       return;
     }
 
+    if (request.method === "POST" && url.pathname === "/api/workouts/import-motion-coach") {
+      try {
+        const result = await importMotionCoachHistory({ dataRoot }, await readJsonBody(request, 10_000_000));
+        writeJson(response, 200, { ok: true, ...result });
+      } catch (error) {
+        writeError(response, 422, error, "Failed to import Motion Coach history");
+      }
+      return;
+    }
+
     if (request.method === "GET" && url.pathname === "/api/workouts") {
       try {
         const library = await listWorkoutLibrary(
@@ -391,14 +402,14 @@ function writeJson(response: ServerResponse<IncomingMessage>, status: number, bo
   response.end(JSON.stringify(body));
 }
 
-async function readJsonBody(request: IncomingMessage) {
+async function readJsonBody(request: IncomingMessage, maxBytes = 1_000_000) {
   const chunks: Buffer[] = [];
   let size = 0;
 
   for await (const chunk of request) {
     const buffer = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
     size += buffer.length;
-    if (size > 1_000_000) throw new Error("Request body exceeds 1 MB");
+    if (size > maxBytes) throw new Error(`Request body exceeds ${maxBytes / 1_000_000} MB`);
     chunks.push(buffer);
   }
 
