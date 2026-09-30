@@ -1,4 +1,4 @@
-import { focusTransitionTiming, publishFocusFrame } from "../../design/focus-transition";
+import { focusComposition, focusTransitionTiming, publishFocusFrame } from "../../design/focus-transition";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useLayoutEffect, useRef } from "react";
 import { Box3, MathUtils, Mesh, PerspectiveCamera, Vector3 } from "three";
@@ -53,7 +53,7 @@ export function FocusCameraRig({
   const lastReset = useRef(resetToken);
   const lastCompact = useRef(size.width < 700);
   const damping = useRef(true);
-  const desktop = size.width >= 700 && window.innerWidth > 1100;
+  const { enabled: desktop, zoom: focusZoom, shift: focusShift } = focusComposition(size.width, size.height, window.innerWidth);
 
   useLayoutEffect(() => {
     if (!controls || !(camera instanceof PerspectiveCamera)) return;
@@ -101,12 +101,12 @@ export function FocusCameraRig({
       const up = new Vector3().setFromMatrixColumn(camera.matrixWorld, 1);
       const center = bounds.isEmpty() ? base.target.clone() : bounds.getCenter(new Vector3());
       const relative = center.sub(base.target);
-      destination.offset.multiplyScalar(1 / 1.22);
+      destination.offset.multiplyScalar(1 / focusZoom);
       const viewHeight =
         2 * Math.tan(MathUtils.degToRad(camera.fov / 2)) * destination.offset.length();
       destination.target.addScaledVector(
         right,
-        viewHeight * camera.aspect * 0.16 + relative.dot(right) * 0.35
+        viewHeight * camera.aspect * focusShift + relative.dot(right) * 0.35
       );
       destination.target.addScaledVector(up, MathUtils.clamp(relative.dot(up) * 0.45, -0.55, 0.55));
     }
@@ -143,6 +143,8 @@ export function FocusCameraRig({
     camera,
     controls,
     desktop,
+    focusZoom,
+    focusShift,
     ready,
     reducedMotion,
     resetToken,

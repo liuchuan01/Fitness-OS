@@ -1,3 +1,4 @@
+import { focusComposition } from "../../design/focus-transition";
 import { useEffect, useMemo } from "react";
 import { useThree } from "@react-three/fiber";
 import { CanvasTexture, Color, LinearFilter, Vector4 } from "three";
@@ -29,7 +30,7 @@ type MuscleBackdropProps = { label: string; anatomicalName: string; color: strin
 export function MuscleBackdrop({ label, anatomicalName, color }: MuscleBackdropProps) {
   const { size, invalidate } = useThree();
   const lettering = useMemo(() => {
-    if (size.width < 700 || window.innerWidth <= 1100) return null;
+    if (!focusComposition(size.width, size.height, window.innerWidth).enabled) return null;
     const fontSize = Math.min(148, Math.max(66, size.width * 0.086), size.height * 0.148);
     const left = 42;
     const height = Math.ceil(fontSize * 3.7);
