@@ -13,8 +13,6 @@ The app runs locally. Your profile, plans, and workout records live in your own 
 
 [![AI Fitness OS demo: explore muscles, review workouts, and open the AI coach](https://github.com/user-attachments/assets/4f890d1b-42b3-45c1-9996-db6d3405ef00)](https://github.com/user-attachments/assets/db68d75e-9831-4c09-b095-4687b8032a9c)
 
-[Watch the full demo (33 seconds)](https://github.com/user-attachments/assets/db68d75e-9831-4c09-b095-4687b8032a9c)
-
 [Native DSH integration](#native-deepseek-harness-integration) · [Quick start](#quick-start) · [Your data](#your-data) · [Development](#development)
 
 ## Native DeepSeek Harness integration
