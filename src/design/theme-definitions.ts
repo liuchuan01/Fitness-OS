@@ -24,6 +24,16 @@ export const neonLoadColors = [
   neon.selection
 ];
 
+export const graphiteLoadColors = [
+  graphite.accent,
+  graphite["body-load-1"],
+  graphite["body-load-2"],
+  graphite["body-load-3"],
+  graphite["body-load-4"],
+  graphite["body-load-5"],
+  graphite.selection
+];
+
 export const appThemes: Record<ThemeId, ThemeDefinition> = {
   neon: {
     id: "neon",
@@ -35,7 +45,12 @@ export const appThemes: Record<ThemeId, ThemeDefinition> = {
     id: "graphite",
     name: "Graphite / 无霓虹",
     palette: { ...neon, ...graphite },
-    body: { focusEmission: 0.12, baseEmission: 0.035, skinOpacity: 0.12 }
+    body: {
+      focusEmission: 0.12,
+      baseEmission: 0.035,
+      skinOpacity: 0.12,
+      loadColors: graphiteLoadColors
+    }
   }
 };
 export const neonScales = {

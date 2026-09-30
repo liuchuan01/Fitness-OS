@@ -32,11 +32,15 @@
 - 3D 运行时资源使用轻量 GLB/glTF，不批量加载原始 STL；人体只包含皮肤和训练相关肌肉，四肢完整，不包含骨骼、器官或生殖器。
 - UI 必须遵守 `Body is the Interface`：人体先于数字、面板和技术状态获得注意力；避免满屏霓虹、扫描线、厚描边和常驻聊天栏。
 
-- 视觉改动必须遵守 `docs/design/DESIGN.md` 第 7、10、19 节；复用 `src/design/tokens.json`、`IconButton` 与 `GlassCard` / `.glass-card`，执行 `npm run lint:design`，按固定视口实际审图。Neon 人体负荷使用设计第 7.3 节已确认的柔和桥接色带，不得自行扩展多色热力或用 Unicode 代替工具图标。
+- 视觉改动必须遵守 `docs/design/DESIGN.md` 第 7、10、19 节；复用 `src/design/tokens.json`、`IconButton` 与 `GlassCard` / `.glass-card`，执行 `npm run lint:design`，按固定视口实际审图。人体负荷使用设计第 7.3／7.4 节的 Neon 柔和桥接与 Graphite 冷暖中性色带，不得自行扩展多色热力或用 Unicode 代替工具图标。
 
 ## 当前路线图
 
 本节是仓库唯一的推进路线图。后续 Agent 在开始实现前确认当前工作属于哪一项；完成一个阶段或改变顺序时，更新本节及对应专题文档，不再新增平行 roadmap 文档。
+
+### 当前增量：Graphite 连续负荷色带
+
+按用户要求直接实现 Graphite 冷灰蓝至暖沙色连续配色，五个中间色覆盖主题 load token，人体与刺激图例共用现有连续插值链路。保留无光晕、较低自发光、灰色零负荷、动作／焦点语义及训练数据契约；不新增独立色卡。设计契约见第 7.4 节，实际浏览器审图与验证见 `docs/design/VISUAL-REVIEW.md`；效果待用户审阅。
 
 ### 当前增量：柔和桥接人体配色与同源图例
 

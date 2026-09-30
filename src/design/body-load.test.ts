@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { appThemes, neonLoadColors } from "./theme-definitions";
+import { appThemes, neonLoadColors, graphiteLoadColors } from "./theme-definitions";
 import { bodyLoadColor } from "./body-load";
 import { sampleGradient } from "./color-scale";
 
@@ -22,13 +22,19 @@ describe("soft load colors", () => {
       bodyLoadColor({ intensity: 50, status: "blue" }, appThemes.neon.palette, neonLoadColors)
     ).toBe(resolve(50));
   });
-  it("keeps Graphite's existing status palette", () => {
-    expect(
+  it("uses Graphite's cool-to-warm stops with neutral zero load", () => {
+    const resolve = (intensity: number) =>
       bodyLoadColor(
-        { intensity: 50, status: "orange" },
+        { intensity, status: "orange" },
         appThemes.graphite.palette,
         appThemes.graphite.body.loadColors
-      )
-    ).toBe(appThemes.graphite.palette.orange);
+      );
+    expect(sampleGradient(graphiteLoadColors, 0)).toBe("#B7D2E5");
+    expect(resolve(25)).toBe("#B7C3D3");
+    expect(resolve(50)).toBe("#BEB8C2");
+    expect(resolve(100)).toBe("#DAC6AC");
+    expect(resolve(150)).toBe("#DAC6AC");
+    for (const value of [0, -1, NaN]) expect(resolve(value)).toBe(appThemes.graphite.palette.gray);
+    expect(resolve(49.99)).toBe(resolve(50.01));
   });
 });

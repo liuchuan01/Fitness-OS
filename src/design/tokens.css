@@ -64,11 +64,11 @@
   --orange: #b7d2e5;
   --red: #bcae9a;
   --purple: #dac6ac;
-  --body-load-1: #65c3d7;
-  --body-load-2: #8aaabd;
-  --body-load-3: #a292b1;
-  --body-load-4: #bb7da5;
-  --body-load-5: #dc6594;
+  --body-load-1: #b6c8d9;
+  --body-load-2: #b7becd;
+  --body-load-3: #beb8c2;
+  --body-load-4: #c8bab9;
+  --body-load-5: #d2bfb1;
 }
 :root[data-glow="off"] {
   --glow-accent: none;

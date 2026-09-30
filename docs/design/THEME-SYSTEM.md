@@ -49,6 +49,10 @@
 
 2026-09-30 用户选定独立色卡中的柔和桥接。Neon 人体正值负荷改用七色标连续插值，新增 `body-load-1…5`，两端复用 accent／selection；色卡、Three 与左下角完整色带同源。零负荷保持灰色；Graphite、动作角色、焦点和其他 status 消费位置不变。领域计算不修改，完整显示边界以 `DESIGN.md` 第 7.3 节为准。色卡方向获选，真实人体版本仍待用户审阅。
 
+### Graphite 冷暖中性色带
+
+用户随后要求直接接入 Graphite 连续色带，省略色卡提案。`graphite.json` 为五个 `body-load` 中间色提供独立中性覆盖，端点仍为该主题 accent／selection，人体和图例复用既有插值逻辑；不改变光晕、自发光、动作和焦点配置。Graphite 人体正值负荷不再按离散 status 取色，其他 status 消费方保持原样。契约见 `DESIGN.md` 第 7.4 节，实际视觉效果待审阅。
+
 ## 3. 分离边界
 
 ```text
