@@ -109,6 +109,17 @@ test("starts without playback controls even with reduced motion, and restores HU
     await summary.hover();
     await expect(hud.locator(".body-hud-detail")).toBeVisible();
     expect(await summary.boundingBox()).toEqual(before);
+    const surface = hud.locator(".body-hud-surface");
+    await expect(surface).toHaveCSS("backdrop-filter", "blur(20px) saturate(1.15)");
+    const enclosure = (await surface.boundingBox())!;
+    for (const content of [summary, hud.locator(".body-hud-detail")]) {
+      const bounds = (await content.boundingBox())!;
+      expect(bounds.x).toBeGreaterThanOrEqual(enclosure.x);
+      expect(bounds.y).toBeGreaterThanOrEqual(enclosure.y);
+      expect(bounds.x + bounds.width).toBeLessThanOrEqual(enclosure.x + enclosure.width);
+      expect(bounds.y + bounds.height).toBeLessThanOrEqual(enclosure.y + enclosure.height);
+    }
+    await expect(hud.locator(".body-hud-detail")).toHaveCSS("background-image", "none");
     await hud.locator(".body-hud-detail").hover();
     await expect(summary).toHaveAttribute("aria-expanded", "true");
     await page.screenshot({ path: testInfo.outputPath(`expanded-${await hud.getAttribute("aria-label")}.png`) });

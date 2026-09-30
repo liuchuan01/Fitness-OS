@@ -13,6 +13,7 @@ export function OverviewHud({ dashboard }: OverviewHudProps) {
   return (
     <>
       <HudCard
+        anchored
         position="recovery"
         label="距上次训练"
         detail={
@@ -37,6 +38,7 @@ export function OverviewHud({ dashboard }: OverviewHudProps) {
         </strong>
       </HudCard>
       <HudCard
+        anchored
         position="load"
         label="近 7 日训练"
         detail={
@@ -67,6 +69,7 @@ export function OverviewHud({ dashboard }: OverviewHudProps) {
         </strong>
       </HudCard>
       <HudCard
+        anchored
         position="volume"
         label="力量训练"
         detail={
@@ -92,6 +95,7 @@ export function OverviewHud({ dashboard }: OverviewHudProps) {
         </strong>
       </HudCard>
       <HudCard
+        anchored
         position="stimulus"
         label="肌群训练分布"
         detail={

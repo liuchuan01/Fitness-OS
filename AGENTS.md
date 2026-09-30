@@ -40,7 +40,7 @@
 
 ### 当前增量：首页 HUD 原位展开
 
-按用户要求，Overview 四角摘要默认仅显示文字，背景透明且无边框；hover 时主文字保持原位，辅助详情独立向画布内部展开，沿用共享 GlassCard 材质。保留键盘切换、Escape 与手机点按，其他模式沿用原卡片。规则见设计第 10.2 节，验证与审图见 `docs/design/VISUAL-REVIEW.md`。
+按用户要求，Overview 四角摘要默认仅显示文字，背景透明且无边框；hover 时主文字保持原位，同一张共享 GlassCard 围绕摘要向画布内部扩展，将主文字和辅助详情包在同一连续底框内；不使用独立菜单／气泡式详情卡。保留键盘切换、Escape 与手机点按，其他模式沿用原卡片。规则见设计第 10.2 节，验证与审图见 `docs/design/VISUAL-REVIEW.md`。
 
 ### 当前增量：DSH 原生模型与思考强度设置
 
@@ -72,7 +72,7 @@
 
 ### 当前增量：身体探索与动态 HUD
 
-身体选择改为 HUD 分区 → 肌肉两级导航，保留四角数据并随肌肉焦点切换。默认自转使用独立限频调度启动，选择期间暂停；取消播放按钮，reduced-motion 降低速度。Day／Exercise／肌肉焦点的四角 HUD 复用 GlassCard quiet 毛玻璃；首页现按“首页 HUD 原位展开”增量只常驻文字，hover／点按后显示详情玻璃层与完整记录、口径或分布。组件状态与事实数据流见 `docs/data/MUSCLE-HISTORY.md`，视觉与运动行为见 `docs/design/DESIGN.md`，浏览器入口为 `tests/e2e/body-explorer.spec.ts`。
+身体选择改为 HUD 分区 → 肌肉两级导航，保留四角数据并随肌肉焦点切换。默认自转使用独立限频调度启动，选择期间暂停；取消播放按钮，reduced-motion 降低速度。Day／Exercise／肌肉焦点的四角 HUD 复用 GlassCard quiet 毛玻璃；首页现按“首页 HUD 原位展开”增量只常驻文字，hover／点按后整张玻璃卡片包住主文字与完整记录、口径或分布。组件状态与事实数据流见 `docs/data/MUSCLE-HISTORY.md`，视觉与运动行为见 `docs/design/DESIGN.md`，浏览器入口为 `tests/e2e/body-explorer.spec.ts`。
 
 ### 当前增量：身体训练档案第一步
 

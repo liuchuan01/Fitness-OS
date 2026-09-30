@@ -252,7 +252,13 @@ describe("App", () => {
     expect(screen.getByLabelText("Training insights")).toBeInTheDocument();
     expect(await screen.findByText("今天的身体状态")).toBeInTheDocument();
     expect(await screen.findAllByText("距上次训练")).toHaveLength(2);
-    expect(screen.getAllByText("背阔肌恢复不足；下肢训练量偏低。")).toHaveLength(2);
+    expect(within(screen.getByLabelText("Training insights")).getByText(
+      "背阔肌恢复不足；下肢训练量偏低。"
+    )).toBeInTheDocument();
+    // The compact insight switches to the plan title once the plan request resolves.
+    expect(await screen.findByRole("button", {
+      name: `身体状态 ${todayPlanResponse.plan.title}`
+    })).toBeInTheDocument();
     expect(screen.getByLabelText("首页身体数据")).toBeInTheDocument();
     expect(screen.getByText("近 7 日训练")).toBeInTheDocument();
     expect(screen.getByText("力量训练")).toBeInTheDocument();
