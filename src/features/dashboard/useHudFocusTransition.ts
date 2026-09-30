@@ -1,8 +1,9 @@
+import { subscribeFocusFrames } from "../../design/focus-transition";
 import { useLayoutEffect, useRef } from "react";
 
 const positions = ["recovery", "load", "volume", "stimulus"] as const;
 
-/** Preserve the four spatial identities even when overview/focus content mounts anew. */
+/** Preserve the four spatial identities across mode changes, driven by rendered camera frames. */
 export function useHudFocusTransition(focused: boolean) {
   const root = useRef<HTMLDivElement>(null);
   const previous = useRef(new Map<string, DOMRect>());
@@ -19,68 +20,62 @@ export function useHudFocusTransition(focused: boolean) {
       const element = container.querySelector<HTMLElement>(`.hud-${position}`);
       return element ? [{ position, element }] : [];
     });
-    const before = previous.current;
-    const animations: Animation[] = [];
-    const canAnimate =
-      container.clientWidth >= 700 &&
-      window.innerWidth > 1100 &&
-      !matchMedia("(prefers-reduced-motion: reduce)").matches;
-    for (const { position, element } of cards) {
-      const old = before.get(position);
-      const next = element.getBoundingClientRect();
-      if (canAnimate && old && (Math.abs(old.x - next.x) > 1 || Math.abs(old.y - next.y) > 1)) {
-        animations.push(
-          element.animate(
-            [
-              { transform: `translate(${old.x - next.x}px, ${old.y - next.y}px)` },
-              { transform: "translate(0, 0)" }
-            ],
-            { duration: focused ? 720 : 650, easing: "cubic-bezier(.22,.68,0,1)" }
-          )
-        );
-      }
-    }
-    animations.forEach((animation) => {
-      animation.pause();
-      animation.currentTime = 0;
-    });
-    let frame = 0;
-    let elapsed = 0;
-    let lastFrame: number | null = null;
-    const duration = focused ? 720 : 650;
-    const remember = () => {
-      previous.current = new Map(
-        cards.map(({ position, element }) => [position, element.getBoundingClientRect()])
-      );
+    const measure = () =>
+      new Map(cards.map(({ position, element }) => [position, element.getBoundingClientRect()]));
+    let animations: Animation[] = [];
+    let activeId: number | null = null;
+    const cancel = () => {
+      animations.forEach((animation) => animation.cancel());
+      animations = [];
     };
-    const track = (now: number) => {
-      elapsed += lastFrame === null ? 0 : Math.min(now - lastFrame, 120);
-      lastFrame = now;
+    const prepare = (before: Map<string, DOMRect>) => {
+      cancel();
       if (
         container.clientWidth < 700 ||
         window.innerWidth <= 1100 ||
-        matchMedia("(prefers-reduced-motion: reduce)").matches
+        !container.closest(".body-stage")?.querySelector("canvas")
       )
-        elapsed = duration;
-      animations.forEach((animation) => {
-        animation.currentTime = Math.min(elapsed, duration);
-      });
-      remember();
-      if (animations.length && elapsed < duration) frame = requestAnimationFrame(track);
-      else animations.forEach((animation) => animation.cancel());
+        return;
+      for (const { position, element } of cards) {
+        const old = before.get(position);
+        const next = element.getBoundingClientRect();
+        if (!old || (Math.abs(old.x - next.x) < 1 && Math.abs(old.y - next.y) < 1)) continue;
+        const animation = element.animate(
+          [
+            { transform: `translate(${old.x - next.x}px, ${old.y - next.y}px)` },
+            { transform: "translate(0, 0)" }
+          ],
+          { duration: 1, easing: "linear", fill: "both" }
+        );
+        animation.pause();
+        animation.currentTime = 0;
+        animations.push(animation);
+      }
     };
-    remember();
-    frame = requestAnimationFrame(track);
+    prepare(previous.current);
+    previous.current = measure();
+    const unsubscribe = subscribeFocusFrames(container, (frame) => {
+      if (frame.focusing !== focused) return;
+      // Retarget from the visible position if another muscle interrupts the camera transition.
+      if (activeId !== null && activeId !== frame.id) prepare(measure());
+      activeId = frame.id;
+      animations.forEach((animation) => {
+        animation.currentTime = frame.progress;
+      });
+      if (frame.progress >= 1) cancel();
+      previous.current = measure();
+    });
     const observer = new ResizeObserver(() => {
       syncLayout();
-      remember();
+      if (container.clientWidth < 700 || window.innerWidth <= 1100) cancel();
+      previous.current = measure();
     });
     observer.observe(container);
     cards.forEach(({ element }) => observer.observe(element));
     return () => {
-      cancelAnimationFrame(frame);
+      unsubscribe();
       observer.disconnect();
-      animations.forEach((animation) => animation.cancel());
+      cancel();
     };
   }, [focused]);
   return root;

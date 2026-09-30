@@ -28,18 +28,18 @@ export function DashboardMetrics({ mode, dashboard, dailyWorkout, focus }: Dashb
     >
       {focus ? (
         <>
-          <HudCard position="recovery" label="最近涉及训练" detail={focus.label}>
+          <HudCard anchored position="recovery" label="最近涉及训练" detail={focus.label}>
             <strong className="hud-date">
               {history ? (history.lastTrainedDate?.replace(/-/g, ".") ?? "暂无记录") : placeholder}
             </strong>
           </HudCard>
-          <HudCard position="load" label="近 7 日训练" detail="关联该肌肉的训练次数">
+          <HudCard anchored position="load" label="近 7 日训练" detail="关联该肌肉的训练次数">
             <strong>
               {history?.weekly.sessions ?? "—"}
               <small>次</small>
             </strong>
           </HudCard>
-          <HudCard position="volume" label="主练 / 参与" detail="近 7 日 · 记录组数">
+          <HudCard anchored position="volume" label="主练 / 参与" detail="近 7 日 · 记录组数">
             <strong>
               {history?.weekly.primarySets ?? "—"}
               <em>/</em>
@@ -47,7 +47,7 @@ export function DashboardMetrics({ mode, dashboard, dailyWorkout, focus }: Dashb
               <small>组</small>
             </strong>
           </HudCard>
-          <HudCard
+          <HudCard anchored
             position="stimulus"
             label="上次怎么练"
             detail={

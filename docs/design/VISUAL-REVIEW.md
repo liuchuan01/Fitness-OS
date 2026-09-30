@@ -293,3 +293,14 @@ lint、lint:design、lint:architecture、typecheck、完整 build、58 项单元
 实际浏览器与审图：隔离训练 fixture、Neon／Graphite 两套主题，模型就绪后暂停自转。1728×1117 验证普通动效的中间相机位置、缩放与 HUD 坐标均处于起终点之间；四卡在右侧对齐且互不重叠。空白点击返回、快速取消再选择、手动缩放后返回均验证镜头复原。1440×900、1728×1117、2560×1440 检查长短名称、真实人体遮字、HUD 与对话入口；390×844 检查完整人体、四角与档案 Sheet、触摸展开和键盘入口。截图目录：`test-results/visual-regression/focus-transition/{neon,graphite}/`。当前为 Chromium 模拟 CSS 视口；未在真实 Mac／Safari 验证动画帧率。
 
 验证：lint、lint:design、lint:architecture、typecheck、完整 build、58 项单元／组件测试、全部三个 3D 校验通过。聚焦相关 E2E 共 8 项覆盖通过（身体探索 4、双主题运动 2、双主题背景遮挡 2）。初轮暴露长帧跨过动效，增加可见步骤推进限制后复验；运动测试等待进入状态再检查终态，避免 DOM 与 R3F 提交先后造成提前读取。触屏用例此前硬编码 5178，独立端口运行失败，本轮改用配置 baseURL 后独立复验通过。未放宽断言或测试超时。构建仍有既有 Three 异步 chunk 体积提示。
+
+
+## 2026-09-30 聚焦动效同步与无框 HUD 修复
+
+用户确认 macOS 开启“减少动态效果”，旧实现会直接跳到终态；新增前台浏览器回归在旧代码下复现 reduced-motion 没有中间帧。现保留用户主动聚焦／返回的 400ms 简化连续位移与缩放，普通模式仍为 720ms 进入／650ms 返回。此条覆盖上一轮 reduced-motion 直接呈现终态的规则；其他环境动效降级不变。
+
+修复卡片先动、人体后动：相机渲染帧是唯一进度来源，HUD 在同一帧接收已缓动的进度，不再独立计时。聚焦四张摘要统一 80px 最小高度，默认透明、无可见边框；hover／键盘／点按沿用 Overview 原位展开的同一共享玻璃底框，标题与主要数值保持原位。Day／Exercise 样式不变。
+
+实际验证：Chromium 前台真实 R3F 渲染，同时采样相机与 HUD 每帧坐标，普通与 reduced-motion 的进入／返回均出现多个中间位置，每帧归一化位移偏差小于 0.04；断言四卡高度差小于 1px、默认透明边框与无背景图、hover 主摘要位置不变。已打开 reduced-motion 录屏抽帧检查同步进入和返回，并复看桌面聚焦与 hover 截图；双主题布局覆盖 1440×900、1728×1117、2560×1440 和 390×844 手机，实际打开 Graphite 1440 与 Neon 手机截图检查文字层级、无框摘要和档案。证据位于已忽略的 `test-results/visual-regression/focus-motion-fix/{motion,layout}/`，含录屏与截图。模拟系统偏好与 CSS 视口，不代表真实 Mac／Safari 帧率验收。
+
+lint、lint:design、lint:architecture、typecheck、完整 build、58 项单元／组件及全部三项 3D 校验通过。10 项相关 E2E 通过：动效偏好 2、双主题聚焦／反向与中途重选 2、身体探索 4、双主题背景遮挡 2；未放宽原断言或超时。使用独立 8798／5188 端口，临时测试配置已删除。保留既有 Three 异步 chunk 体积提示；未运行完整业务集成或生产部署。

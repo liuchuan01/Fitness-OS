@@ -212,7 +212,7 @@
 }
 
 /* The summary remains the anchor; one shared glass surface encloses it and its details. */
-.body-stage .body-hud.body-hud-overview .body-hud-card {
+.body-stage .body-hud:is(.body-hud-overview, .body-hud-focused) .body-hud-card {
   --hud-padding-y: 15px;
   --hud-padding-x: 16px;
   width: clamp(130px, 19%, 206px);
@@ -222,14 +222,14 @@
   -webkit-backdrop-filter: none;
   box-shadow: none;
 }
-.body-hud-overview .body-hud-card::before {
+:is(.body-hud-overview, .body-hud-focused) .body-hud-card::before {
   display: none;
 }
-.body-hud-overview .body-hud-summary {
+:is(.body-hud-overview, .body-hud-focused) .body-hud-summary {
   position: relative;
   z-index: 1;
 }
-.body-hud-overview .body-hud-surface {
+:is(.body-hud-overview, .body-hud-focused) .body-hud-surface {
   position: absolute;
   top: -1px;
   left: -1px;
@@ -238,22 +238,22 @@
   border-radius: inherit;
   animation: hud-unfold-down 180ms ease-out;
 }
-.body-hud-overview :is(.hud-load, .hud-stimulus) .body-hud-surface {
+:is(.body-hud-overview, .body-hud-focused) :is(.hud-load, .hud-stimulus) .body-hud-surface {
   left: auto;
   right: -1px;
 }
-.body-hud-overview :is(.hud-volume, .hud-stimulus) .body-hud-surface {
+:is(.body-hud-overview, .body-hud-focused) :is(.hud-volume, .hud-stimulus) .body-hud-surface {
   top: auto;
   bottom: -1px;
   padding-top: var(--hud-padding-y);
   padding-bottom: calc(var(--hud-summary-height) + var(--hud-padding-y));
   animation-name: hud-unfold-up;
 }
-.body-hud-overview .body-hud-detail {
+:is(.body-hud-overview, .body-hud-focused) .body-hud-detail {
   margin-top: 16px;
   padding-top: 8px;
 }
-.body-hud-overview :is(.hud-volume, .hud-stimulus) .body-hud-detail {
+:is(.body-hud-overview, .body-hud-focused) :is(.hud-volume, .hud-stimulus) .body-hud-detail {
   margin-top: 0;
   margin-bottom: 16px;
   padding-top: 0;
@@ -270,18 +270,18 @@
   to { opacity: 1; clip-path: inset(0 round 13px); }
 }
 @media (max-width: 1100px) {
-  .body-stage .body-hud.body-hud-overview .body-hud-card {
+  .body-stage .body-hud:is(.body-hud-overview, .body-hud-focused) .body-hud-card {
     --hud-padding-y: 8px;
     --hud-padding-x: 8px;
     width: 28%;
     max-width: 166px;
   }
-  .body-hud-overview .body-hud-surface {
+  :is(.body-hud-overview, .body-hud-focused) .body-hud-surface {
     width: min(248px, calc(100vw - 44px));
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .body-hud-overview .body-hud-surface { animation: none; }
+  :is(.body-hud-overview, .body-hud-focused) .body-hud-surface { animation: none; }
 }
 
 /* Focus gathers the four existing facts into one rail inside the body canvas. */
@@ -295,4 +295,16 @@
   .body-stage .body-hud-focused[data-focus-rail="true"] .hud-load { top: 35%; }
   .body-stage .body-hud-focused[data-focus-rail="true"] .hud-volume { top: 52%; }
   .body-stage .body-hud-focused[data-focus-rail="true"] .hud-stimulus { top: 69%; }
+}
+
+.body-hud-focused .body-hud-surface { left: auto; right: -1px; }
+@media (min-width: 1101px) {
+  .body-hud-focused .body-hud-summary {
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+  }
+  .body-hud-focused .body-hud-value { min-height: 48px; }
 }

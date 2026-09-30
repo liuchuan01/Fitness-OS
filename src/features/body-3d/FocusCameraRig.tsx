@@ -1,3 +1,4 @@
+import { focusTransitionTiming, publishFocusFrame } from "../../design/focus-transition";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useLayoutEffect, useRef } from "react";
 import { Box3, MathUtils, Mesh, PerspectiveCamera, Vector3 } from "three";
@@ -12,11 +13,13 @@ type Controls = {
 };
 type Pose = { target: Vector3; offset: Vector3 };
 type Transition = {
+  id: number;
   from: Pose;
   to: Pose;
   elapsed: number;
   lastFrame: number | null;
   duration: number;
+  zoomDelay: number;
   focusing: boolean;
 };
 type FocusCameraRigProps = {
@@ -38,9 +41,10 @@ export function FocusCameraRig({
   resetToken,
   onTransition
 }: FocusCameraRigProps) {
-  const { camera, controls: rawControls, scene, size, invalidate } = useThree();
+  const { camera, controls: rawControls, scene, size, invalidate, gl } = useThree();
   const controls = rawControls as unknown as Controls | undefined;
   const home = useRef<Pose | null>(null);
+  const sequence = useRef(0);
   const animation = useRef<Transition | null>(null);
   const initialized = useRef(false);
   const lastReset = useRef(resetToken);
@@ -105,13 +109,13 @@ export function FocusCameraRig({
     controls.enableDamping = false;
     const from = pose();
     if (
-      reducedMotion ||
-      (!focusing &&
-        !animation.current &&
-        from.target.distanceTo(destination.target) < 0.001 &&
-        from.offset.distanceTo(destination.offset) < 0.001)
+      !focusing &&
+      !animation.current &&
+      from.target.distanceTo(destination.target) < 0.001 &&
+      from.offset.distanceTo(destination.offset) < 0.001
     ) {
       apply(destination);
+      publishFocusFrame(gl.domElement, { id: ++sequence.current, focusing, progress: 1 });
       controls.enableDamping = damping.current;
       animation.current = null;
       if (!focusing) home.current = null;
@@ -119,13 +123,15 @@ export function FocusCameraRig({
       return;
     }
     animation.current = {
+      id: ++sequence.current,
       from,
       to: destination,
       elapsed: 0,
       lastFrame: null,
-      duration: focusing ? 720 : 650,
+      ...focusTransitionTiming(focusing, reducedMotion),
       focusing
     };
+    publishFocusFrame(gl.domElement, { id: sequence.current, focusing, progress: 0 });
     onTransition(true);
     invalidate();
   }, [
@@ -140,12 +146,19 @@ export function FocusCameraRig({
     size.height,
     scene,
     invalidate,
-    onTransition
+    onTransition,
+    gl
   ]);
 
   useLayoutEffect(() => {
     if (!controls) return;
     const interrupt = () => {
+      if (animation.current)
+        publishFocusFrame(gl.domElement, {
+          id: animation.current.id,
+          focusing: animation.current.focusing,
+          progress: 1
+        });
       if (animation.current && !animation.current.focusing) home.current = null;
       animation.current = null;
       controls.enableDamping = damping.current;
@@ -156,7 +169,7 @@ export function FocusCameraRig({
       controls.removeEventListener("start", interrupt);
       controls.enableDamping = damping.current;
     };
-  }, [controls, onTransition]);
+  }, [controls, onTransition, gl]);
 
   useFrame(() => {
     const current = animation.current;
@@ -167,12 +180,15 @@ export function FocusCameraRig({
     current.lastFrame = now;
     const elapsed = current.elapsed;
     const move = ease(elapsed / current.duration);
-    const zoom = ease(
-      (elapsed - (current.focusing ? 90 : 0)) / (current.duration - (current.focusing ? 90 : 0))
-    );
+    const zoom = ease((elapsed - current.zoomDelay) / (current.duration - current.zoomDelay));
     controls.target.lerpVectors(current.from.target, current.to.target, move);
     camera.position.lerpVectors(current.from.offset, current.to.offset, zoom).add(controls.target);
     controls.update();
+    publishFocusFrame(gl.domElement, {
+      id: current.id,
+      focusing: current.focusing,
+      progress: move
+    });
     if (elapsed >= current.duration) {
       animation.current = null;
       controls.enableDamping = damping.current;
