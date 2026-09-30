@@ -32,24 +32,63 @@ export function ThemePreview({ theme }: { theme: ThemeDefinition }) {
         <i />
       </span>
       <svg viewBox="0 0 160 260" fill="none">
-        <g stroke="var(--preview-accent)" strokeWidth="1.2" strokeLinejoin="round">
+        <g
+          fill="var(--preview-surface)"
+          stroke="var(--preview-accent)"
+          strokeOpacity=".65"
+          strokeWidth="1.4"
+          strokeLinejoin="round"
+        >
           <path
-            fill="var(--preview-surface)"
-            d="M80 16c-9 0-14 7-14 17 0 8 4 14 8 17v10l-24 9-9 11-10 33-8 35-5 19 4 7 6-3 5-20 13-33 9-22 6 37-4 28 5 42 2 26-5 15 3 5 14-1 3-20 2-37-1-23 4-12 4 12-1 23 2 37 3 20 14 1 3-5-5-15 2-26 5-42-4-28 6-37 9 22 13 33 5 20 6 3 4-7-5-19-8-35-10-33-9-11-24-9V50c4-3 8-9 8-17 0-10-5-17-14-17Z"
+            d="M71 74 L72 69
+              C64 65 59 57 59 47 C59 33 68 23 80 23
+              C92 23 101 33 101 47 C101 57 96 65 88 69
+              L89 74
+              Q92 77 102 79 Q116 82 121 97
+              L130 125 Q132 131 133 138 L140 163
+              Q143 174 136 176 Q130 178 127 169
+              L117 143 L107 116
+              Q103 131 105 145 Q109 156 108 168
+              L103 202 L101 229 Q101 233 106 237
+              Q110 244 102 246 L90 246 Q85 246 85 239
+              L83 205 L82 175 Q82 170 80 170
+              Q78 170 78 175 L77 205 L75 239
+              Q75 246 70 246 L58 246 Q50 244 54 237
+              Q59 233 59 229 L57 202 L52 168
+              Q51 156 55 145 Q57 131 53 116
+              L43 143 L33 169 Q30 178 24 176
+              Q17 174 20 163 L27 138 Q28 131 30 125
+              L39 97 Q44 82 58 79 Q68 77 71 74 Z"
           />
-          <path
-            d="M54 76 76 70v27l-18-3Zm52 0L84 70v27l18-3ZM63 105l13 1v13H63Zm34 0-13 1v13h13ZM64 126h12v12l-11 5Zm32 0H84v12l11 5Z"
-            fill="var(--preview-accent)"
-            fillOpacity=".32"
-          />
-          <path
-            d="m61 151 14 6-3 39-7 10-5-38Zm38 0-14 6 3 39 7 10 5-38Z"
-            fill="var(--preview-focus)"
-            fillOpacity=".55"
-            stroke="var(--preview-focus)"
-          />
-          <path d="m45 83-8 26 7 6 9-26m62-6 8 26-7 6-9-26M68 213l5 22m19-22-5 22" />
         </g>
+        {[false, true].map((mirrored) => (
+          <g
+            key={String(mirrored)}
+            transform={mirrored ? "translate(160 0) scale(-1 1)" : undefined}
+          >
+            <g fill="var(--preview-accent)">
+              <path
+                d="M53 87 Q43 93 43 108 Q48 112 52 106 L58 89 Q57 86 53 87Z"
+                fillOpacity=".25"
+              />
+              <path
+                d="M62 88 Q68 86 75 87 Q77 87 77 91 L77 108 Q67 113 59 108 Q55 101 59 92 Q60 89 62 88Z"
+                fillOpacity=".5"
+              />
+              <rect x="65" y="117" width="12" height="12" rx="3.5" fillOpacity=".32" />
+              <path
+                d="M68 134 H77 V143 Q77 147 73 148 L69 149 Q65 145 65 138 Q65 134 68 134Z"
+                fillOpacity=".25"
+              />
+              <path d="M61 207 Q67 205 71 208 L69 231 Q65 234 63 230Z" fillOpacity=".18" />
+            </g>
+            <path
+              d="M60 156 Q66 157 74 161 L72 180 Q71 192 65 198 Q61 198 60 190 L57 169 Q56 160 60 156Z"
+              fill="var(--preview-focus)"
+              fillOpacity=".6"
+            />
+          </g>
+        ))}
       </svg>
       <span className="preview-hud preview-hud-left">
         <i />

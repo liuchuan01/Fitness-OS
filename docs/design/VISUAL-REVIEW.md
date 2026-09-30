@@ -192,3 +192,15 @@ VISUAL_THEME=graphite VISUAL_OUTPUT=test-results/visual-regression/main-themes/g
 所有写入与实际 fixture 请求在临时隔离工作区验证，真实本地页面仅读取配置，没有替用户修改个人模型默认值或密钥，也未发起真实 DeepSeek 请求。原生模型设置的详细接口、生效范围和文件归属以 `DSH-FITNESS-INTEGRATION.md` 为准。保留既有 Three 包体积及单元测试多实例提示，未执行完整生产部署验收。
 
 推送前已接入远端新增的 DSH Host 诊断日志，模型偏好与凭据接口的 503 日志分别显示准确路径及 bridge 类型。合并后 lint、设计／架构检查、typecheck、完整 build 及 7 项受影响集成测试复验通过，包含 Host 日志脱敏、模型接口错误转发、原生 Host 默认选择和重启持久化。
+
+### 设置页主题预览人体重绘
+
+按用户对预览小人线条杂乱的反馈，重绘 `ThemePreview.tsx` 中的内联 SVG：略大椭圆头部、圆润对称四肢、低对比单层外轮廓，肩胸腹腿采用留有间距的色块，移除手臂和小腿交叉描边。颜色继续读取现有 theme definition；轻微缩小并上移示意人体，为手机上的脚部与底部说明留出空隙。此改动仅涉及设置页示意图，未调整真实 3D 模型。
+
+隔离浏览器验证 Neon / Graphite 的 1440×900、390×844、320×844 设置页，实际打开桌面 Graphite、手机 Neon 和窄屏 Graphite 截图审阅，两张主题示意中的头、手、脚完整，色块无交叉线，脚部与说明分离。截图位于 `test-results/theme-preview-redraw/appearance-settings-sectio-ace2c-rrow-screens-in-both-themes-chromium/{theme}-{width}-界面外观.png`，不提交图片；效果待用户审阅。
+
+lint、lint:design、lint:architecture、typecheck、完整 build 通过；两项既有 E2E 覆盖主题切换／持久化及双主题三尺寸分区布局、键盘与 reduced-motion。最终间距微调后复验设计检查及布局 E2E 通过。构建仍有既有 Three 分包体积提示。本轮为静态示意图调整，不新增按路径坐标断言的测试，视觉结果以实际截图审阅为依据；未重复主站四模式 3D 或生产部署验收。
+
+用户后续反馈头身之间留空、位置偏高：已将独立头部与躯干合并为一条连续的头颈外轮廓，SVG 顶部位置由 5% 调整到 7%，整体下移约 3–4px。重新生成双主题三尺寸截图，并实际检查桌面 Graphite 与手机 Neon，确认颈部无空隙、顶部留白增加、脚部仍与说明分离。静态检查、完整构建及既有布局 E2E 复验通过；截图沿用上述目录。
+
+用户进一步指出脖子过长：头部向肩部靠近 9 个 SVG 坐标单位，颈部直段从 14 缩短到 5，保留头部大小及连续轮廓。双主题三尺寸布局 E2E 通过，实际复看桌面 Graphite 与手机 Neon，短颈衔接自然、无新增遮挡；lint、设计／架构检查、typecheck 与完整 build 通过。截图沿用上述目录。
