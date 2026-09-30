@@ -45,6 +45,10 @@
 - [Three.js Selective Bloom 示例](https://threejs.org/examples/webgl_postprocessing_unreal_bloom_selective.html)及 [UnrealBloomPass](https://threejs.org/docs/pages/UnrealBloomPass.html)：研究高亮物体周围光晕的技术边界。本项目使用 Three 0.171，不能直接照抄当前 WebGPU 例子。
 - [DTCG 2025.10 格式](https://www.w3.org/community/reports/design-tokens/CG-FINAL-format-20251028/)：参考类型、分组、别名及交换格式。它不定义本产品的语义、布局或主题插件加载器。
 
+### 柔和桥接获选并接入负荷视图
+
+2026-09-30 用户选定独立色卡中的柔和桥接。Neon 人体正值负荷改用七色标连续插值，新增 `body-load-1…5`，两端复用 accent／selection；色卡、Three 与左下角完整色带同源。零负荷保持灰色；Graphite、动作角色、焦点和其他 status 消费位置不变。领域计算不修改，完整显示边界以 `DESIGN.md` 第 7.3 节为准。色卡方向获选，真实人体版本仍待用户审阅。
+
 ## 3. 分离边界
 
 ```text

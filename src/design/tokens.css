@@ -29,6 +29,11 @@
   --orange: #57b8c3;
   --red: #cb718c;
   --purple: #ff477e;
+  --body-load-1: #65c3d7;
+  --body-load-2: #8aaabd;
+  --body-load-3: #a292b1;
+  --body-load-4: #bb7da5;
+  --body-load-5: #dc6594;
 }
 [data-theme="graphite"] {
   --canvas: #111316;
@@ -59,6 +64,11 @@
   --orange: #b7d2e5;
   --red: #bcae9a;
   --purple: #dac6ac;
+  --body-load-1: #65c3d7;
+  --body-load-2: #8aaabd;
+  --body-load-3: #a292b1;
+  --body-load-4: #bb7da5;
+  --body-load-5: #dc6594;
 }
 :root[data-glow="off"] {
   --glow-accent: none;

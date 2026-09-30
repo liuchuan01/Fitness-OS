@@ -7,7 +7,7 @@ import "../../components/glass-card.css";
 import "./gradient-study.css";
 
 export default function GradientStudy() {
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState(1);
   const [value, setValue] = useState(50);
   const palette = gradientPalettes[selected];
   const color = sampleGradient(palette.colors, value);
@@ -18,13 +18,13 @@ export default function GradientStudy() {
           <ArrowLeft size={16} aria-hidden="true" /> 原色卡样板
         </a>
         <span>COLOR STUDY / 04</span>
-        <span className="draft">候选配色 · 待审阅</span>
+        <span className="draft">柔和桥接已选定</span>
       </header>
       <section className="gradient-intro">
         <p className="eyebrow">CYAN TO MAGENTA</p>
         <h1>从冷静的青，到有温度的洋红。</h1>
         <p>先看颜色如何连起来。三条路线，共用现有主题的青色与偏红洋红端点。</p>
-        <p className="gradient-caption">独立色卡 demo，未应用到首页人体。</p>
+        <p className="gradient-caption">柔和桥接已用于 Neon 人体负荷，其余两组保留为对照。</p>
       </section>
       <div className="gradient-layout">
         <section aria-label="候选渐变方案" className="gradient-options">
@@ -101,7 +101,7 @@ export default function GradientStudy() {
         </div>
       </section>
       <footer>
-        这一页只比较配色。人体上的透明度、自发光和不同肌肉之间的颜色关系，需在选定方向后单独预览。
+        这一页比较纯色色卡。柔和桥接在人体上的透明度、自发光和相邻肌肉颜色，以首页实际显示为准。
       </footer>
     </main>
   );

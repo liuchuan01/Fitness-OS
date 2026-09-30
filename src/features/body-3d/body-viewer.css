@@ -145,3 +145,14 @@
     max-height: 48px;
   }
 }
+
+.projection-continuous {
+  width: 88px;
+  height: 6px;
+  border-radius: 2px;
+}
+@media (min-width: 1101px) {
+  .body-stage:has(.agent-chat-launcher) .body-projection-label:has(.projection-continuous) {
+    bottom: 86px;
+  }
+}

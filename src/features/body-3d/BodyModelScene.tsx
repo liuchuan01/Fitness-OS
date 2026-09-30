@@ -1,3 +1,4 @@
+import { bodyLoadColor } from "../../design/body-load";
 import defaultPalette from "../../design/tokens.json";
 import { useLoader, useThree } from "@react-three/fiber";
 import { useCallback, useEffect, useMemo } from "react";
@@ -30,6 +31,7 @@ type MeshBinding = {
 
 type BodyModelSceneProps = {
   palette?: typeof defaultPalette;
+  loadColors?: readonly string[];
   focusEmission?: number;
   baseEmission?: number;
   skinOpacity?: number;
@@ -48,6 +50,7 @@ type BodyModelSceneProps = {
 
 export function BodyModelScene({
   palette = defaultPalette,
+  loadColors,
   focusEmission = 0.28,
   baseEmission = 0.06,
   skinOpacity = 0.12,
@@ -125,7 +128,7 @@ export function BodyModelScene({
                 ? secondaryColor
                 : palette.gray
             : muscle
-              ? palette[muscle.status]
+              ? bodyLoadColor(muscle, palette, loadColors)
               : palette.gray
       );
       const intensity = (muscle?.intensity ?? 0) / 100;
@@ -146,6 +149,7 @@ export function BodyModelScene({
   }, [
     invalidate,
     palette,
+    loadColors,
     focusEmission,
     baseEmission,
     secondaryColor,

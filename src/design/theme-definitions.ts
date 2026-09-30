@@ -7,14 +7,29 @@ export type ThemeDefinition = {
   id: ThemeId;
   name: string;
   palette: typeof neon;
-  body: { focusEmission: number; baseEmission: number; skinOpacity: number };
+  body: {
+    focusEmission: number;
+    baseEmission: number;
+    skinOpacity: number;
+    loadColors?: readonly string[];
+  };
 };
+export const neonLoadColors = [
+  neon.accent,
+  neon["body-load-1"],
+  neon["body-load-2"],
+  neon["body-load-3"],
+  neon["body-load-4"],
+  neon["body-load-5"],
+  neon.selection
+];
+
 export const appThemes: Record<ThemeId, ThemeDefinition> = {
   neon: {
     id: "neon",
     name: "Neon / 青与洋红",
     palette: neon,
-    body: { focusEmission: 0.48, baseEmission: 0.06, skinOpacity: 0.12 }
+    body: { focusEmission: 0.48, baseEmission: 0.06, skinOpacity: 0.12, loadColors: neonLoadColors }
   },
   graphite: {
     id: "graphite",

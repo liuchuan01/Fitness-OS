@@ -196,6 +196,7 @@ export function BodyViewer3D({
             {meta ? (
               <BodyModelScene
                 palette={palette}
+                loadColors={theme.body.loadColors}
                 secondaryColor={palette["selection-mid"]}
                 baseEmission={theme.body.baseEmission}
                 skinOpacity={theme.body.skinOpacity}
@@ -270,16 +271,29 @@ export function BodyViewer3D({
               </span>
             </>
           ) : !selectedMuscle && !region ? (
-            <>
+            theme.body.loadColors ? (
               <span>
-                <i className="projection-swatch projection-load" />
-                低至高刺激
+                低刺激
+                <i
+                  className="projection-swatch projection-continuous"
+                  style={{
+                    background: `linear-gradient(90deg, ${theme.body.loadColors.join(",")})`
+                  }}
+                />
+                高刺激
               </span>
-              <span>
-                <i className="projection-swatch projection-warning" />
-                高负荷
-              </span>
-            </>
+            ) : (
+              <>
+                <span>
+                  <i className="projection-swatch projection-load" />
+                  低至高刺激
+                </span>
+                <span>
+                  <i className="projection-swatch projection-warning" />
+                  高负荷
+                </span>
+              </>
+            )
           ) : null}
         </span>
         <div className="body-selection-context" aria-label="模型覆盖说明">

@@ -1,6 +1,10 @@
 import tokens from "../../design/tokens.json";
 
-// Isolated study candidates, never consumed by the production body palette.
+import { neonLoadColors } from "../../design/theme-definitions";
+import { mixColor } from "../../design/color-scale";
+export { sampleGradient } from "../../design/color-scale";
+
+// Other candidates remain isolated; soft shares the approved production stops.
 export const gradientPalettes = [
   {
     id: "spectrum",
@@ -12,7 +16,7 @@ export const gradientPalettes = [
     id: "soft",
     name: "柔和桥接",
     note: "中段降低饱和度，经过雾蓝与灰紫。更安静，层级差异也更含蓄。",
-    colors: [tokens.accent, "#65C3D7", "#8AAABD", "#A292B1", "#BB7DA5", "#DC6594", tokens.selection]
+    colors: neonLoadColors
   },
   {
     id: "direct",
@@ -23,20 +27,3 @@ export const gradientPalettes = [
     )
   }
 ];
-
-function mixColor(start: string, end: string, fraction: number) {
-  const channels = [1, 3, 5].map((offset) => {
-    const a = parseInt(start.slice(offset, offset + 2), 16);
-    const b = parseInt(end.slice(offset, offset + 2), 16);
-    return Math.round(a + (b - a) * fraction)
-      .toString(16)
-      .padStart(2, "0");
-  });
-  return `#${channels.join("")}`.toUpperCase();
-}
-
-export function sampleGradient(colors: string[], value: number) {
-  const position = (Math.max(0, Math.min(100, value)) / 100) * (colors.length - 1);
-  const index = Math.min(Math.floor(position), colors.length - 2);
-  return mixColor(colors[index], colors[index + 1], position - index);
-}

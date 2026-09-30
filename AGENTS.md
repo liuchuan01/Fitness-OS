@@ -32,15 +32,19 @@
 - 3D 运行时资源使用轻量 GLB/glTF，不批量加载原始 STL；人体只包含皮肤和训练相关肌肉，四肢完整，不包含骨骼、器官或生殖器。
 - UI 必须遵守 `Body is the Interface`：人体先于数字、面板和技术状态获得注意力；避免满屏霓虹、扫描线、厚描边和常驻聊天栏。
 
-- 视觉改动必须遵守 `docs/design/DESIGN.md` 第 7、10、19 节；复用 `src/design/tokens.json`、`IconButton` 与 `GlassCard` / `.glass-card`，执行 `npm run lint:design`，按固定视口实际审图。不得新增多色人体热力或用 Unicode 代替工具图标。
+- 视觉改动必须遵守 `docs/design/DESIGN.md` 第 7、10、19 节；复用 `src/design/tokens.json`、`IconButton` 与 `GlassCard` / `.glass-card`，执行 `npm run lint:design`，按固定视口实际审图。Neon 人体负荷使用设计第 7.3 节已确认的柔和桥接色带，不得自行扩展多色热力或用 Unicode 代替工具图标。
 
 ## 当前路线图
 
 本节是仓库唯一的推进路线图。后续 Agent 在开始实现前确认当前工作属于哪一项；完成一个阶段或改变顺序时，更新本节及对应专题文档，不再新增平行 roadmap 文档。
 
+### 当前增量：柔和桥接人体配色与同源图例
+
+用户已选定柔和桥接，Neon 首页／训练日负荷投影按 intensity 连续插值青、雾蓝、灰紫至洋红。五个中间色提升为共享 token，原色卡、人体与左下角“低刺激—高刺激”色带同源；零负荷／缺失保留灰色，动作主练／参与、焦点、Graphite、训练计算与数据保持原契约。色卡方向已确认，真实人体实施效果待审阅；设计与边界见第 7.3 节，验证见 `docs/design/VISUAL-REVIEW.md`。
+
 ### 当前增量：青至洋红渐变色卡提案
 
-按用户要求先提供独立小色卡 demo：`/design-lab.html?study=gradient` 比较蓝紫桥接、柔和桥接和直接混色，支持滑杆连续预览与七阶取样。端点复用现有 Neon token，中间色只属于样板候选；不接入首页人体、不修改训练计算或主题偏好。当前为待用户审阅提案，不能据此解除正式人体禁止多色热力的限制；后续是否接入由审阅决定。范围见设计第 7.3 节，验证见 `docs/design/VISUAL-REVIEW.md`。
+按用户要求先提供独立小色卡 demo：`/design-lab.html?study=gradient` 比较蓝紫桥接、柔和桥接和直接混色，支持滑杆连续预览与七阶取样。初版端点复用现有 Neon token，中间色仅为样板候选，未接入首页人体或修改训练计算／主题偏好。用户后续已选定柔和桥接，接入范围以上方“柔和桥接人体配色与同源图例”为准；其余方案仍只用于对照。范围见设计第 7.3 节，验证见 `docs/design/VISUAL-REVIEW.md`。
 
 ### 当前增量：肌肉焦点背景大字
 
