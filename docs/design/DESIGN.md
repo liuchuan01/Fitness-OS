@@ -453,7 +453,7 @@ Focus Magenta    #FF477E
 
 唯一实现为 `src/components/GlassCard.tsx` 与 `glass-card.css`。组件只管理材质，不决定业务、尺寸或定位；默认 div，可用 `as="section"` 等语义标签。需要原生 button / details 或 ref 的已有容器直接使用 `.glass-card`，避免额外包裹破坏点击、键盘和浮层定位。
 
-- 默认层：主题 glass 的 72% 混合透明度，20px blur，细边界和低强度青／洋红渐变。quiet 层用于四角 HUD（首页只在展开时出现，覆盖摘要与详情），52% 混合透明度、12px blur、无扩散阴影；展开时改为更深的 glass-raised。
+- 默认层：主题 glass 与透明色按 48% 混合，8px blur，细边界和低强度青／洋红渐变。quiet 层用于四角 HUD（首页只在展开时出现，覆盖摘要与详情），34% 混合、5px blur、无扩散阴影；展开时使用 glass-raised 的 58% 混合与 8px blur。混合比例作用于主题色原有 alpha，不代表最终不透明度；保留背景轮廓的可辨性，避免厚重雾面。
 - 边缘装饰局限于 1px 遮罩，不覆盖内容、不接收指针。静止时保留淡色光边；hover、focus-within、details 展开或 HUD 展开时 18 秒缓慢绕行。reduced-motion 停止流光，Graphite 采用静态中性弱边缘。
 - 后台设置、新用户建档、密钥提示、身体探索、四角 HUD、计划／动作卡、选中标签、状态通知和历史抽屉复用此材质。禁止再用不透明实色卡作为默认替代。
 - 例外：页面布局容器与计划文档保持开放排版，列表行／组次／表单控件保持平面，避免玻璃套玻璃；原生 Agent iframe 内部由官方 Surface 管理，主站不以 CSS 穿透替换。聊天全画布遮罩负责背景退场，不额外套成小卡。

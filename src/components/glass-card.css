@@ -7,8 +7,9 @@
   position: relative;
 }
 .glass-card {
-  --glass-fill: color-mix(in srgb, var(--glass) 72%, transparent);
-  --glass-blur: 20px;
+  --glass-base-fill: color-mix(in srgb, var(--glass) 48%, transparent);
+  --glass-fill: var(--glass-base-fill);
+  --glass-blur: 8px;
   --glass-edge-opacity: 0.38;
   --glass-shadow: var(--shadow-panel);
   isolation: isolate;
@@ -56,14 +57,14 @@
   animation: glass-edge-drift 18s linear infinite;
 }
 .glass-card--quiet {
-  --glass-fill: color-mix(in srgb, var(--glass) 52%, transparent);
-  --glass-blur: 12px;
+  --glass-fill: color-mix(in srgb, var(--glass) 34%, transparent);
+  --glass-blur: 5px;
   --glass-edge-opacity: 0.22;
   --glass-shadow: none;
 }
 .glass-card--quiet[data-expanded="true"] {
-  --glass-fill: color-mix(in srgb, var(--glass-raised) 90%, transparent);
-  --glass-blur: 20px;
+  --glass-fill: color-mix(in srgb, var(--glass-raised) 58%, transparent);
+  --glass-blur: 8px;
   --glass-edge-opacity: 0.38;
   --glass-shadow: var(--shadow-panel);
 }

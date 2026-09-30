@@ -110,7 +110,7 @@ test("starts without playback controls even with reduced motion, and restores HU
     await expect(hud.locator(".body-hud-detail")).toBeVisible();
     expect(await summary.boundingBox()).toEqual(before);
     const surface = hud.locator(".body-hud-surface");
-    await expect(surface).toHaveCSS("backdrop-filter", "blur(20px) saturate(1.15)");
+    await expect(surface).toHaveCSS("backdrop-filter", "blur(8px) saturate(1.15)");
     const enclosure = (await surface.boundingBox())!;
     for (const content of [summary, hud.locator(".body-hud-detail")]) {
       const bounds = (await content.boundingBox())!;

@@ -1871,7 +1871,7 @@ textarea:focus-visible {
 
 .exercise-card.active {
   border-color: color-mix(in srgb, var(--selection) 48%, transparent);
-  --glass-fill: color-mix(in srgb, var(--selection) 8%, var(--glass));
+  --glass-fill: color-mix(in srgb, var(--selection) 8%, var(--glass-base-fill));
 }
 
 .exercise-title {
