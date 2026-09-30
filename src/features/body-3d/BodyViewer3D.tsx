@@ -1,6 +1,8 @@
 import { RotateCcw, X, ScanLine } from "lucide-react";
 import { IconButton } from "../../components/IconButton";
 import { useTheme } from "../../design/theme";
+import { MuscleBackdrop } from "./MuscleBackdrop";
+import { muscleLabels } from "../../../shared/muscle-taxonomy";
 import { BodyMotion } from "./BodyMotion";
 import { useBodyMotion } from "./useBodyMotion";
 import { musclesInRegion, type BodyRegionId } from "../muscles/body-regions";
@@ -183,6 +185,9 @@ export function BodyViewer3D({
         dpr={[1, 1.25]}
         gl={{ antialias: true, preserveDrawingBuffer: true }}
       >
+        {selectedMuscle && modelReady && (
+          <MuscleBackdrop label={muscleLabels[selectedMuscle]} color={palette.muted} />
+        )}
         <hemisphereLight args={[palette.text, palette.canvas, 0.9]} />
         <directionalLight position={[3, 5, 4]} color={palette.text} intensity={1.2} />
         <directionalLight position={[-3, 1, -2]} color={palette["accent-mid"]} intensity={0.55} />
@@ -277,15 +282,14 @@ export function BodyViewer3D({
             </>
           ) : null}
         </span>
-      </div>
-      <div className="selection-panel glass-card" aria-label="Selected muscles">
-        {selectedDetails.map((detail) => (
-          <span key={detail.id}>
-            {detail.label}
-            {detail.coverage === "partial" ? " · 模型近似显示" : ""}
-            {professionalMode ? ` · ${detail.id} · ${detail.coverage}` : ""}
-          </span>
-        ))}
+        <div className="body-selection-context" aria-label="模型覆盖说明">
+          {selectedDetails.filter((detail) => professionalMode || detail.coverage === "partial").map((detail) => (
+            <span key={detail.id}>
+              {detail.label}{detail.coverage === "partial" ? " · 模型近似显示" : ""}
+              {professionalMode ? ` · ${detail.id} · ${detail.coverage}` : ""}
+            </span>
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -173,7 +173,8 @@ test("searches timeline and opens a daily workout with exercise highlighting", a
     timeout: 20_000
   });
   await expect(page.getByLabel("3D model status")).toContainText("已聚焦");
-  await expect(page.getByLabel("Selected muscles")).toContainText("背阔肌");
+  await expect(exercise).toContainText("背阔肌");
+  await expect(page.locator(".selection-panel")).toHaveCount(0);
   await page.screenshot({
     path: "test-results/visual-regression/daily-workout-desktop.png",
     fullPage: true
@@ -299,7 +300,7 @@ test("loads the interactive 3D body smoke view", async ({ page }) => {
   expect(box).not.toBeNull();
   if (box) {
     await page.mouse.click(box.x + box.width * 0.5, box.y + box.height * 0.35);
-    await expect(page.getByLabel("Selected muscles")).not.toContainText("下背");
+    await expect(page.locator(".canvas-context")).not.toContainText("下背");
   }
 
   if (await page.getByRole("button", { name: "清除选择" }).count())
