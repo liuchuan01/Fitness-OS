@@ -192,3 +192,12 @@ VISUAL_THEME=graphite VISUAL_OUTPUT=test-results/visual-regression/main-themes/g
 所有写入与实际 fixture 请求在临时隔离工作区验证，真实本地页面仅读取配置，没有替用户修改个人模型默认值或密钥，也未发起真实 DeepSeek 请求。原生模型设置的详细接口、生效范围和文件归属以 `DSH-FITNESS-INTEGRATION.md` 为准。保留既有 Three 包体积及单元测试多实例提示，未执行完整生产部署验收。
 
 推送前已接入远端新增的 DSH Host 诊断日志，模型偏好与凭据接口的 503 日志分别显示准确路径及 bridge 类型。合并后 lint、设计／架构检查、typecheck、完整 build 及 7 项受影响集成测试复验通过，包含 Host 日志脱敏、模型接口错误转发、原生 Host 默认选择和重启持久化。
+
+
+## 2026-09-30 首页 HUD 透明摘要与原位展开
+
+Overview 四角摘要默认仅显示名称与数值，取消背景、边框、模糊、阴影和边缘装饰。摘要保留固定占位；辅助详情独立定位，上方两项向下、下方两项向上，右侧详情贴齐右边界。详情复用共享 `.glass-card` quiet 材质，限高并可滚动；鼠标移入详情保持展开，移出收起。键盘 Enter／空格、Escape 和手机点按保留。Day／Exercise／肌肉焦点仍沿用原卡片；无数据契约或主题色变更。
+
+验证：lint、lint:architecture、lint:design、typecheck、完整 build 通过（既有 Three 大分包提示保留）；5 项聚焦 E2E 通过，覆盖四个桌面摘要展开前后 bounding box 完全一致、移入详情保持打开、移出恢复、键盘关闭、手机点按原位、空态、探索及真实 Canvas 自转。首轮手机验证发现旧 expanded 样式优先级使摘要向左移动，修正后复验通过。
+
+固定 2026-06-21 dashboard 投影与隔离 workout fixture，模型加载后通过浏览器隐藏调度门暂停旋转，以 Neon／Graphite 在 1440×900、390×844 生成审图。已实际打开检查首页精简态、展开记录／力量口径／肌群分布，以及关联动作与肌肉档案：摘要原位、桌面详情向画布内展开，手机详情按需覆盖部分人体且保留头脚与原摘要，内容限高滚动。截图在 `test-results/visual-regression/hud-{neon,graphite}/`，不提交产物。浏览器回归另含空态、选择器与 reduced-motion；本轮未执行全量 E2E 或生产部署。

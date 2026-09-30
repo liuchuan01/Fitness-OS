@@ -38,6 +38,10 @@
 
 本节是仓库唯一的推进路线图。后续 Agent 在开始实现前确认当前工作属于哪一项；完成一个阶段或改变顺序时，更新本节及对应专题文档，不再新增平行 roadmap 文档。
 
+### 当前增量：首页 HUD 原位展开
+
+按用户要求，Overview 四角摘要默认仅显示文字，背景透明且无边框；hover 时主文字保持原位，辅助详情独立向画布内部展开，沿用共享 GlassCard 材质。保留键盘切换、Escape 与手机点按，其他模式沿用原卡片。规则见设计第 10.2 节，验证与审图见 `docs/design/VISUAL-REVIEW.md`。
+
 ### 当前增量：DSH 原生模型与思考强度设置
 
 按用户要求在模型连接分区开放默认模型和思考强度，从当前 DSH Host 获取目录与能力，经认证 bridge 写入原生 `agent-default-model` 设置，不恢复 Fitness 独立模型配置或旧环境覆盖。适用于新对话与新建自动任务会话，已有会话保留原选择；支持重新读取、revision 冲突和只读反馈。真实安装 Host 的隔离 fixture 验证原生持久化、外部修改、旧／新会话边界与重启恢复；真实 DeepSeek 调用和生产部署仍未验收。详细契约见 DSH 集成文档，审图见 `docs/design/VISUAL-REVIEW.md`。
@@ -68,7 +72,7 @@
 
 ### 当前增量：身体探索与动态 HUD
 
-身体选择改为 HUD 分区 → 肌肉两级导航，保留四角数据并随肌肉焦点切换。默认自转使用独立限频调度启动，选择期间暂停；取消播放按钮，reduced-motion 降低速度。四角 HUD 默认复用 GlassCard 的 quiet 毛玻璃；hover／点按后加深玻璃层并显示完整记录、口径或分布。组件状态与事实数据流见 `docs/data/MUSCLE-HISTORY.md`，视觉与运动行为见 `docs/design/DESIGN.md`，浏览器入口为 `tests/e2e/body-explorer.spec.ts`。
+身体选择改为 HUD 分区 → 肌肉两级导航，保留四角数据并随肌肉焦点切换。默认自转使用独立限频调度启动，选择期间暂停；取消播放按钮，reduced-motion 降低速度。Day／Exercise／肌肉焦点的四角 HUD 复用 GlassCard quiet 毛玻璃；首页现按“首页 HUD 原位展开”增量只常驻文字，hover／点按后显示详情玻璃层与完整记录、口径或分布。组件状态与事实数据流见 `docs/data/MUSCLE-HISTORY.md`，视觉与运动行为见 `docs/design/DESIGN.md`，浏览器入口为 `tests/e2e/body-explorer.spec.ts`。
 
 ### 当前增量：身体训练档案第一步
 
