@@ -27,17 +27,11 @@ test("edits coach instructions and automation in the configuration page", async 
   await page.getByRole("button", { name: "配置后台" }).click();
 
   await expect(page.getByRole("region", { name: "配置后台", exact: true })).toBeVisible();
-  await page
-    .locator("summary")
-    .filter({ has: page.getByRole("heading", { name: "教练指令", exact: true }) })
-    .click();
-  await page
-    .locator("summary")
-    .filter({ has: page.getByRole("heading", { name: "自动计划", exact: true }) })
-    .click();
+  await page.getByRole("button", { name: "教练偏好" }).click();
   await expect(page.getByRole("textbox", { name: "教练指令", exact: true })).toHaveValue(
     /健身教练/
   );
+  await page.getByRole("button", { name: "自动计划", exact: true }).click();
   await expect(page.getByText("每日自动计划", { exact: true })).toBeVisible();
 });
 

@@ -12,15 +12,22 @@ export function App() {
 }
 
 function AppContent() {
-  const [settingsPage, setSettingsPage] = useState(() => window.location.hash === "#/settings");
+  const [settingsPage, setSettingsPage] = useState(
+    () => window.location.hash.split("?")[0] === "#/settings"
+  );
   useEffect(() => {
-    const navigate = () => setSettingsPage(window.location.hash === "#/settings");
+    const navigate = () => setSettingsPage(window.location.hash.split("?")[0] === "#/settings");
     window.addEventListener("hashchange", navigate);
     return () => window.removeEventListener("hashchange", navigate);
   }, []);
   if (settingsPage)
     return (
       <AutomationSettings
+        initialSection={
+          new URLSearchParams(window.location.hash.split("?")[1]).get("section") === "connection"
+            ? "connection"
+            : "appearance"
+        }
         onClose={() => {
           window.location.hash = "/";
         }}

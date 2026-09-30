@@ -10,7 +10,7 @@
 
 当前实现以 `src/design/tokens.json` 和 `graphite.json` 为两套主题来源，`theme-definitions.ts` 汇总配色与身体材质参数。生成的 `tokens.css` 提供 CSS 变量；`ThemeProvider` / `useTheme()` 向 Three 场景提供同源主题。历史 blue/orange/purple 键仅桥接领域负荷状态，不定义跨主题颜色名称。
 
-仅配置后台的外观卡片可切换 Neon / Graphite；首页不再设置重复入口。偏好经白名单解析后存入 `fitness:appearance:v1`，非法存储回退默认值，存储不可用时仍能在当前页面切换；启动时先应用 DOM 主题，跨标签页监听 storage。主题切换不主动清除日期、动作或肌肉选择。
+仅设置页的界面外观分区可切换 Neon / Graphite；首页不再设置重复入口。偏好经白名单解析后存入 `fitness:appearance:v1`，非法存储回退默认值，存储不可用时仍能在当前页面切换；启动时先应用 DOM 主题，跨标签页监听 storage。主题切换不主动清除日期、动作或肌肉选择。
 
 主站取消“强调光效”开关，Neon 固定启用控件光晕及重点肌肉自发光，Graphite 保持无控件霓虹。旧 `glowEnabled: false` 存储自动归一为 true，保留主题选择；v1 存储字段暂留兼容。四角 HUD 使用共享 quiet 毛玻璃；展开时加深底色，保持人体优先。
 

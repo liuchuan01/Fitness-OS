@@ -1,100 +1,101 @@
+.settings-page {
+  background:
+    radial-gradient(
+      ellipse at 70% 0%,
+      color-mix(in srgb, var(--accent) 4%, transparent),
+      transparent 55%
+    ),
+    var(--canvas);
+}
 .settings-page .automation-panel.settings-panel {
   width: min(1080px, 100%);
 }
 .settings-panel > header {
-  padding-bottom: 20px;
+  padding: 8px 0 24px;
   border-bottom: 1px solid var(--border);
 }
 .settings-panel > header h2 {
-  font-size: clamp(24px, 3vw, 32px);
+  font-size: 32px;
   font-weight: 500;
   margin-top: 10px;
+  letter-spacing: -0.04em;
+}
+.settings-panel > header > div > span {
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 0.2em;
 }
 .settings-panel > header .icon-button {
   width: 44px;
+  background: transparent;
 }
 .settings-description {
-  margin: 20px 0 32px;
+  margin: 20px 0 36px;
+  font-size: 14px;
 }
-.settings-grid {
+.settings-layout {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 192px minmax(0, 1fr);
+  gap: 40px;
   align-items: start;
-  gap: 20px;
 }
-.settings-grid .settings-card {
-  min-width: 0;
-  margin: 0;
-  padding: 0;
-  border-radius: 16px;
-  overflow: hidden;
-}
-.settings-card > summary {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  min-height: 124px;
-  padding: 24px;
-  cursor: pointer;
-  list-style: none;
-}
-.settings-card > summary::-webkit-details-marker {
-  display: none;
-}
-.settings-card > summary:hover {
-  background: color-mix(in srgb, var(--accent) 3%, transparent);
-}
-.settings-card > summary:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: -3px;
-  border-radius: 15px;
-}
-.settings-card-icon {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  flex-shrink: 0;
-  color: var(--accent-mid);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-}
-.settings-card-heading {
+.settings-nav {
   display: grid;
   gap: 6px;
+  padding-top: 4px;
+}
+.settings-page .settings-nav button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  text-align: left;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--muted);
+  font-size: 14px;
+}
+.settings-page .settings-nav button:hover {
+  color: var(--text);
+  background: color-mix(in srgb, var(--muted) 6%, transparent);
+}
+.settings-page .settings-nav button[aria-current] {
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 14%, transparent);
+}
+.settings-nav > p {
+  margin: 36px 14px 0;
+  font-size: 12px;
+  line-height: 1.9;
+  color: var(--muted);
+}
+.settings-workspace {
   min-width: 0;
 }
-.settings-eyebrow {
-  color: var(--muted);
-  font:
-    500 10px "JetBrains Mono",
-    monospace;
-  letter-spacing: 0.14em;
+.settings-page .settings-card {
+  margin: 0;
+  min-height: 490px;
+  padding: 32px;
+  border-radius: 20px;
+}
+.settings-card-heading {
+  margin-bottom: 32px;
 }
 .settings-card-heading h3 {
-  margin: 0;
-  font-size: 18px;
+  margin: 0 0 10px;
+  font-size: 23px;
   font-weight: 500;
+  letter-spacing: -0.025em;
 }
-.settings-card-description {
-  font-size: 12px;
-  line-height: 1.6;
-  color: var(--muted);
-}
-.settings-chevron {
-  margin-left: auto;
-  flex-shrink: 0;
-  color: var(--muted);
-}
-.settings-card[open] .settings-chevron {
-  transform: rotate(180deg);
-}
-.settings-card[open] {
+.settings-card-heading p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.7;
 }
 .settings-card-content {
-  border-top: 1px solid var(--border);
-  margin: 0 24px;
-  padding: 20px 0 24px;
+  font-size: 14px;
+  line-height: 1.7;
 }
 .settings-card-content > p:first-child {
   margin-top: 0;
@@ -109,10 +110,15 @@
   width: 100%;
   border-color: var(--border-strong);
   font-size: 14px;
+  background: color-mix(in srgb, var(--canvas) 65%, transparent);
 }
-.settings-card-content input:focus-visible {
+.settings-card-content textarea {
+  padding: 16px;
+  line-height: 1.8;
+}
+.settings-page :is(button, input, textarea):focus-visible {
   outline: 2px solid var(--accent);
-  outline-offset: 3px;
+  outline-offset: 4px;
 }
 .settings-card-content button {
   font-size: 13px;
@@ -125,33 +131,137 @@
 }
 .settings-card-content footer {
   flex-wrap: wrap;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+.settings-save-state {
+  margin-right: auto;
+  font-size: 12px;
+  color: var(--muted);
+}
+.settings-card-content .automation-toggle {
+  padding: 0 0 24px;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+}
+.settings-card-content .automation-toggle input {
+  appearance: none;
+  width: 40px;
+  height: 24px;
+  padding: 3px;
+  border: 1px solid var(--border-strong);
+  border-radius: 20px;
+  background: var(--raised);
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.settings-card-content .automation-toggle input::before {
+  content: "";
+  display: block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--muted);
+  transition: transform 150ms;
+}
+.settings-card-content .automation-toggle input:checked {
+  background: color-mix(in srgb, var(--accent) 20%, var(--surface));
+  border-color: var(--accent-mid);
+}
+.settings-card-content .automation-toggle input:checked::before {
+  transform: translateX(16px);
+  background: var(--accent);
+}
+.settings-card-content .automation-status {
+  gap: 16px;
+  margin-top: 28px;
 }
 .settings-card-content .automation-status dd {
   overflow-wrap: anywhere;
+  line-height: 1.6;
 }
 .settings-feedback {
   color: var(--accent-mid);
-  padding: 16px 0;
+  font-size: 13px;
+  padding: 0 4px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .settings-card-content .automation-toggle input::before {
+    transition: none;
+  }
 }
 @media (max-width: 767px) {
-  .settings-grid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 14px;
+  .settings-page {
+    padding: 24px 16px;
   }
-  .settings-card > summary {
-    min-height: 108px;
-    padding: 20px;
-    gap: 12px;
+  .settings-panel > header {
+    padding-top: 0;
+    padding-bottom: 20px;
   }
-  .settings-card-content {
-    margin: 0 20px;
+  .settings-panel > header h2 {
+    font-size: 28px;
   }
   .settings-description {
-    margin-bottom: 24px;
+    margin: 16px 0 24px;
+  }
+  .settings-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
+  }
+  .settings-nav {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 2px;
+    padding: 0 0 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .settings-page .settings-nav button {
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+    min-height: 66px;
+    padding: 8px 2px;
+    font-size: 12px;
+  }
+  .settings-nav > p {
+    display: none;
+  }
+  .settings-page .settings-card {
+    margin: 0;
+    min-height: 0;
+    padding: 24px 20px;
+    border-radius: 16px;
+  }
+  .settings-card-heading {
+    margin-bottom: 26px;
+  }
+  .settings-card-heading h3 {
+    font-size: 21px;
+  }
+  .settings-card-content footer {
+    gap: 10px;
+  }
+  .settings-save-state {
+    flex-basis: 100%;
+  }
+  .settings-card-content .automation-status div {
+    flex-wrap: wrap;
+    gap: 6px;
   }
 }
 @media (max-width: 359px) {
   .settings-card-content .automation-fields {
     grid-template-columns: minmax(0, 1fr);
   }
+}
+
+.settings-card-content .settings-connection-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px;
+  margin-bottom: 24px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 12px;
 }

@@ -344,12 +344,12 @@ describe("App", () => {
     render(<App />);
     fireEvent.click(screen.getByRole("button", { name: "配置后台" }));
 
-    expect(await screen.findByRole("heading", { name: "配置后台" })).toBeVisible();
-    fireEvent.click((await screen.findByRole("heading", { name: "教练指令" })).closest("summary")!);
-    fireEvent.click((await screen.findByRole("heading", { name: "自动计划" })).closest("summary")!);
+    expect(await screen.findByRole("heading", { name: "设置" })).toBeVisible();
+    fireEvent.click(screen.getByRole("button", { name: "教练偏好" }));
     expect(await screen.findByDisplayValue("你是一名测试用健身教练。")).toBeVisible();
-    fireEvent.click((await screen.findByRole("heading", { name: "DeepSeek" })).closest("summary")!);
+    fireEvent.click(screen.getByRole("button", { name: "模型连接" }));
     expect(await screen.findByText("已配置密钥")).toBeVisible();
+    fireEvent.click(screen.getByRole("button", { name: "自动计划" }));
     expect(screen.getByDisplayValue("09:00")).toBeVisible();
     expect(screen.getByDisplayValue("Asia/Shanghai")).toBeVisible();
     expect(screen.getByText(/succeeded · already_exists/)).toBeVisible();
@@ -448,7 +448,7 @@ describe("App", () => {
     expect(await screen.findByRole("alert")).toHaveTextContent("尚未配置模型密钥");
     expect(screen.getByRole("link", { name: "前往配置后台" })).toHaveAttribute(
       "href",
-      "#/settings"
+      "#/settings?section=connection"
     );
     expect(screen.queryByTitle("训练 Agent 会话")).not.toBeInTheDocument();
     expect(vi.mocked(fetch).mock.calls.some(([url]) => String(url).endsWith("/api/dsh-web"))).toBe(
@@ -457,9 +457,12 @@ describe("App", () => {
   });
 
   it("saves a key without displaying the saved secret", async () => {
-    window.history.replaceState(null, "", "/#/settings");
+    window.history.replaceState(null, "", "/#/settings?section=connection");
     render(<App />);
-    fireEvent.click((await screen.findByRole("heading", { name: "DeepSeek" })).closest("summary")!);
+    expect(await screen.findByRole("button", { name: "模型连接" })).toHaveAttribute(
+      "aria-current",
+      "page"
+    );
     const input = await screen.findByLabelText("DeepSeek API Key");
     await waitFor(() => expect(input).toBeEnabled());
     fireEvent.change(input, { target: { value: "test-only-key" } });
