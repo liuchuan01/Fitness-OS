@@ -2,9 +2,14 @@
 
 **English** | [简体中文](README_zh.md)
 
-**A personal fitness workspace built natively on DeepSeek Harness, with your body as the interface.**
+> [!NOTE]
+> AI Fitness OS is still in preview, and we’re making it better step by step. Have a feature in mind or an idea for improving the experience? Share it in [Issues](https://github.com/liuchuan01/Fitness-OS/issues)—let’s discuss it and build this together!
 
-Explore your training through an interactive 3D body, revisit workouts, and work with an AI coach on what comes next. AI Fitness OS runs locally and keeps your profile, plans, and training records in readable YAML files in your own workspace.
+**Start with your body. Keep track of every workout.**
+
+What have you trained lately? What would you like to work on next? Rotate the 3D body, pick a muscle group, revisit your workouts, and talk through your next steps with an AI coach. Built natively on DeepSeek Harness, AI Fitness OS brings body exploration, training records, and coaching conversations into one personal fitness workspace.
+
+The app runs locally. Your profile, plans, and workout records live in your own workspace as readable YAML files, ready to browse and back up.
 
 ![AI Fitness OS: interactive 3D body, training timeline, and muscle activity](docs/index.png)
 
@@ -12,28 +17,28 @@ Explore your training through an interactive 3D body, revisit workouts, and work
 
 ## Native DeepSeek Harness integration
 
-[DeepSeek Harness (DSH)](https://github.com/deepseek-ai/deepseek-harness) is the Agent runtime at the heart of AI Fitness OS. The application starts a persistent DSH Host with a dedicated Fitness profile and integrates its conversation interface into the training workspace.
+[DeepSeek Harness (DSH)](https://github.com/deepseek-ai/deepseek-harness) powers the AI coach. The app starts a persistent DSH Host with a dedicated Fitness profile, so you can talk with your coach right inside your training workspace.
 
-- **Native conversations and tools.** Sessions, history, streaming responses, tool calls, approvals, and reconnect are handled by DSH.
-- **Model and reasoning controls.** Choose a default model and its supported reasoning effort in Settings. The model catalog and available options come directly from the running DSH Host; preferences are saved through DSH's native settings.
-- **One Host for coaching and automation.** Interactive coaching and scheduled planning use the same Host with separate sessions. Fitness handles scheduling, retries, and validation of the resulting training files.
-- **A clear data boundary.** DSH owns conversations; Fitness owns training data. Local validation and deterministic calculations turn Agent drafts into verified fitness records.
+- **Conversations and tools, built in.** DSH provides sessions, history, streaming responses, tool calls, approvals, and reconnection.
+- **Your choice of model and reasoning effort.** Pick a default model and a supported reasoning effort in Settings. Available options come straight from the current DSH Host, and your choices are saved in DSH’s native settings.
+- **Room for both coaching and scheduled plans.** They share one Host while keeping separate sessions. Fitness handles task scheduling, retries, and validation of training files.
+- **Training records checked before they’re saved.** DSH manages conversations; Fitness manages training data. AI drafts pass through local validation and rule-based calculations before becoming official records.
 
-The repository currently pins `@deepseek-ai/dsh` to `0.1.5-rc.2`. See the [DSH integration architecture](docs/dsh-integration/DSH-FITNESS-INTEGRATION.md) for implementation details and validation scope.
+For a closer look at the integration and what has been validated, see the [DSH integration architecture](docs/dsh-integration/DSH-FITNESS-INTEGRATION.md). The repository currently pins `@deepseek-ai/dsh` to `0.1.5-rc.2`.
 
 ## What you can do
 
-- **Explore training on your body.** Rotate the 3D model, select a muscle group, and inspect related exercises and training history.
-- **Revisit each workout.** Use the timeline to review exercises, sets, reps, and weights.
-- **Build a profile with your AI coach.** Discuss goals, experience, equipment, and availability, then work toward a training plan. Plans and completed workouts remain separate records.
-- **Keep your own data.** Store personal records outside the application repository, back them up, or manage them in a private Git repository.
-- **Make the workspace yours.** Choose Neon or Graphite, with layouts for desktop and narrow screens.
+- **Pick a muscle group and see what you’ve trained.** Rotate the 3D body, select an area that interests you, and explore related exercises and workout history.
+- **Look back at your training.** Follow the timeline to revisit each workout, down to the exercises, sets, reps, and weights.
+- **Talk through a plan with your AI coach.** Start with your goals, experience, available equipment, and schedule. Build your profile and discuss a plan together, with separate records for what you intend to do and what you actually complete.
+- **Keep your data in your hands.** Personal records live outside the app repository. Back them up whenever you like, or manage them in your own private Git repository.
+- **Choose a look you enjoy.** Switch between Neon and Graphite, with layouts for both desktop and smaller phone screens.
 
-The current release is for **single-user local use**. The interface and most project documentation are currently in Chinese. AI conversations require network access and a valid model API key; relevant conversation context is sent to the model provider.
+For now, the preview is for **one person trying it out locally**. The interface and most documentation are in Chinese. AI coaching needs an internet connection and a valid model API key; the context needed for the conversation is sent to the model provider.
 
 ## Quick start
 
-The locally validated environment is **Linux, Node.js 24, and npm 11**. Install Git and Node.js, then run these commands in Bash:
+With Git and Node.js installed, you’re ready to get started. We’ve validated the app locally on **Linux, Node.js 24, and npm 11**. Run the following commands in Bash:
 
 ```bash
 git clone https://github.com/liuchuan01/Fitness-OS.git
@@ -46,26 +51,26 @@ npm run fitness -- init
 npm run dev
 ```
 
-Open **[http://127.0.0.1:5173](http://127.0.0.1:5173)**. Keep the terminal running; press `Ctrl+C` to stop.
+Once the app starts, open **[http://127.0.0.1:5173](http://127.0.0.1:5173)** to see the home page. Leave the terminal running while you use it, then press `Ctrl+C` when you’re done.
 
-Set the same `WORKSPACE_ROOT` whenever you start the app in a new terminal. Without it, the app uses `.workspaces/default` inside the repository, which may show a different, empty workspace.
+Next time you open a terminal, remember to set the same `WORKSPACE_ROOT` to return to your workspace. If you skip this step, the app uses `.workspaces/default` inside the repository, and you may find yourself in an empty workspace.
 
-Initialization does not import sample profiles or workouts. Scheduled planning is off by default. Browse the [fictional example workspace](examples/fitness-starter/README.md) to see the data format.
+Your workspace starts fresh, without sample profiles or workouts, and scheduled planning is off by default. To get a feel for the data format, take a look around the [fictional example workspace](examples/fitness-starter/README.md).
 
-For containers, see the [Docker guide](deploy/README.md). Services listen on localhost by default; access from another device requires additional configuration. Shared multi-user accounts are not supported.
+If you prefer Docker, follow the [Docker guide](deploy/README.md). Services listen on localhost by default, so access from other devices needs extra configuration. Shared multi-user accounts aren’t supported yet.
 
-## First session
+## Your first session
 
-1. Open **Settings (配置后台) → Model connection (模型连接)**. Under **DeepSeek Harness**, enter your DeepSeek API key. You can explore the body without a key; AI coaching requires one.
-2. Select a default model and reasoning effort if desired. Options depend on the model capabilities reported by DSH. Saved defaults apply to new sessions, including newly created automation sessions; existing sessions keep their own selections.
-3. Return to the home page and choose **Create my training profile (建立我的训练档案)**. Discuss your goals, experience, available time, and equipment with the coach.
-4. Review the profile summary and discuss your first plan. After training, report what you actually completed so planned and performed workouts stay distinct.
+1. **Connect your AI coach.** Open **Settings (配置后台) → Model connection (模型连接)** and enter your DeepSeek API key under **DeepSeek Harness**. If you don’t have a key ready, you can still explore the body and get familiar with the interface.
+2. **Choose a model and reasoning effort.** Available options depend on the model capabilities provided by DSH. Once saved, these defaults apply to new conversations and newly created automation sessions. Existing sessions keep their previous choices.
+3. **Let your coach get to know you.** Go back to the home page and choose **Create my training profile (建立我的训练档案)**. Share your goals, training experience, the time you can set aside, and the equipment you have available.
+4. **Plan your first workout together.** Confirm your profile summary, then discuss a first plan with the coach. After your workout, tell the coach what you actually completed. Plans and workout records are saved separately.
 
-See the [onboarding guide](docs/product/ONBOARDING.md) for the full flow. Local service, data validation, and browser flows have automated regression coverage. Full onboarding and file writes with a real model, and production deployment, have not yet completed acceptance testing; see the [validation record](docs/dsh-integration/DSH-FITNESS-INTEGRATION.md).
+For more detailed steps, see the [onboarding guide](docs/product/ONBOARDING.md). Automated regression tests cover local services, data validation, and browser flows. The full onboarding and file-writing flow with a real model, as well as production deployment, still await acceptance testing. You can follow the progress in the [DSH integration record](docs/dsh-integration/DSH-FITNESS-INTEGRATION.md).
 
 ## Your data
 
-Application code and personal data live separately:
+Your training data has a home of its own, separate from the app code:
 
 ```text
 my-fitness-workspace/
@@ -76,15 +81,15 @@ my-fitness-workspace/
 
 Model and reasoning defaults use DSH's native `agent-default-model` settings in `runtime/dsh/settings.yaml`. API credentials are stored separately in `config/dsh-credentials.yaml`; environment-provided credentials remain read-only in the UI.
 
-Back up `fitness/` to preserve your training records. Back up `config/` and `runtime/` separately if you also need settings, credentials, and conversations. Restoring conversations depends on the DSH version and original workspace paths; copying files alone does not guarantee recovery.
+Back up `fitness/` to keep your official training records. To save settings, credentials, and conversations too, also back up `config/` and `runtime/`. Conversation recovery depends on the DSH version and original workspace paths, so copying files alone may not restore your chats.
 
-You can initialize a **private Git repository** inside `fitness/`. The app does not commit or push automatically. Keep credentials, conversations, and the full personal workspace out of public repositories.
+If Git is part of your workflow, you can create a **private repository** inside `fitness/` and manage your record history yourself. The app won’t commit or push automatically. Keep credentials, conversations, and the full personal workspace out of public repositories.
 
-Upgrading with existing records? Back up first and follow the [migration and recovery guide](docs/dsh-integration/LOCAL-DEVELOPMENT.md#其他机器升级时保留记录). Personal data does not sync with application code.
+When upgrading with existing records, make a backup first, then follow the [migration and recovery guide](docs/dsh-integration/LOCAL-DEVELOPMENT.md#其他机器升级时保留记录). Updating the app code won’t automatically sync your personal data.
 
 ## Development
 
-React, TypeScript, Vite, and Three.js power the frontend. A local Node.js service validates YAML, performs calculations, and manages fitness file writes. DeepSeek Harness provides the Agent Host and sessions.
+If you’d like to help build the project, here’s where to start. The frontend uses React, TypeScript, Vite, and Three.js. A local Node.js service validates YAML, runs calculations, and writes training files, while DeepSeek Harness provides the Agent Host and sessions. These directories are a good starting point:
 
 | Directory               | Purpose                                         |
 | ----------------------- | ----------------------------------------------- |
