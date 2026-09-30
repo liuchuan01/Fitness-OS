@@ -177,6 +177,8 @@ export function Dashboard() {
                 selectedMuscle={selectedMuscle}
                 onMuscleSelect={selectMuscle}
                 exerciseTargets={exercisePreview ?? (selectedMuscle ? null : activeExercise)}
+                exerciseName={exercisePreview?.name ?? (!selectedMuscle ? activeExercise?.name : undefined)}
+                onResetFocus={() => { selectMuscle(null); setActiveExerciseId(null); }}
                 projectionLabel={
                   mode === "overview" ? "近 7 日训练负荷估算 · 不代表恢复状态" : "当日训练刺激估算"
                 }
@@ -211,6 +213,7 @@ export function Dashboard() {
               mode={mode}
               dashboard={dashboard}
               dailyWorkout={dailyWorkout}
+              exercise={!selectedMuscle ? activeExercise : undefined}
               focus={
                 selectedMuscle
                   ? {

@@ -3,13 +3,17 @@
 import { createHash, timingSafeEqual } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { parse } from "yaml";
+import { registerModelPreferences } from "./model-preferences.js";
 
 export const inject = [
   "webServer",
   "sessionController",
   "workspaceController",
   "systemPrompt",
-  "credentialsController"
+  "credentialsController",
+  "settings",
+  "agentDefaultModel",
+  "llm"
 ];
 
 const routePath = "/fitness-automation-bridge";
@@ -56,6 +60,7 @@ export function apply(ctx) {
   });
 
   ctx.effect(() => {
+    const disposePreferences = registerModelPreferences(ctx, secret, { matchesSecret, readBody });
     const disposeCredentials = ctx.webServer.register({
       kind: "exact",
       path: "/fitness-model-settings",
@@ -210,6 +215,7 @@ export function apply(ctx) {
       }
     });
     return () => {
+      disposePreferences();
       disposeCredentials();
       disposeAdmission();
       disposeBootstrap();

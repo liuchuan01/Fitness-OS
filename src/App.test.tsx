@@ -1,4 +1,5 @@
-import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { modelPreferencesFixture } from "../tests/fixtures/model-preferences";
+import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { subscribeDataChanges } from "./api/data-sync";
 vi.mock("./api/data-sync", () => ({ subscribeDataChanges: vi.fn(() => () => {}) }));
@@ -76,6 +77,9 @@ describe("App", () => {
       "fetch",
       vi.fn(async (input: RequestInfo | URL) => {
         const url = String(input);
+
+        if (url.endsWith("/api/model/preferences"))
+          return Response.json({ ok: true, preferences: modelPreferencesFixture() });
 
         if (url.endsWith("/api/model/settings")) {
           return Response.json({
@@ -248,7 +252,13 @@ describe("App", () => {
     expect(screen.getByLabelText("Training insights")).toBeInTheDocument();
     expect(await screen.findByText("今天的身体状态")).toBeInTheDocument();
     expect(await screen.findAllByText("距上次训练")).toHaveLength(2);
-    expect(screen.getAllByText("背阔肌恢复不足；下肢训练量偏低。")).toHaveLength(2);
+    expect(within(screen.getByLabelText("Training insights")).getByText(
+      "背阔肌恢复不足；下肢训练量偏低。"
+    )).toBeInTheDocument();
+    // The compact insight switches to the plan title once the plan request resolves.
+    expect(await screen.findByRole("button", {
+      name: `身体状态 ${todayPlanResponse.plan.title}`
+    })).toBeInTheDocument();
     expect(screen.getByLabelText("首页身体数据")).toBeInTheDocument();
     expect(screen.getByText("近 7 日训练")).toBeInTheDocument();
     expect(screen.getByText("力量训练")).toBeInTheDocument();
@@ -264,9 +274,52 @@ describe("App", () => {
     fireEvent.click(await screen.findByRole("button", { name: /Pull Day/ }));
 
     expect(await screen.findByText("Daily workout · 2026-06-19")).toBeInTheDocument();
+    expect(screen.queryByLabelText("今日计划")).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "收起训练时间线" })).toBeInTheDocument();
     expect(screen.getByLabelText("Search workouts")).toBeInTheDocument();
   });
+
+  it.each([false, true])(
+    "shows today's plan after selecting today (workout: %s)",
+    async (hasWorkout) => {
+      const original = fetch;
+      vi.stubGlobal(
+        "fetch",
+        vi.fn((input: RequestInfo | URL, init?: RequestInit) =>
+          String(input).includes("/api/workouts/2026-06-20")
+            ? Promise.resolve(
+                hasWorkout
+                  ? Response.json({
+                      ok: true,
+                      workout: {
+                        id: "workout-2026-06-20",
+                        date: "2026-06-20",
+                        title: "今日已完成训练",
+                        totalSets: 3,
+                        totalVolumeKg: 240,
+                        readiness: {},
+                        blocks: [],
+                        bodyProjection: []
+                      }
+                    })
+                  : Response.json({ error: "Not found" }, { status: 404 })
+              )
+            : original(input, init)
+        )
+      );
+      render(<App />);
+      await screen.findByRole("button", { name: "查看完整计划" });
+      fireEvent.click(screen.getByRole("button", { name: "展开训练时间线" }));
+      fireEvent.click(screen.getByRole("button", { name: /今天/ }));
+      const insights = within(screen.getByLabelText("Training insights"));
+      expect(
+        await insights.findByText(hasWorkout ? "今日已完成训练" : "当天没有训练记录")
+      ).toBeVisible();
+      expect(insights.getByLabelText("今日计划")).toHaveTextContent(todayPlanResponse.plan.title);
+      fireEvent.click(insights.getByRole("button", { name: "查看完整计划" }));
+      expect(screen.getByLabelText("今日计划详情")).toBeVisible();
+    }
+  );
 
   it("opens the full today plan and copies every set", async () => {
     const writeText = vi.fn(async () => undefined);
@@ -301,12 +354,12 @@ describe("App", () => {
     render(<App />);
     fireEvent.click(screen.getByRole("button", { name: "配置后台" }));
 
-    expect(await screen.findByRole("heading", { name: "配置后台" })).toBeVisible();
-    fireEvent.click((await screen.findByRole("heading", { name: "教练指令" })).closest("summary")!);
-    fireEvent.click((await screen.findByRole("heading", { name: "自动计划" })).closest("summary")!);
+    expect(await screen.findByRole("heading", { name: "设置" })).toBeVisible();
+    fireEvent.click(screen.getByRole("button", { name: "教练偏好" }));
     expect(await screen.findByDisplayValue("你是一名测试用健身教练。")).toBeVisible();
-    fireEvent.click((await screen.findByRole("heading", { name: "DeepSeek" })).closest("summary")!);
+    fireEvent.click(screen.getByRole("button", { name: "模型连接" }));
     expect(await screen.findByText("已配置密钥")).toBeVisible();
+    fireEvent.click(screen.getByRole("button", { name: "自动计划" }));
     expect(screen.getByDisplayValue("09:00")).toBeVisible();
     expect(screen.getByDisplayValue("Asia/Shanghai")).toBeVisible();
     expect(screen.getByText(/succeeded · already_exists/)).toBeVisible();
@@ -405,7 +458,7 @@ describe("App", () => {
     expect(await screen.findByRole("alert")).toHaveTextContent("尚未配置模型密钥");
     expect(screen.getByRole("link", { name: "前往配置后台" })).toHaveAttribute(
       "href",
-      "#/settings"
+      "#/settings?section=connection"
     );
     expect(screen.queryByTitle("训练 Agent 会话")).not.toBeInTheDocument();
     expect(vi.mocked(fetch).mock.calls.some(([url]) => String(url).endsWith("/api/dsh-web"))).toBe(
@@ -414,9 +467,12 @@ describe("App", () => {
   });
 
   it("saves a key without displaying the saved secret", async () => {
-    window.history.replaceState(null, "", "/#/settings");
+    window.history.replaceState(null, "", "/#/settings?section=connection");
     render(<App />);
-    fireEvent.click((await screen.findByRole("heading", { name: "DeepSeek" })).closest("summary")!);
+    expect(await screen.findByRole("button", { name: "模型连接" })).toHaveAttribute(
+      "aria-current",
+      "page"
+    );
     const input = await screen.findByLabelText("DeepSeek API Key");
     await waitFor(() => expect(input).toBeEnabled());
     fireEvent.change(input, { target: { value: "test-only-key" } });

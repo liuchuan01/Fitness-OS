@@ -234,13 +234,21 @@ DSH cwd 使用解析后的 WORKSPACE_ROOT，DSH_HOME 位于 runtime/dsh；指令
 
 新用户流程见 [ONBOARDING.md](../product/ONBOARDING.md)。上下文版本核对只保证数据未过期，不证明模型遵守每条偏好。
 
-## 模型与密钥设置收敛
+## 模型、思考强度与密钥设置
 
-Fitness 配置后台只支持 DeepSeek API Key。按已核对的 DSH 源码：`dsh-llm-deepseek` 的 `listModels()` 返回内置配置目录，`dsh-base/cordis.patch.yml` 提供 `deepseek-official` 默认提供商；alpha.3 默认模型为 `deepseek-v4-flash`，0.1.5-rc.2 为 `deepseek-flash`。这是 DSH 随包维护的配置，不是填 Key 后请求远端模型列表，也不是根据任务自动选模型。
+2026-09-30 按用户要求，设置页在 DeepSeek Harness 分区开放“默认模型”和“思考强度”。这替代先前“仅配置 API Key”的界面取舍；模型设置继续由 DSH 持有，不恢复 Fitness 自有模型名单、旧 model patch 或平行配置库。
 
-Fitness Host 不再读取 `config/settings.yaml` 的旧 model 字段生成 `agent-default-model` patch，也不传递旧 `DSH_PROVIDER` / `DSH_MODEL` 环境覆盖。移除后台模型表单与 `/api/model/selection`；旧 model 数据保留兼容解析与迁移，不删除用户文件。模型目录和默认值随锁定 DSH 版本维护，升级需验证默认路由和官方会话行为，不另抄一份 Fitness 名单。已有 DSH Session 自身持久化的模型选择仍由官方 Session 管理，不能把默认值变更描述为改写全部历史会话。
+- `GET /api/model/preferences` 经同一长期 Host 的认证 loopback `/fitness-model-preferences` 读取 `sessionController.modelCatalog()`，模型名称、提供方和支持的思考档位来自当前已安装的 DSH adapter。目录不是填 Key 后向 DeepSeek 远端探测的结果，不保证每个账户均可调用所有目录项。
+- 页面包含“模型默认”选项；当前安装的 DeepSeek adapter 提供 off / low / high / max，界面对应关闭思考／低／高／最高，但是否显示由返回能力决定。更换模型时清除原显式强度；无思考能力的模型禁用强度选择。未知的当前模型或强度明确显示为不可用，不静默替换。
+- `PUT /api/model/preferences` 只接受 provider、model、可选 reasoningEffort 和 revision。bridge 校验目录成员与 `llm.resolveCallConfig()` 能力后，通过 DSH `settings.replace("agent-default-model", …, revision)` 写入原生设置。缺少 reasoningEffort 表示继承 adapter 默认，而非把解析出的默认强度固定保存。原生 settings provider 负责文件锁、原子写入与监听；不修改其他 namespace。
+- 默认原生文件为 `$WORKSPACE_ROOT/runtime/dsh/settings.yaml`，对应 DSH_HOME 下的 `agent-default-model` 分节。直接修改该文件后，DSH watcher 更新内存；页面通过“重新读取”获取最新值，未做轮询自动覆盖编辑中的草稿。原生 revision 冲突返回 409，保留草稿并要求重新读取；只读、目录读取失败和无效组合均有明确反馈。
+- 生效范围遵循 DSH：尚无会话级选择／请求记录的会话使用默认值；新对话与新建的自动任务 Session 因此使用新配置。已有请求记录或显式选择的会话保留原选择，含正在执行或重试的旧自动任务 Session。页面不批量改写历史 Session，也不把保存默认值描述为下一条已有对话必然切换。
 
-凭据仍通过同一 Host 的认证 bridge 写入 `DEEPSEEK_API_KEY`，页面只读取 configured / writable，不返回 Key。保存影响下一次请求，环境提供的密钥保持只读。保存成功表示凭据已存储，不等于已完成真实模型连通性验证。
+Fitness Host 仍不读取 `config/settings.yaml` 的旧 model 字段生成 `agent-default-model` patch，不传递旧 `DSH_PROVIDER` / `DSH_MODEL` 环境覆盖，不恢复旧 `/api/model/selection`。旧 model 数据只保留既有兼容解析与迁移，不删除用户文件。模型基础目录和默认值随锁定的 DSH 版本维护，用户覆盖经上述原生 settings seam 生效。
+
+凭据继续独立通过 `/api/model/settings` 和同一 Host 的认证 bridge 写入 `DEEPSEEK_API_KEY`，页面只读取 configured / writable，不返回 Key。模型设置与密钥各自保存，互不清空未提交输入；环境密钥只读不等于模型偏好只读。保存密钥或默认模型均不代表已完成真实模型连通性验证。
+
+验收入口：`tests/integration/dsh-installed-host.test.ts` 使用真实已安装 Host 与本地 fixture adapter，覆盖模型能力、拒绝非法输入、revision 冲突、原生落盘、外部编辑监听、无关设置保留、旧会话选择稳定、新自动任务采用新选择、清除显式强度及 Host 重启后的持久性。`model-settings.test.ts` 验证同源转发和错误状态；`ModelPreferences.test.tsx`、`appearance.spec.ts` 覆盖页面错误恢复、只读、草稿保留、动态选项与独立保存。真实 DeepSeek 调用与生产拓扑未由这些无 Key 测试验收。
 
 
 ## 2026-09-13 DSH 0.1.5-rc.2 升级
@@ -265,3 +273,5 @@ Fitness Host 不再读取 `config/settings.yaml` 的旧 model 字段生成 `agen
 密钥状态读取失败不代表凭据只读。配置页允许在状态未知时填写 Key；读取结束后可尝试保存，由同一 Host 的凭据控制器执行权限校验。已明确 `writable: false` 的环境凭据仍禁止编辑。读取失败显示“密钥状态暂不可用”，不继续显示正在读取，也不将未知状态宣称为未配置。保存失败保留输入供重试，成功后立即清空。
 
 验证入口：`DeepSeekSettings.test.tsx` 覆盖正常保存、读取失败后的保存恢复、环境凭据只读；`tests/integration/empty-workspace-credentials.test.ts` 使用临时空工作区启动真实 `npm run dev`，通过 Vite 页面与实际 DSH Host 验证首次写入和刷新。第二种场景仅注入初次 GET 503，恢复后 PUT 仍写入真实临时凭据存储。使用虚构 Key，不调用真实模型。当前机器正常首次启动未复现读取失败，因此这些结果不能证明用户机器上的服务失败原因已修复。
+
+本地服务在 `npm run dev` 终端记录 DSH Host 启动、就绪和退出原因，以及 `/api/model/settings` 或 `/api/model/preferences` 返回 503 时的 Host 状态与对应 bridge 类型。Host 启动日志不输出带浏览器 token 的 URL；退出原因仅保留错误摘要并遮盖已知密钥。工作区从其他路径恢复时，`runtime/dsh` 可能包含无法在新路径使用的 Session 和安装目录缓存；若 Host 报目录类型冲突或 Session 所属路径冲突，先停止服务，归档整个 `runtime/dsh` 后再启动，保留 `fitness/` 和 `config/`。归档的旧 Session 不自动迁移。

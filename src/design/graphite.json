@@ -22,5 +22,10 @@
   "blue": "#88969f",
   "orange": "#b7d2e5",
   "red": "#bcae9a",
-  "purple": "#dac6ac"
+  "purple": "#dac6ac",
+  "body-load-1": "#b6c8d9",
+  "body-load-2": "#b7becd",
+  "body-load-3": "#beb8c2",
+  "body-load-4": "#c8bab9",
+  "body-load-5": "#d2bfb1"
 }

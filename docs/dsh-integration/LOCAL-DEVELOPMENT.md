@@ -17,7 +17,7 @@ npm run dev
 
 网页为 `http://127.0.0.1:5173`，Fitness API 为 `http://127.0.0.1:8787`，DSH Host 为 `127.0.0.1:3080`。这些是运行代码的本机地址；远程访问使用已有端口转发或另行部署拓扑。
 
-模型 Key 沿用网页配置页或 `DEEPSEEK_API_KEY` 环境变量，既不写入普通 settings，也不作为建档确认或连接测试步骤。DSH 官方凭据路径为 `config/dsh-credentials.yaml`，保持 0600 权限。`DSH_PROVIDER` / `DSH_MODEL` 显式环境覆盖优先于普通设置中的模型选择；否则读取 settings.model，再使用官方默认值。保存普通模型选择后重启服务／Host，不改写历史 Session 的模型选择。
+模型 Key 沿用网页配置页或 `DEEPSEEK_API_KEY` 环境变量，既不写入普通 settings，也不作为建档确认或连接测试步骤。DSH 官方凭据路径为 `config/dsh-credentials.yaml`，保持 0600 权限。模型与思考强度在设置页“模型连接”中编辑，读写 DSH 原生 `$WORKSPACE_ROOT/runtime/dsh/settings.yaml` 的 `agent-default-model` 分节；保存无需重启，适用于新对话与新建自动任务会话，已有会话保留自己的模型选择。`DSH_PROVIDER` / `DSH_MODEL` 和普通 `config/settings.yaml` 的旧 model 字段不再覆盖当前 Host；详细契约见 `DSH-FITNESS-INTEGRATION.md`。
 
 ## CLI 与生产构建
 

@@ -1,4 +1,6 @@
 import process from "node:process";
+import { appendFile } from "node:fs/promises";
+import { join } from "node:path";
 import { LlmAdapter } from "@deepseek-ai/dsh-llm";
 
 export const inject = ["llm"];
@@ -6,12 +8,32 @@ export function apply(ctx) {
   class FixtureAdapter extends LlmAdapter {
     readSessions = new Set();
     async listModels(provider) {
-      return [{ provider, id: "fixture", name: "Fitness fixture" }];
+      return ["fixture", "fixture-alt"].map((id) => ({ provider, id, name: id }));
     }
     async resolveModel(provider, model) {
-      return { provider, id: model, name: "Fitness fixture", context: { contextWindow: 131072 } };
+      return {
+        provider,
+        id: model,
+        name: "Fitness fixture",
+        context: { contextWindow: 131072 },
+        reasoning: {
+          efforts: [
+            { id: "low", name: "Low" },
+            { id: "high", name: "High" }
+          ],
+          defaultEffort: "high"
+        }
+      };
     }
     async *stream(options) {
+      await appendFile(
+        join(process.cwd(), "fixture-model-requests.jsonl"),
+        JSON.stringify({
+          sessionId: options.sessionId,
+          model: options.model,
+          reasoningEffort: options.reasoningEffort
+        }) + "\n"
+      );
       const system = JSON.stringify(
         options.messages.filter((message) => message.role === "system")
       );

@@ -1,0 +1,201 @@
+.gradient-study {
+  min-height: 100dvh;
+  padding: 0 max(24px, calc((100vw - 1200px) / 2));
+  background: var(--canvas);
+  color: var(--text);
+}
+.gradient-header a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.gradient-intro {
+  padding: 40px 0 28px;
+}
+.gradient-intro h1 {
+  font-size: clamp(28px, 3vw, 40px);
+}
+.gradient-intro p {
+  margin: 8px 0;
+}
+.gradient-study .gradient-caption {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+.gradient-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
+  gap: 28px;
+}
+.gradient-options {
+  display: grid;
+  gap: 12px;
+}
+.gradient-option {
+  display: grid;
+  gap: 16px;
+  padding: 22px;
+  text-align: left;
+  background: transparent;
+  border-color: var(--border);
+}
+.gradient-option[aria-pressed="true"] {
+  background: color-mix(in srgb, var(--accent) 4%, transparent);
+  border-color: var(--accent-mid);
+  color: var(--text);
+}
+.gradient-option-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 15px;
+}
+.gradient-option-title small {
+  font-size: 11px;
+  color: var(--muted);
+}
+.gradient-ramp {
+  display: block;
+  height: 42px;
+  border-radius: 6px;
+}
+.gradient-description {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+.gradient-preview {
+  padding: 24px;
+  min-width: 0;
+}
+.gradient-preview .eyebrow {
+  margin: 0;
+}
+.gradient-sample {
+  display: grid;
+  place-items: center;
+  gap: 16px;
+  padding: 26px 0;
+}
+.gradient-sample-shape {
+  width: 150px;
+  height: 116px;
+  border-radius: 54% 46% 42% 58% / 46% 46% 54% 54%;
+  background: var(--sample);
+}
+.gradient-sample > span {
+  color: var(--muted);
+  font-size: 11px;
+}
+.gradient-readout {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+.gradient-readout strong {
+  font-size: 36px;
+  font-weight: 500;
+}
+.gradient-readout small {
+  color: var(--muted);
+  font-size: 14px;
+}
+.gradient-readout output {
+  font-family: ui-monospace, monospace;
+  font-size: 14px;
+}
+.gradient-preview label {
+  font-size: 13px;
+}
+.gradient-preview input {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  margin: 4px 0;
+  accent-color: var(--accent);
+}
+.gradient-preview input:focus-visible {
+  outline: 2px solid var(--selection);
+  outline-offset: 3px;
+}
+.gradient-endpoints {
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted);
+  font-size: 11px;
+}
+.gradient-steps {
+  padding: 28px 0 32px;
+}
+.gradient-section-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.gradient-section-heading h2 {
+  font-size: 20px;
+}
+.gradient-section-heading p {
+  font-size: 12px;
+}
+.gradient-swatches {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 10px;
+}
+.gradient-swatch {
+  padding: 0 0 10px;
+  overflow: hidden;
+  background: transparent;
+  text-align: left;
+  border-color: var(--border);
+}
+.gradient-swatch i {
+  display: block;
+  height: 66px;
+  margin-bottom: 10px;
+}
+.gradient-swatch span,
+.gradient-swatch code {
+  display: block;
+  margin: 0 10px;
+  font-size: 11px;
+  line-height: 1.8;
+}
+.gradient-swatch span {
+  color: var(--muted);
+}
+@media (max-width: 767px) {
+  .gradient-study {
+    padding: 0 20px;
+  }
+  .gradient-intro {
+    padding-top: 24px;
+  }
+  .gradient-layout {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .gradient-option {
+    padding: 18px;
+  }
+  .gradient-option-title {
+    font-size: 14px;
+  }
+  .gradient-section-heading {
+    display: block;
+  }
+  .gradient-swatches {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .gradient-swatch span,
+  .gradient-swatch code {
+    margin: 0 6px;
+    font-size: 10px;
+  }
+}

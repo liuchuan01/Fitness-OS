@@ -1,38 +1,27 @@
-import { useState, type ReactNode } from "react";
-import { ChevronDown, type LucideIcon } from "lucide-react";
+import type { ReactNode } from "react";
+import { GlassCard } from "../../components/GlassCard";
 
 export function SettingsCard({
   title,
-  eyebrow,
+  mark,
   description,
-  icon: Icon,
-  defaultOpen = false,
   children
 }: {
   title: string;
-  eyebrow: string;
+  mark?: ReactNode;
   description: string;
-  icon: LucideIcon;
-  defaultOpen?: boolean;
   children: ReactNode;
 }) {
-  const [initialOpen] = useState(defaultOpen);
   return (
-    <details className="settings-card glass-card" open={initialOpen}>
-      <summary>
-        <span className="settings-card-icon">
-          <Icon size={20} strokeWidth={1.75} aria-hidden="true" />
-        </span>
-        <span className="settings-card-heading">
-          <span className="settings-eyebrow">{eyebrow}</span>
-          <h3>{title}</h3>
-          <span className="settings-card-description">{description}</span>
-        </span>
-        <ChevronDown className="settings-chevron" size={18} aria-hidden="true" />
-      </summary>
-      <section className="settings-card-content" aria-label={title}>
-        {children}
-      </section>
-    </details>
+    <GlassCard as="section" className="settings-card" aria-label={title}>
+      <div className="settings-card-heading">
+        <h3>
+          {mark}
+          {title}
+        </h3>
+        <p>{description}</p>
+      </div>
+      <div className="settings-card-content">{children}</div>
+    </GlassCard>
   );
 }

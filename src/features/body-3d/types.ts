@@ -5,6 +5,8 @@ export type BodyViewer3DProps = {
   selectedMuscle: MuscleId | null;
   onMuscleSelect: (muscleId: MuscleId | null) => void;
   exerciseTargets?: { primaryMuscles: MuscleId[]; secondaryMuscles: MuscleId[] } | null;
+  exerciseName?: string;
+  onResetFocus?: () => void;
   projectionLabel: string;
   onExplorationChange?: (open: boolean) => void;
 };

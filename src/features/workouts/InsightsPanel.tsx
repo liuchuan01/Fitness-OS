@@ -65,6 +65,8 @@ export function InsightsPanel({
             onExerciseSelect={onExerciseSelect}
             onOverview={onOverview}
             selectedDate={selectedDate}
+            plan={todayPlan?.date === selectedDate ? todayPlan : null}
+            onPlanOpen={onPlanOpen}
             workout={workout}
           />
         ))}
@@ -129,6 +131,8 @@ function DailyWorkoutPanel({
   onExerciseSelect,
   onOverview,
   selectedDate,
+  plan,
+  onPlanOpen,
   workout
 }: {
   activeExerciseId: string | null;
@@ -136,6 +140,8 @@ function DailyWorkoutPanel({
   onExerciseSelect: (id: string) => void;
   onOverview: () => void;
   selectedDate: string;
+  plan: TodayPlan | null;
+  onPlanOpen: (plan: TodayPlan) => void;
   workout: DailyWorkout | null;
 }) {
   const contentRef = useRef<HTMLDivElement>(null);
@@ -160,12 +166,13 @@ function DailyWorkoutPanel({
       </button>
       <div className="context-heading">
         <p className="eyebrow">Daily workout · {selectedDate}</p>
-        <h2>{workout?.title ?? "恢复日"}</h2>
+        <h2>{workout?.title ?? (plan ? "今日训练" : "恢复日")}</h2>
       </div>
+      {plan ? <TodayPlanSummary onOpen={onPlanOpen} plan={plan} /> : null}
       {!workout ? (
         <div className="daily-empty" role="status">
           <strong>当天没有训练记录</strong>
-          <span>身体将按恢复日继续计算。</span>
+          <span>{plan ? "完成计划后记录实际训练。" : "身体将按恢复日继续计算。"}</span>
         </div>
       ) : (
         <>

@@ -40,6 +40,7 @@ export class DshWebHost {
     const bindHost = dshBindHost(process.env.DSH_WEB_BIND_HOST);
     const fitness = this.readFitnessConfig();
     this.prepareFitnessProfile(dshHome, bindHost);
+    console.info(`[Fitness DSH] Starting Host on ${bindHost}:${this.options.port}`);
     const child = spawn(
       process.execPath,
       [
@@ -79,7 +80,10 @@ export class DshWebHost {
     child.stderr.setEncoding("utf8");
     child.stdout.on("data", (chunk: string) => {
       const url = /dsh web: (http:\/\/[^\s]+)/u.exec(chunk)?.[1];
-      if (url && this.child === child) this.current = { status: "ready", url };
+      if (url && this.child === child) {
+        this.current = { status: "ready", url };
+        console.info(`[Fitness DSH] Host ready on ${bindHost}:${this.options.port}`);
+      }
     });
     child.stderr.on("data", (chunk: string) => {
       stderr = (stderr + chunk).slice(-4_000);
@@ -87,12 +91,16 @@ export class DshWebHost {
     child.once("exit", (code, signal) => {
       this.handleChildTermination(
         child,
-        stderr.trim() || `DSH Web exited (${signal ?? String(code)})`
+        summarizeDshFailure(stderr, `Host exited (${signal ?? String(code)})`, [
+          this.options.bridgeSecret,
+          process.env.DEEPSEEK_API_KEY
+        ])
       );
     });
     child.once("error", (error) => {
       if (this.closingChild === child) {
         this.current = { status: "failed", error: error.message };
+        console.error(`[Fitness DSH] Host process error: ${error.message}`);
         return;
       }
       this.handleChildTermination(child, error.message);
@@ -132,6 +140,7 @@ export class DshWebHost {
     if (this.child !== child) return;
     this.child = undefined;
     this.current = { status: "failed", error };
+    console.error(`[Fitness DSH] ${error}`);
   }
 
   private readFitnessConfig() {
@@ -179,6 +188,19 @@ export class DshWebHost {
       }
     }
   }
+}
+
+function summarizeDshFailure(stderr: string, fallback: string, secrets: (string | undefined)[]) {
+  const lines = stderr.split(/\r?\n/u).map((line) => line.trim()).filter(Boolean);
+  const message = [...lines].reverse().find((line) => /^(?:Error:|\w+Error:|dsh: fatal)/u.test(line)) ??
+    lines.at(-1) ?? fallback;
+  let safe = message;
+  for (const secret of secrets) {
+    if (secret) safe = safe.replaceAll(secret, "[redacted]");
+  }
+  return safe
+    .replace(/([?&]token=)[^\s&]+/giu, "$1[redacted]")
+    .replace(/\bsk-[A-Za-z0-9_-]{8,}\b/gu, "[redacted]");
 }
 
 function dshBindHost(value: string | undefined): "127.0.0.1" | "0.0.0.0" {

@@ -1,3 +1,5 @@
+import { modelPreferencesResponseSchema } from "../../shared/dsh-model-preferences.js";
+import { z } from "zod";
 import { mkdtemp, mkdir, readFile, writeFile, symlink, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
@@ -5,6 +7,7 @@ import { createServer } from "node:net";
 import { once } from "node:events";
 import { setTimeout as delay } from "node:timers/promises";
 import { expect, it } from "vitest";
+import { parse, stringify } from "yaml";
 import { chromium } from "@playwright/test";
 import { DshWebHost } from "../../server/dsh-web-host.js";
 import { initializeWorkspace } from "../../server/workspace-init.js";
@@ -60,7 +63,72 @@ it("boots the installed DSH, authenticates the bridge and refreshes profile cont
     const headers = { "x-fitness-bridge-secret": "test-only", "Content-Type": "application/json" };
     const settings = await (await fetch(`${base}/fitness-model-settings`, { headers })).json();
     expect(settings).toMatchObject({ ok: true });
+    const preferencesUrl = `${base}/fitness-model-preferences`;
+    expect((await fetch(preferencesUrl)).status).toBe(401);
+    const readPreferences = async () =>
+      modelPreferencesResponseSchema.parse(await (await fetch(preferencesUrl, { headers })).json())
+        .preferences;
+    let preferences = await readPreferences();
+    expect(preferences.models).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: "fixture",
+          efforts: [
+            { id: "low", name: "Low" },
+            { id: "high", name: "High" }
+          ]
+        })
+      ])
+    );
+    const savePreferences = (value: object) =>
+      fetch(preferencesUrl, { method: "PUT", headers, body: JSON.stringify(value) });
+    for (const invalid of [
+      { model: "absent", reasoningEffort: "high" },
+      { model: "fixture", reasoningEffort: "unsupported" }
+    ]) {
+      expect(
+        (
+          await savePreferences({
+            provider: "fitness-test",
+            revision: preferences.revision,
+            ...invalid
+          })
+        ).status
+      ).toBe(422);
+    }
+    expect(
+      (
+        await savePreferences({
+          provider: "fitness-test",
+          model: "fixture",
+          reasoningEffort: "high",
+          revision: preferences.revision
+        })
+      ).status
+    ).toBe(200);
+    expect(
+      (
+        await savePreferences({
+          provider: "fitness-test",
+          model: "fixture-alt",
+          revision: preferences.revision
+        })
+      ).status
+    ).toBe(409);
+    preferences = await readPreferences();
     for (const equipment of ["bands", "dumbbells"]) {
+      if (equipment === "dumbbells") {
+        expect(
+          (
+            await savePreferences({
+              provider: "fitness-test",
+              model: "fixture-alt",
+              reasoningEffort: "low",
+              revision: preferences.revision
+            })
+          ).status
+        ).toBe(200);
+      }
       await writeFile(profile, `preferences: {equipment: ${equipment}}\n`);
       const body = JSON.stringify({
         sessionId: "fitness-interactive",
@@ -96,6 +164,78 @@ it("boots the installed DSH, authenticates the bridge and refreshes profile cont
         )
         .toBe("idle");
     }
+    expect(
+      (
+        await fetch(`${base}/fitness-automation-bridge`, {
+          method: "POST",
+          headers,
+          body: JSON.stringify({
+            sessionId: "fitness-daily-model-test",
+            runId: "model-test",
+            requestId: "model-test",
+            message: "检查模型设置。"
+          })
+        })
+      ).status
+    ).toBe(202);
+    await expect
+      .poll(
+        async () =>
+          z
+            .object({ state: z.string() })
+            .parse(
+              await (
+                await fetch(
+                  `${base}/fitness-automation-bridge/status?sessionId=fitness-daily-model-test&runId=model-test`,
+                  { headers }
+                )
+              ).json()
+            ).state,
+        { timeout: 20000 }
+      )
+      .toBe("idle");
+    const calls = (await readFile(join(root, "fixture-model-requests.jsonl"), "utf8"))
+      .trim()
+      .split("\n")
+      .map((line) => JSON.parse(line));
+    expect(
+      calls
+        .filter((call) => call.sessionId === "fitness-interactive")
+        .every((call) => call.model === "fixture" && call.reasoningEffort === "high")
+    ).toBe(true);
+    expect(calls).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          sessionId: "fitness-daily-model-test",
+          model: "fixture-alt",
+          reasoningEffort: "low"
+        })
+      ])
+    );
+    const nativeFile = join(paths.dshHome, "settings.yaml");
+    const stored = parse(await readFile(nativeFile, "utf8"));
+    expect(stored["agent-default-model"]).toMatchObject({
+      model: "fixture-alt",
+      reasoningEffort: "low"
+    });
+    stored["agent-default-model"] = { provider: "fitness-test", model: "fixture" };
+    stored["fitness-test-unrelated"] = { keep: "unchanged" };
+    await writeFile(nativeFile, stringify(stored));
+    await expect.poll(async () => (await readPreferences()).selection.model).toBe("fixture");
+    preferences = await readPreferences();
+    expect(preferences.selection.reasoningEffort).toBeUndefined();
+    expect(
+      (
+        await savePreferences({
+          provider: "fitness-test",
+          model: "fixture-alt",
+          revision: preferences.revision
+        })
+      ).status
+    ).toBe(200);
+    const updated = parse(await readFile(nativeFile, "utf8"));
+    expect(updated["fitness-test-unrelated"]).toEqual({ keep: "unchanged" });
+    expect(updated["agent-default-model"].reasoningEffort).toBeUndefined();
     const browser = await chromium.launch();
     try {
       const page = await browser.newPage({
@@ -149,6 +289,13 @@ it("boots the installed DSH, authenticates the bridge and refreshes profile cont
     } finally {
       await browser.close();
     }
+    host.close();
+    host.start();
+    await expect.poll(() => host.status().status, { timeout: 45000 }).toBe("ready");
+    expect((await readPreferences()).selection).toEqual({
+      provider: "fitness-test",
+      model: "fixture-alt"
+    });
   } finally {
     host.close();
     await delay(1000);

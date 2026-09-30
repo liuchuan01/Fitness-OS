@@ -1,3 +1,4 @@
+import { bodyLoadColor } from "../../design/body-load";
 import defaultPalette from "../../design/tokens.json";
 import { useLoader, useThree } from "@react-three/fiber";
 import { useCallback, useEffect, useMemo } from "react";
@@ -17,6 +18,7 @@ import type { ThreeEvent } from "@react-three/fiber";
 import type { Object3D } from "three";
 import type { MuscleId, MuscleVisualState } from "../../../shared/fitness/index";
 import type { BodyViewer3DProps, ModelContract } from "./types";
+import { addMuscleDepthPrepass } from "./muscle-depth";
 
 const MODEL_URL = "/models/bodyparts3d/bodyparts3d-fitness-taxonomy-draco.glb";
 
@@ -29,6 +31,7 @@ type MeshBinding = {
 
 type BodyModelSceneProps = {
   palette?: typeof defaultPalette;
+  loadColors?: readonly string[];
   focusEmission?: number;
   baseEmission?: number;
   skinOpacity?: number;
@@ -47,6 +50,7 @@ type BodyModelSceneProps = {
 
 export function BodyModelScene({
   palette = defaultPalette,
+  loadColors,
   focusEmission = 0.28,
   baseEmission = 0.06,
   skinOpacity = 0.12,
@@ -73,6 +77,7 @@ export function BodyModelScene({
     const scene = gltf.scene.clone(true);
     frameModel(scene);
     prepareModel(scene, targetBindings, palette, skinOpacity);
+    addMuscleDepthPrepass(scene);
     return scene;
   }, [gltf.scene, targetBindings, palette, skinOpacity]);
   useEffect(
@@ -123,7 +128,7 @@ export function BodyModelScene({
                 ? secondaryColor
                 : palette.gray
             : muscle
-              ? palette[muscle.status]
+              ? bodyLoadColor(muscle, palette, loadColors)
               : palette.gray
       );
       const intensity = (muscle?.intensity ?? 0) / 100;
@@ -144,6 +149,7 @@ export function BodyModelScene({
   }, [
     invalidate,
     palette,
+    loadColors,
     focusEmission,
     baseEmission,
     secondaryColor,
@@ -197,28 +203,6 @@ export function BodyModelScene({
       <primitive object={model} />
     </group>
   );
-}
-
-export function CameraReset({ resetToken }: { resetToken: number }) {
-  const camera = useThree((state) => state.camera);
-  const controls = useThree((state) => state.controls) as unknown as
-    | { target: Vector3; update: () => void }
-    | undefined;
-  const viewportWidth = useThree((state) => state.size.width);
-  const viewportHeight = useThree((state) => state.size.height);
-
-  useEffect(() => {
-    const distance = viewportWidth < 700 ? 10 : 7.8;
-    const targetY = viewportWidth < 700 && viewportHeight > 500 ? -0.45 : 0.1;
-    camera.position.set(0, targetY + 0.15, distance);
-    camera.lookAt(0, targetY, 0);
-    if (controls) {
-      controls.target.set(0, targetY, 0);
-      controls.update();
-    }
-  }, [camera, controls, resetToken, viewportWidth, viewportHeight]);
-
-  return null;
 }
 
 function normalizeModelId(value: string) {
@@ -278,6 +262,7 @@ function prepareModel(
       opacity: taxonomyMuscleId ? 0.82 : 0.18,
       roughness: 0.68,
       side: DoubleSide,
+      forceSinglePass: true,
       transparent: true
     });
     node.renderOrder = 2;

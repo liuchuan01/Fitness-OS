@@ -19,7 +19,7 @@ runtime/
 .env.*
 !.env.example
 
-.workspaces/
+.workspace*/
 
 # 本地截图不进入公开仓库
 pic/

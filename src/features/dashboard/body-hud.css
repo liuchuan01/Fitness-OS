@@ -129,15 +129,15 @@
     padding: 0 5px;
     font-size: 17px;
   }
-  .muscle-focused.detail-open .body-hud {
+  :is(.muscle-focused, .mode-exercise).detail-open .body-hud {
     height: calc(52dvh - 60px);
   }
-  .muscle-focused.detail-open .body-hud .hud-recovery,
-  .muscle-focused.detail-open .body-hud .hud-load {
+  :is(.muscle-focused, .mode-exercise).detail-open .body-hud .hud-recovery,
+  :is(.muscle-focused, .mode-exercise).detail-open .body-hud .hud-load {
     top: 36%;
   }
-  .muscle-focused.detail-open .body-stage .body-hud .hud-volume,
-  .muscle-focused.detail-open .body-stage .body-hud .hud-stimulus {
+  :is(.muscle-focused, .mode-exercise).detail-open .body-stage .body-hud .hud-volume,
+  :is(.muscle-focused, .mode-exercise).detail-open .body-stage .body-hud .hud-stimulus {
     bottom: 8%;
   }
 }
@@ -197,16 +197,114 @@
 }
 
 @media (max-width: 1100px) and (max-height: 700px) {
-  .muscle-focused.detail-open .body-hud-value {
+  :is(.muscle-focused, .mode-exercise).detail-open .body-hud-value {
     margin-top: 8px;
   }
-  .muscle-focused.detail-open .body-hud-value > strong {
+  :is(.muscle-focused, .mode-exercise).detail-open .body-hud-value > strong {
     font-size: 24px;
   }
-  .muscle-focused.detail-open .body-hud-value .hud-date {
+  :is(.muscle-focused, .mode-exercise).detail-open .body-hud-value .hud-date {
     font-size: 13px;
   }
-  .muscle-focused.detail-open .body-hud-value .hud-action-name {
+  :is(.muscle-focused, .mode-exercise).detail-open .body-hud-value .hud-action-name {
     font-size: 12px;
   }
+}
+
+/* The summary remains the anchor; one shared glass surface encloses it and its details. */
+.body-stage .body-hud:is(.body-hud-overview, .body-hud-focused) .body-hud-card {
+  --hud-padding-y: 15px;
+  --hud-padding-x: 16px;
+  width: clamp(130px, 19%, 206px);
+  background: none;
+  border-color: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+}
+:is(.body-hud-overview, .body-hud-focused) .body-hud-card::before {
+  display: none;
+}
+:is(.body-hud-overview, .body-hud-focused) .body-hud-summary {
+  position: relative;
+  z-index: 1;
+}
+:is(.body-hud-overview, .body-hud-focused) .body-hud-surface {
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 280px;
+  padding: calc(var(--hud-summary-height) + var(--hud-padding-y)) var(--hud-padding-x) var(--hud-padding-y);
+  border-radius: inherit;
+  animation: hud-unfold-down 180ms ease-out;
+}
+:is(.body-hud-overview, .body-hud-focused) :is(.hud-load, .hud-stimulus) .body-hud-surface {
+  left: auto;
+  right: -1px;
+}
+:is(.body-hud-overview, .body-hud-focused) :is(.hud-volume, .hud-stimulus) .body-hud-surface {
+  top: auto;
+  bottom: -1px;
+  padding-top: var(--hud-padding-y);
+  padding-bottom: calc(var(--hud-summary-height) + var(--hud-padding-y));
+  animation-name: hud-unfold-up;
+}
+:is(.body-hud-overview, .body-hud-focused) .body-hud-detail {
+  margin-top: 16px;
+  padding-top: 8px;
+}
+:is(.body-hud-overview, .body-hud-focused) :is(.hud-volume, .hud-stimulus) .body-hud-detail {
+  margin-top: 0;
+  margin-bottom: 16px;
+  padding-top: 0;
+  padding-bottom: 8px;
+  border-top: 0;
+  border-bottom: 1px solid var(--border);
+}
+@keyframes hud-unfold-down {
+  from { opacity: 0; clip-path: inset(0 0 calc(100% - var(--hud-summary-height) - 2 * var(--hud-padding-y)) 0 round 13px); }
+  to { opacity: 1; clip-path: inset(0 round 13px); }
+}
+@keyframes hud-unfold-up {
+  from { opacity: 0; clip-path: inset(calc(100% - var(--hud-summary-height) - 2 * var(--hud-padding-y)) 0 0 0 round 13px); }
+  to { opacity: 1; clip-path: inset(0 round 13px); }
+}
+@media (max-width: 1100px) {
+  .body-stage .body-hud:is(.body-hud-overview, .body-hud-focused) .body-hud-card {
+    --hud-padding-y: 8px;
+    --hud-padding-x: 8px;
+    width: 28%;
+    max-width: 166px;
+  }
+  :is(.body-hud-overview, .body-hud-focused) .body-hud-surface {
+    width: min(248px, calc(100vw - 44px));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  :is(.body-hud-overview, .body-hud-focused) .body-hud-surface { animation: none; }
+}
+
+/* Focus gathers the four existing facts into one rail inside the body canvas. */
+@media (min-width: 1101px) {
+  .body-stage .body-hud.body-hud-focused[data-focus-rail="true"] .body-hud-card {
+    left: auto;
+    right: 26px;
+    bottom: auto;
+  }
+  .body-stage .body-hud-focused[data-focus-rail="true"] .hud-recovery { top: 18%; }
+  .body-stage .body-hud-focused[data-focus-rail="true"] .hud-load { top: 35%; }
+  .body-stage .body-hud-focused[data-focus-rail="true"] .hud-volume { top: 52%; }
+  .body-stage .body-hud-focused[data-focus-rail="true"] .hud-stimulus { top: 69%; }
+}
+
+.body-hud-focused .body-hud-surface { left: auto; right: -1px; }
+@media (min-width: 1101px) {
+  .body-hud-focused .body-hud-summary {
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+  }
+  .body-hud-focused .body-hud-value { min-height: 48px; }
 }

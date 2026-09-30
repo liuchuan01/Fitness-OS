@@ -34,8 +34,9 @@ test("opens history from the body, previews related actions and locates an actua
   const history = page.getByLabel("肌肉训练档案", { exact: true });
   await expect(history.getByRole("heading", { name: "背阔肌", exact: true })).toBeVisible();
   await expect(history.getByText("2026-06-19", { exact: true }).first()).toBeVisible();
-  await expect(page.getByLabel("Selected muscles")).toContainText("背阔肌");
-  await expect(page.getByLabel("Selected muscles")).not.toContainText("刺激");
+  await expect(page.locator(".canvas-context")).toContainText("背阔肌");
+  await expect(page.locator(".canvas-context")).not.toContainText("刺激");
+  await expect(page.locator(".selection-panel")).toHaveCount(0);
   await page.screenshot({ path: testInfo.outputPath("muscle-history-desktop.png") });
   const related = page.getByLabel("相关动作选择").getByRole("button").first();
   await related.click();

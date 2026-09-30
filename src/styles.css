@@ -658,8 +658,7 @@ textarea:focus-visible {
 .body-stage:has(.agent-chat-layer:not([hidden])) .canvas-context,
 .body-stage:has(.agent-chat-layer:not([hidden])) .dashboard-hud,
 .body-stage:has(.agent-chat-layer:not([hidden])) .canvas-metrics,
-.body-stage:has(.agent-chat-layer:not([hidden])) .body-3d-hud,
-.body-stage:has(.agent-chat-layer:not([hidden])) .selection-panel {
+.body-stage:has(.agent-chat-layer:not([hidden])) .body-3d-hud {
   opacity: 0.4;
   pointer-events: none;
 }
@@ -1080,26 +1079,6 @@ textarea:focus-visible {
 }
 
 .body-3d-hud .technical-status {
-  display: none;
-}
-
-.selection-panel {
-  position: absolute;
-  right: 22px;
-  bottom: 66px;
-  z-index: 7;
-  display: grid;
-  gap: 6px;
-  width: min(260px, 34vw);
-  max-height: 124px;
-  padding: 10px 12px;
-  overflow: auto;
-  border-radius: 12px;
-  color: var(--text);
-  font-size: 0.7rem;
-}
-
-.selection-panel:empty {
   display: none;
 }
 
@@ -1871,7 +1850,7 @@ textarea:focus-visible {
 
 .exercise-card.active {
   border-color: color-mix(in srgb, var(--selection) 48%, transparent);
-  --glass-fill: color-mix(in srgb, var(--selection) 8%, var(--glass));
+  --glass-fill: color-mix(in srgb, var(--selection) 8%, var(--glass-base-fill));
 }
 
 .exercise-title {
@@ -2127,8 +2106,7 @@ textarea:focus-visible {
     width: min(232px, 42vw);
   }
 
-  .body-3d-hud,
-  .selection-panel {
+  .body-3d-hud {
     right: 14px;
   }
 
@@ -2136,9 +2114,6 @@ textarea:focus-visible {
     bottom: 88px;
   }
 
-  .selection-panel {
-    display: none;
-  }
 }
 
 @media (max-width: 767px) {
@@ -2454,7 +2429,7 @@ textarea:focus-visible {
 }
 
 @media (max-width: 1100px) {
-  .muscle-focused .insights {
+  :is(.muscle-focused, .mode-exercise) .insights {
     max-height: 48dvh;
   }
   .body-projection-label {
@@ -2466,11 +2441,11 @@ textarea:focus-visible {
 }
 
 @media (max-width: 1100px) {
-  .muscle-focused.detail-open .body-3d-shell {
+  :is(.muscle-focused, .mode-exercise).detail-open .body-3d-shell {
     bottom: auto;
     height: calc(52dvh - 60px);
   }
-  .muscle-focused.detail-open .body-projection-label {
+  :is(.muscle-focused, .mode-exercise).detail-open .body-projection-label {
     bottom: auto;
     max-width: calc(100% - 28px);
   }

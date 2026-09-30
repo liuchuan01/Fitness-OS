@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { KeyRound } from "lucide-react";
 import { getModelSettings, saveModelSettings } from "../../api/client";
 import type { ModelSettings } from "../../api/model-settings-schemas";
 import { ApiError } from "../../api/http";
+import { ModelPreferences } from "./ModelPreferences";
+import { DshMark } from "./DshMark";
 import { SettingsCard } from "./SettingsCard";
 
 export function DeepSeekSettings() {
@@ -49,13 +50,17 @@ export function DeepSeekSettings() {
   }, []);
   return (
     <SettingsCard
-      title="DeepSeek"
-      eyebrow="CONNECTION"
-      icon={KeyRound}
-      description={model?.configured ? "密钥已配置 · 对话与自动计划" : "连接你的训练教练"}
+      title="DeepSeek Harness"
+      mark={<DshMark />}
+      description="原生支持 · 训练教练与自动计划由 DeepSeek Harness 驱动"
     >
-      <p>填写 API Key，连接训练教练与每日自动计划。</p>
-      <p role="status">
+      <p className="dsh-intro">
+        DSH 是 DeepSeek 开源的 Agent 运行框架，在本应用中承载教练对话、工具调用与自动任务。{" "}
+        <a href="https://github.com/deepseek-ai/deepseek-harness" target="_blank" rel="noreferrer">
+          了解 DSH
+        </a>
+      </p>
+      <p className="settings-connection-state" role="status">
         {modelLoading
           ? "正在读取密钥状态…"
           : model
@@ -65,6 +70,7 @@ export function DeepSeekSettings() {
             : "密钥状态暂不可用"}
       </p>
       {model?.writable === false ? <p>当前密钥由启动环境提供，请在启动环境中修改。</p> : null}
+      <ModelPreferences />
       <form
         onSubmit={(event) => {
           event.preventDefault();
@@ -84,13 +90,15 @@ export function DeepSeekSettings() {
           />
         </label>
         <p>密钥保存在本机凭据存储中，页面不会回显已保存的密钥。</p>
-        <button
-          className="automation-primary"
-          type="submit"
-          disabled={model?.writable === false || !apiKey.trim() || modelBusy || modelLoading}
-        >
-          {modelBusy ? "正在保存…" : "保存模型密钥"}
-        </button>
+        <footer>
+          <button
+            className="automation-primary"
+            type="submit"
+            disabled={model?.writable === false || !apiKey.trim() || modelBusy || modelLoading}
+          >
+            {modelBusy ? "正在保存…" : "保存模型密钥"}
+          </button>
+        </footer>
       </form>
       {modelError ? (
         <p className="automation-error" role="alert">

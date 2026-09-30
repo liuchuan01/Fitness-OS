@@ -10,7 +10,7 @@
 
 当前实现以 `src/design/tokens.json` 和 `graphite.json` 为两套主题来源，`theme-definitions.ts` 汇总配色与身体材质参数。生成的 `tokens.css` 提供 CSS 变量；`ThemeProvider` / `useTheme()` 向 Three 场景提供同源主题。历史 blue/orange/purple 键仅桥接领域负荷状态，不定义跨主题颜色名称。
 
-仅配置后台的外观卡片可切换 Neon / Graphite；首页不再设置重复入口。偏好经白名单解析后存入 `fitness:appearance:v1`，非法存储回退默认值，存储不可用时仍能在当前页面切换；启动时先应用 DOM 主题，跨标签页监听 storage。主题切换不主动清除日期、动作或肌肉选择。
+仅设置页的界面外观分区可切换 Neon / Graphite；首页不再设置重复入口。偏好经白名单解析后存入 `fitness:appearance:v1`，非法存储回退默认值，存储不可用时仍能在当前页面切换；启动时先应用 DOM 主题，跨标签页监听 storage。主题切换不主动清除日期、动作或肌肉选择。
 
 主站取消“强调光效”开关，Neon 固定启用控件光晕及重点肌肉自发光，Graphite 保持无控件霓虹。旧 `glowEnabled: false` 存储自动归一为 true，保留主题选择；v1 存储字段暂留兼容。四角 HUD 使用共享 quiet 毛玻璃；展开时加深底色，保持人体优先。
 
@@ -44,6 +44,14 @@
 - [Arwes](https://arwes.dev/docs)：科幻 UI 的线条、层次与状态构成可参考；其动画、声音和整套装饰不默认引入。官方也强调其能力需要自己的设计规则，不能代替设计系统。
 - [Three.js Selective Bloom 示例](https://threejs.org/examples/webgl_postprocessing_unreal_bloom_selective.html)及 [UnrealBloomPass](https://threejs.org/docs/pages/UnrealBloomPass.html)：研究高亮物体周围光晕的技术边界。本项目使用 Three 0.171，不能直接照抄当前 WebGPU 例子。
 - [DTCG 2025.10 格式](https://www.w3.org/community/reports/design-tokens/CG-FINAL-format-20251028/)：参考类型、分组、别名及交换格式。它不定义本产品的语义、布局或主题插件加载器。
+
+### 柔和桥接获选并接入负荷视图
+
+2026-09-30 用户选定独立色卡中的柔和桥接。Neon 人体正值负荷改用七色标连续插值，新增 `body-load-1…5`，两端复用 accent／selection；色卡、Three 与左下角完整色带同源。零负荷保持灰色；Graphite、动作角色、焦点和其他 status 消费位置不变。领域计算不修改，完整显示边界以 `DESIGN.md` 第 7.3 节为准。色卡方向获选，真实人体版本仍待用户审阅。
+
+### Graphite 冷暖中性色带
+
+用户随后要求直接接入 Graphite 连续色带，省略色卡提案。`graphite.json` 为五个 `body-load` 中间色提供独立中性覆盖，端点仍为该主题 accent／selection，人体和图例复用既有插值逻辑；不改变光晕、自发光、动作和焦点配置。Graphite 人体正值负荷不再按离散 status 取色，其他 status 消费方保持原样。契约见 `DESIGN.md` 第 7.4 节，实际视觉效果待审阅。
 
 ## 3. 分离边界
 

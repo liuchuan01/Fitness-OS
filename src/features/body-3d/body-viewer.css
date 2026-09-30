@@ -5,9 +5,6 @@
   max-width: min(440px, 65%);
   line-height: 1.7;
 }
-.body-3d-shell .selection-panel {
-  border-color: color-mix(in srgb, var(--accent) 25%, transparent);
-}
 @media (max-width: 767px) {
   .body-3d-shell .body-3d-toolbar {
     gap: 4px;
@@ -70,10 +67,6 @@
   color: var(--muted);
   backdrop-filter: none;
 }
-.body-3d-shell .selection-panel {
-  border-color: color-mix(in srgb, var(--selection) 28%, transparent);
-  color: var(--text);
-}
 .body-3d-shell .body-projection-label {
   display: grid;
   gap: 6px;
@@ -123,5 +116,43 @@
   .body-3d-shell .body-projection-label {
     font-size: 11px;
     gap: 4px;
+  }
+}
+
+.body-selection-context {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 0;
+  width: max-content;
+  max-width: min(440px, calc(100vw - 44px));
+  display: grid;
+  gap: 4px;
+  max-height: 72px;
+  overflow-y: auto;
+  color: var(--muted);
+  font-size: 11px;
+  overflow-wrap: anywhere;
+  pointer-events: auto;
+}
+.body-selection-context:empty {
+  display: none;
+}
+
+@media (max-width: 1100px) {
+  .body-selection-context {
+    position: static;
+    max-width: 100%;
+    max-height: 48px;
+  }
+}
+
+.projection-continuous {
+  width: 88px;
+  height: 6px;
+  border-radius: 2px;
+}
+@media (min-width: 1101px) {
+  .body-stage:has(.agent-chat-launcher) .body-projection-label:has(.projection-continuous) {
+    bottom: 86px;
   }
 }
