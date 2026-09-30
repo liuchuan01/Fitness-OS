@@ -39,7 +39,7 @@ export function HudCard({ position, label, detail, children }: HudCardProps) {
         </div>
         <div className="body-hud-value">{children}</div>
       </button>
-      <div id={detailId} className="body-hud-detail" hidden={!expanded}>
+      <div id={detailId} className="body-hud-detail glass-card glass-card--quiet" hidden={!expanded}>
         {detail}
       </div>
     </GlassCard>

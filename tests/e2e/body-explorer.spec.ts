@@ -96,18 +96,31 @@ test("starts without playback controls even with reduced motion, and restores HU
   const detail = card.locator(".body-hud-detail");
   await expect(detail).toBeHidden();
   for (const hud of await page.locator(".body-hud-card").all()) {
-    await expect(hud).not.toHaveCSS("background-image", "none");
-    await expect(hud).toHaveCSS("backdrop-filter", "blur(12px) saturate(1.15)");
+    await expect(hud).toHaveCSS("background-image", "none");
+    await expect(hud).toHaveCSS("border-top-color", "rgba(0, 0, 0, 0)");
+    await expect(hud).toHaveCSS("backdrop-filter", "none");
     expect(await hud.evaluate((el) => getComputedStyle(el, "::before").animationName)).toBe("none");
     await expect(hud).toHaveCSS("box-shadow", "none");
   }
   await page.screenshot({ path: testInfo.outputPath("hud-compact-desktop.png") });
-  const collapsed = await card.boundingBox();
+  for (const hud of await page.locator(".body-hud-card").all()) {
+    const summary = hud.locator(".body-hud-summary");
+    const before = await summary.boundingBox();
+    await summary.hover();
+    await expect(hud.locator(".body-hud-detail")).toBeVisible();
+    expect(await summary.boundingBox()).toEqual(before);
+    await hud.locator(".body-hud-detail").hover();
+    await expect(summary).toHaveAttribute("aria-expanded", "true");
+    await page.screenshot({ path: testInfo.outputPath(`expanded-${await hud.getAttribute("aria-label")}.png`) });
+    await page.mouse.move(0, 0);
+    await expect(hud.locator(".body-hud-detail")).toBeHidden();
+    expect(await summary.boundingBox()).toEqual(before);
+  }
   await card.hover();
   await expect(detail).toBeVisible();
   await expect(detail.locator(".hud-records li")).toHaveCount(2);
   await expect(detail).toContainText("已记录时长");
-  expect((await card.boundingBox())!.height).toBeGreaterThan(collapsed!.height + 100);
+
   await page.screenshot({ path: testInfo.outputPath("hud-expanded-desktop.png") });
   await page.mouse.move(0, 0);
   await expect(detail).toBeHidden();
@@ -134,8 +147,10 @@ test("toggles glass HUD details by touch on a phone", async ({ browser }, testIn
   const touchTrigger = touchPage.getByRole("button", { name: "近 7 日训练详情" });
   await expect(touchTrigger).toHaveAttribute("aria-expanded", "false");
   await touchPage.screenshot({ path: testInfo.outputPath("hud-compact-mobile.png") });
+  const before = await touchTrigger.boundingBox();
   await touchTrigger.tap();
   await expect(touchTrigger).toHaveAttribute("aria-expanded", "true");
+  expect(await touchTrigger.boundingBox()).toEqual(before);
   await touchPage.screenshot({ path: testInfo.outputPath("hud-expanded-mobile.png") });
   await touchTrigger.tap();
   await expect(touchTrigger).toHaveAttribute("aria-expanded", "false");

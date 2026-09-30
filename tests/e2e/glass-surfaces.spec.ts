@@ -76,7 +76,12 @@ test("shared glass covers onboarding, credential notice, explorer and all HUDs",
   });
   await page.getByRole("button", { name: "重置视角" }).click();
   await expectGlass(page.locator(".dashboard-empty"));
-  for (const card of await page.locator(".body-hud-card").all()) await expectGlass(card);
+  for (const card of await page.locator(".body-hud-card").all()) {
+    await expect(card).toHaveCSS("background-image", "none");
+    await card.getByRole("button").hover();
+    await expectGlass(card.locator(".body-hud-detail"));
+    await page.mouse.move(0, 0);
+  }
   await expectGlass(page.getByRole("button", { name: "选择肌肉", exact: true }));
   await page.screenshot({ path: testInfo.outputPath("onboarding-desktop.png") });
   await page.getByRole("button", { name: "建立我的训练档案" }).click();

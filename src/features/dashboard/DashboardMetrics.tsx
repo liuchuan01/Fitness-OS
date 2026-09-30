@@ -20,7 +20,7 @@ export function DashboardMetrics({ mode, dashboard, dailyWorkout, focus }: Dashb
   const placeholder = focus?.status === "error" ? "暂不可用" : "读取中";
   return (
     <div
-      className={`dashboard-hud body-hud ${focus ? "body-hud-focused" : ""}`}
+      className={`dashboard-hud body-hud ${focus ? "body-hud-focused" : mode === "overview" ? "body-hud-overview" : ""}`}
       aria-label={focus ? "肌肉概览 HUD" : mode === "overview" ? "首页身体数据" : "当日训练 HUD"}
     >
       {focus ? (

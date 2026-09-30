@@ -75,6 +75,14 @@
   line-height: 1.6;
   overflow-wrap: anywhere;
 }
+.body-hud:not(.body-hud-overview) .body-hud-detail {
+  border: 0;
+  border-radius: 0;
+  background: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+}
 .body-hud-detail {
   margin: 9px 0 0;
   color: var(--muted);
@@ -208,5 +216,52 @@
   }
   .muscle-focused.detail-open .body-hud-value .hud-action-name {
     font-size: 12px;
+  }
+}
+
+.body-hud:not(.body-hud-overview) .body-hud-detail::before {
+  display: none;
+}
+
+/* Overview summaries keep the same footprint while details expand independently. */
+.body-stage .body-hud.body-hud-overview .body-hud-card {
+  width: clamp(130px, 19%, 206px);
+  background: none;
+  border-color: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+}
+.body-hud-overview .body-hud-card::before {
+  display: none;
+}
+.body-hud-overview .body-hud-detail:not([hidden]) {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 280px;
+  margin: 0;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  --glass-fill: color-mix(in srgb, var(--glass-raised) 90%, transparent);
+  --glass-shadow: var(--shadow-panel);
+}
+.body-hud-overview :is(.hud-load, .hud-stimulus) .body-hud-detail {
+  left: auto;
+  right: 0;
+}
+.body-hud-overview :is(.hud-volume, .hud-stimulus) .body-hud-detail {
+  top: auto;
+  bottom: 100%;
+}
+@media (max-width: 1100px) {
+  .body-stage .body-hud.body-hud-overview .body-hud-card {
+    width: 28%;
+    max-width: 166px;
+  }
+  .body-hud-overview .body-hud-detail:not([hidden]) {
+    width: min(248px, calc(100vw - 44px));
+    padding: 12px;
   }
 }
