@@ -7,15 +7,18 @@ const exerciseNames = {
   pushup: "俯卧撑",
   plank: "平板支撑",
   russian_twist: "俄罗斯转体",
-  reverse_crunch: "反向卷腹"
+  reverse_crunch: "反向卷腹",
+  dumbbell_curl: "哑铃弯举"
 } as const;
-const exerciseSchema = z.enum(["squat", "pushup", "plank", "russian_twist", "reverse_crunch"]);
+const exerciseSchema = z.enum(["squat", "pushup", "plank", "russian_twist", "reverse_crunch", "dumbbell_curl"]);
+const armCountsSchema = z.object({ left: z.number().int().nonnegative(), right: z.number().int().nonnegative() });
 
 const repRecordSchema = z.object({
   durationMs: z.number().finite().nonnegative(),
   minAngle: z.number().finite(),
   valid: z.boolean(),
-  issue: z.enum(["shallow", "fast"]).nullable()
+  issue: z.enum(["shallow", "fast"]).nullable(),
+  side: z.enum(["left", "right"]).optional()
 });
 
 const holdSchema = z.object({
@@ -36,6 +39,8 @@ export const motionCoachSessionSchema = z.object({
   records: z.array(repRecordSchema),
   countMode: z.literal("completed").optional(),
   twistCountUnit: z.literal("sides").optional(),
+  curlCountUnit: z.literal("arm_reps").optional(),
+  armCounts: armCountsSchema.optional(),
   legacyTwistPairs: z.boolean().optional(),
   hold: holdSchema.optional()
 }).superRefine((session, context) => {
@@ -43,6 +48,9 @@ export const motionCoachSessionSchema = z.object({
     context.addIssue({ code: "custom", message: "Plank record requires hold duration" });
   if (session.exercise === "russian_twist" && session.twistCountUnit !== "sides")
     context.addIssue({ code: "custom", message: "Russian twist count unit must be sides" });
+  if (session.exercise === "dumbbell_curl" && (session.curlCountUnit !== "arm_reps" ||
+    !session.armCounts || session.armCounts.left + session.armCounts.right !== session.repCount))
+    context.addIssue({ code: "custom", message: "Curl record requires arm_reps unit and left/right counts matching total" });
 });
 
 export const motionCoachExportSchema = z.object({
@@ -62,6 +70,8 @@ export const motionCoachSourceSchema = z.object({
   attempt_count: z.number().int().nonnegative(),
   count_mode: z.literal("completed").optional(),
   twist_count_unit: z.literal("sides").optional(),
+  curl_count_unit: z.literal("arm_reps").optional(),
+  arm_counts: armCountsSchema.optional(),
   legacy_twist_pairs: z.boolean().optional(),
   hold: holdSchema.optional(),
   records: z.array(repRecordSchema)
@@ -90,6 +100,8 @@ export function motionCoachExercise(session: MotionCoachSession): Workout["block
       attempt_count: session.attemptCount,
       count_mode: session.countMode,
       twist_count_unit: session.twistCountUnit,
+      curl_count_unit: session.curlCountUnit,
+      arm_counts: session.armCounts,
       legacy_twist_pairs: session.legacyTwistPairs,
       hold: session.hold,
       records: session.records

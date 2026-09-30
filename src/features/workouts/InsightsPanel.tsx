@@ -201,7 +201,9 @@ function DailyWorkoutPanel({
                     </span>
                   ) : (
                     <span className="exercise-targets secondary">
-                      恢复 / 活动动作，不计肌肉刺激
+                      {exercise.source?.system === "ai-motion-coach"
+                        ? "摄像头动作记录，未估算肌肉刺激"
+                        : "恢复 / 活动动作，不计肌肉刺激"}
                     </span>
                   )}
                   {exercise.secondaryMuscles.length > 0 ? (
@@ -228,6 +230,8 @@ function formatSetSummary(exercise: DailyWorkout["blocks"][number]["exercises"][
   if (source?.system === "ai-motion-coach") {
     if (source.exercise === "plank")
       return `保持 ${(source.hold?.heldMs ?? 0) / 1000} 秒 · 最长 ${(source.hold?.bestMs ?? 0) / 1000} 秒`;
+    if (source.exercise === "dumbbell_curl")
+      return `左手 ${source.arm_counts?.left ?? 0} 次 · 右手 ${source.arm_counts?.right ?? 0} 次 · 共 ${source.rep_count} 次（每只手各计一次） · 重量未记录`;
     const unit = source.twist_count_unit === "sides" ? "（左、右每侧各计一次）" : "";
     return `${source.rep_count} 次${unit} · ${source.attempt_count} 次尝试`;
   }

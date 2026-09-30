@@ -37,6 +37,33 @@ function exportFile(sessions: unknown[]) {
 }
 
 describe("AI Motion Coach history import", () => {
+  it("preserves per-arm curl counts, units and rep sides without inventing dumbbell load", async () => {
+    const dataRoot = await mkdtemp(join(tmpdir(), "motion-coach-curl-"));
+    roots.push(dataRoot);
+    const options = { dataRoot, resourcesRoot };
+    const curl = { ...session("curl-1", "squat"), exercise: "dumbbell_curl", repCount: 3,
+      attemptCount: 4, curlCountUnit: "arm_reps", armCounts: { left: 2, right: 1 },
+      countMode: "completed", records: [
+        { side: "left", durationMs: 1500, minAngle: 85, valid: true, issue: null },
+        { side: "right", durationMs: 1600, minAngle: 88, valid: true, issue: null },
+        { side: "left", durationMs: 1800, minAngle: 112, valid: true, issue: "shallow" }
+      ] };
+    const payload = exportFile([curl]);
+    await expect(importMotionCoachHistory(options, payload)).resolves.toMatchObject({ imported: 1, skipped: 0 });
+    const file = join(dataRoot, "workouts", "2026", "2026-09-30.yaml");
+    const workout = workoutSchema.parse(parse(await readFile(file, "utf8")));
+    const exercise = workout.blocks[0].exercises[0];
+    expect(exercise.name).toBe("哑铃弯举");
+    expect(exercise.sets).toEqual([{ kind: "work", reps: 3 }]);
+    expect(exercise.source).toMatchObject({ curl_count_unit: "arm_reps", arm_counts: { left: 2, right: 1 } });
+    expect(exercise.source?.records.map(record => record.side)).toEqual(["left", "right", "left"]);
+    expect(JSON.stringify(workout)).not.toMatch(/weight_kg|bodyweight_kg|"rpe"/);
+    expect(workout.computed?.total_volume_kg).toBeNull();
+    await expect(importMotionCoachHistory(options, payload)).resolves.toMatchObject({ imported: 0, skipped: 1 });
+    for (const bad of [{ ...curl, curlCountUnit: undefined }, { ...curl, armCounts: { left: 2, right: 2 } }])
+      await expect(importMotionCoachHistory(options, exportFile([bad]))).rejects.toThrow();
+  });
+
   it("retains counts, exact hold milliseconds and twist unit without inventing load or RPE", async () => {
     const dataRoot = await mkdtemp(join(tmpdir(), "motion-coach-import-"));
     roots.push(dataRoot);
@@ -96,5 +123,9 @@ describe("AI Motion Coach history import", () => {
     await expect(first.json()).resolves.toMatchObject({ imported: 1, skipped: 0 });
     const second = await request();
     await expect(second.json()).resolves.toMatchObject({ imported: 0, skipped: 1 });
+    const detail = await fetch(`http://127.0.0.1:${port}/api/workouts/2026-09-30`);
+    expect(detail.status).toBe(200);
+    await expect(detail.json()).resolves.toMatchObject({ workout: { date: "2026-09-30",
+      blocks: [{ exercises: [{ source: { record_id: "api-1", twist_count_unit: "sides" } }] }] } });
   });
 });

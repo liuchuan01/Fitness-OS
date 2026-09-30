@@ -17,7 +17,7 @@ import {
   realpath,
   lstat
 } from "node:fs/promises";
-import { dirname, join, relative, resolve } from "node:path";
+import { basename, dirname, join, relative as nativeRelative, resolve, sep } from "node:path";
 import { parse, stringify } from "yaml";
 import {
   buildDashboardProjection,
@@ -106,6 +106,11 @@ export type ValidationSummary = {
 };
 
 export type MotionCoachImportResult = { imported: number; skipped: number; dates: string[] };
+
+// Business references use forward slashes in YAML and API payloads on every platform.
+function relative(from: string, to: string): string {
+  return nativeRelative(from, to).split(sep).join("/");
+}
 
 let motionCoachImportQueue: Promise<void> = Promise.resolve();
 
@@ -210,7 +215,7 @@ export async function getPlanForDate(
 
   const { muscleMap, stimulusRules } = await readCalculationInputs(options);
   const planFiles = await listYamlFiles(join(options.dataRoot, "plans"));
-  const matchingFile = planFiles.find((file) => file.endsWith(`/${date}.generated.yaml`));
+  const matchingFile = planFiles.find((file) => basename(file) === `${date}.generated.yaml`);
   if (!matchingFile) return undefined;
 
   const { plan, hasForbiddenFields } = await readPlanYaml(matchingFile);
@@ -442,7 +447,7 @@ export async function getDailyWorkout(
 ): Promise<DailyWorkoutViewModel | undefined> {
   const { muscleMap, stimulusRules } = await readCalculationInputs(options);
   const workoutFiles = await listYamlFiles(join(options.dataRoot, "workouts"));
-  const matchingFile = workoutFiles.find((file) => file.endsWith(`/${date}.yaml`));
+  const matchingFile = workoutFiles.find((file) => basename(file) === `${date}.yaml`);
   if (!matchingFile) return undefined;
   const workout = await readYaml(matchingFile, workoutSchema, "workout");
   return buildDailyWorkoutView(workout, muscleMap, stimulusRules);
