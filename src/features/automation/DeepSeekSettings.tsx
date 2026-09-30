@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { KeyRound } from "lucide-react";
 import { getModelSettings, saveModelSettings } from "../../api/client";
 import type { ModelSettings } from "../../api/model-settings-schemas";
 import { ApiError } from "../../api/http";
@@ -50,12 +49,9 @@ export function DeepSeekSettings() {
   return (
     <SettingsCard
       title="DeepSeek"
-      eyebrow="CONNECTION"
-      icon={KeyRound}
       description={model?.configured ? "密钥已配置 · 对话与自动计划" : "连接你的训练教练"}
     >
-      <p>填写 API Key，连接训练教练与每日自动计划。</p>
-      <p role="status">
+      <p className="settings-connection-state" role="status">
         {modelLoading
           ? "正在读取密钥状态…"
           : model
@@ -84,13 +80,15 @@ export function DeepSeekSettings() {
           />
         </label>
         <p>密钥保存在本机凭据存储中，页面不会回显已保存的密钥。</p>
-        <button
-          className="automation-primary"
-          type="submit"
-          disabled={model?.writable === false || !apiKey.trim() || modelBusy || modelLoading}
-        >
-          {modelBusy ? "正在保存…" : "保存模型密钥"}
-        </button>
+        <footer>
+          <button
+            className="automation-primary"
+            type="submit"
+            disabled={model?.writable === false || !apiKey.trim() || modelBusy || modelLoading}
+          >
+            {modelBusy ? "正在保存…" : "保存模型密钥"}
+          </button>
+        </footer>
       </form>
       {modelError ? (
         <p className="automation-error" role="alert">

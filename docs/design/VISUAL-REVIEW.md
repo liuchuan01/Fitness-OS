@@ -164,3 +164,13 @@ VISUAL_THEME=graphite VISUAL_OUTPUT=test-results/visual-regression/main-themes/g
 产物位于已忽略的 `test-results/rotation-occlusion/body-occlusion-*/`：`{theme}-{front,side,left,beforeBack,back,afterBack,right}.png`、`{theme}-mobile-back.png`、`{theme}-{390,1440}-{focus,exercise,day}.png`。相关交互回归截图在 `test-results/body-regression/`，不提交图片。
 
 验证结果：lint、lint:architecture、lint:design、typecheck、完整 build、52 项单元／组件、23 项既有相关 E2E 与 2 项新增遮挡 E2E 通过；三项 `validate:3d-*` 通过。source-map 首次因本机缺少原始素材失败，随后按 source-map 锁定的 revision 下载索引及引用 STL 至临时目录，通过 `BODYPARTS3D_DIR` 指定后复验通过；没有修改校验脚本或运行时资产。普通模式对照实测 draw calls 为 137，预绘制替代原透明双面额外颜色绘制，不宣称达到低端真机 FPS 指标。构建仍有既有 Three 异步分包体积提示，单元测试仍有既有 Three 多实例提示；本轮不涉及 DSH、数据写入或生产发布，未运行相关集成与部署验收。
+
+## 2026-09-30 设置页工作区重设计
+
+用户要求重新设计原四张向下展开的卡片，本轮替换为桌面左侧轻导航与右侧单一编辑区，手机顶部四项导航；设计契约见 `DESIGN.md` 第 10.0.2 节。共享玻璃只用于当前编辑面板，导航、控件与主题示意保持平面；颜色、图标和返回操作继续复用 token、Lucide 与 IconButton。主题预览为 SVG 布局示意，并非真实身体渲染或训练数据。此版本为待用户审阅，未标为 approved 基线。
+
+实际启动 `npm run dev`，前端监听本机 5173、服务监听本机 8787，打开真实设置页确认可显示。隔离 E2E 在桌面 1440×900、手机 390×844 与额外 320×844 窄屏生成 Neon / Graphite 四分区截图；实际打开审阅两主题外观、教练、调度与密钥面板的代表截图，确认导航位置、层级、输入框、按钮和手机换行；未发现横向溢出。首轮发现旧全局按钮与卡片样式覆盖，已通过设置页局部选择器修正，最终截图使用修正版本。
+
+截图位于 `test-results/appearance-settings-sectio-ace2c-rrow-screens-in-both-themes-chromium/{Neon,Graphite}-{1440,390,320}-{界面外观,教练偏好,自动计划,模型连接}.png`，不提交图片。设置页无运行时 3D，自转与肌肉材质未改；本轮未重复主站四模式完整 3D 审图。
+
+验证：lint、lint:design、lint:architecture、typecheck、完整 build 通过；52 项单元／组件测试通过，最终密钥直达与表单调整后聚焦复验 13 项通过。6 项相关 E2E 通过，覆盖主题持久化与非法存储回退、两主题三尺寸四分区、键盘 Enter 与 reduced-motion、教练／调度独立保存及跨分区草稿保留、密钥直达及未提交密钥保留、返回首页。E2E 凭据使用 mock，保存隔离于浏览器请求；未向个人凭据存储写测试密钥，也未运行自动计划或真实模型。既有 Three 分包大小与测试多实例提示仍存在；不将本轮界面验证当作真实 Host、完整 AA 或生产发布验收。

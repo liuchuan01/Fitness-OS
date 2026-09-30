@@ -176,7 +176,7 @@ export function AgentChat({ openRequest = 0 }: { openRequest?: number }) {
           <span>
             {needsKey ? "尚未配置模型密钥，请先前往配置后台填写 DeepSeek API Key。" : error}
           </span>
-          <a href="#/settings">前往配置后台</a>
+          <a href="#/settings?section=connection">前往配置后台</a>
           <IconButton
             label="关闭配置提示"
             icon={X}

@@ -15,7 +15,6 @@ it("saves only the DeepSeek key and clears the input without echoing credentials
   );
   vi.stubGlobal("fetch", fetcher);
   render(<DeepSeekSettings />);
-  fireEvent.click(screen.getByRole("heading", { name: "DeepSeek" }).closest("summary")!);
   await screen.findByText("尚未配置密钥");
   fireEvent.change(screen.getByLabelText("DeepSeek API Key"), {
     target: { value: " test-only-key " }
