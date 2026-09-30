@@ -11,7 +11,7 @@
 
 应用在本机运行，档案、计划和训练记录都以可读的 YAML 文件保存在你自己的工作区里，方便查看，也方便备份。
 
-![AI Fitness OS 首页：交互式 3D 人体、训练时间线与肌肉活动](docs/index.png)
+[![AI Fitness OS 动态演示：探索肌肉、回顾训练与打开 AI 教练](https://github.com/user-attachments/assets/4f890d1b-42b3-45c1-9996-db6d3405ef00)](https://github.com/user-attachments/assets/db68d75e-9831-4c09-b095-4687b8032a9c)
 
 [DSH 原生集成](#原生集成-deepseek-harness) · [快速开始](#快速开始) · [数据与备份](#数据与备份) · [开发与文档](#开发与文档)
 
