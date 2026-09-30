@@ -186,6 +186,10 @@ export function createLocalService(options: LocalServiceOptions) {
         });
         writeJson(response, result.status, await result.json());
       } catch {
+        const hostStatus = dshWebHost.status();
+        console.error(
+          `[Fitness] ${request.method} /api/model/settings unavailable: Host ${hostStatus.status}; credential bridge request failed`
+        );
         writeJson(response, 503, { ok: false, error: "模型配置服务暂时不可用，请稍后重试。" });
       }
       return;

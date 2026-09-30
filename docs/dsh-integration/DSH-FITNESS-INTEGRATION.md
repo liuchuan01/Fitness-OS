@@ -265,3 +265,5 @@ Fitness Host 不再读取 `config/settings.yaml` 的旧 model 字段生成 `agen
 密钥状态读取失败不代表凭据只读。配置页允许在状态未知时填写 Key；读取结束后可尝试保存，由同一 Host 的凭据控制器执行权限校验。已明确 `writable: false` 的环境凭据仍禁止编辑。读取失败显示“密钥状态暂不可用”，不继续显示正在读取，也不将未知状态宣称为未配置。保存失败保留输入供重试，成功后立即清空。
 
 验证入口：`DeepSeekSettings.test.tsx` 覆盖正常保存、读取失败后的保存恢复、环境凭据只读；`tests/integration/empty-workspace-credentials.test.ts` 使用临时空工作区启动真实 `npm run dev`，通过 Vite 页面与实际 DSH Host 验证首次写入和刷新。第二种场景仅注入初次 GET 503，恢复后 PUT 仍写入真实临时凭据存储。使用虚构 Key，不调用真实模型。当前机器正常首次启动未复现读取失败，因此这些结果不能证明用户机器上的服务失败原因已修复。
+
+本地服务在 `npm run dev` 终端记录 DSH Host 启动、就绪和退出原因，以及 `/api/model/settings` 返回 503 时的 Host 状态。Host 启动日志不输出带浏览器 token 的 URL；退出原因仅保留错误摘要并遮盖已知密钥。工作区从其他路径恢复时，`runtime/dsh` 可能包含无法在新路径使用的 Session 和安装目录缓存；若 Host 报目录类型冲突或 Session 所属路径冲突，先停止服务，归档整个 `runtime/dsh` 后再启动，保留 `fitness/` 和 `config/`。归档的旧 Session 不自动迁移。

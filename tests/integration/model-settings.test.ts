@@ -60,6 +60,7 @@ describe("model credential proxy", () => {
 
   it("returns a safe error when the credential backend fails", async () => {
     const nativeFetch = globalThis.fetch;
+    const log = vi.spyOn(console, "error").mockImplementation(() => {});
     vi.stubGlobal(
       "fetch",
       vi.fn(async () => {
@@ -75,5 +76,10 @@ describe("model credential proxy", () => {
     const response = await nativeFetch(`http://127.0.0.1:${address.port}/api/model/settings`);
     expect(response.status).toBe(503);
     expect(await response.text()).not.toContain("sensitive backend detail");
+    expect(log).toHaveBeenCalledWith(
+      "[Fitness] GET /api/model/settings unavailable: Host ready; credential bridge request failed"
+    );
+    expect(log.mock.calls.flat().join(" ")).not.toContain("sensitive backend detail");
+    log.mockRestore();
   });
 });
