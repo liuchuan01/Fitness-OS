@@ -2429,7 +2429,7 @@ textarea:focus-visible {
 }
 
 @media (max-width: 1100px) {
-  .muscle-focused .insights {
+  :is(.muscle-focused, .mode-exercise) .insights {
     max-height: 48dvh;
   }
   .body-projection-label {
@@ -2441,11 +2441,11 @@ textarea:focus-visible {
 }
 
 @media (max-width: 1100px) {
-  .muscle-focused.detail-open .body-3d-shell {
+  :is(.muscle-focused, .mode-exercise).detail-open .body-3d-shell {
     bottom: auto;
     height: calc(52dvh - 60px);
   }
-  .muscle-focused.detail-open .body-projection-label {
+  :is(.muscle-focused, .mode-exercise).detail-open .body-projection-label {
     bottom: auto;
     max-width: calc(100% - 28px);
   }

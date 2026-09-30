@@ -129,15 +129,15 @@
     padding: 0 5px;
     font-size: 17px;
   }
-  .muscle-focused.detail-open .body-hud {
+  :is(.muscle-focused, .mode-exercise).detail-open .body-hud {
     height: calc(52dvh - 60px);
   }
-  .muscle-focused.detail-open .body-hud .hud-recovery,
-  .muscle-focused.detail-open .body-hud .hud-load {
+  :is(.muscle-focused, .mode-exercise).detail-open .body-hud .hud-recovery,
+  :is(.muscle-focused, .mode-exercise).detail-open .body-hud .hud-load {
     top: 36%;
   }
-  .muscle-focused.detail-open .body-stage .body-hud .hud-volume,
-  .muscle-focused.detail-open .body-stage .body-hud .hud-stimulus {
+  :is(.muscle-focused, .mode-exercise).detail-open .body-stage .body-hud .hud-volume,
+  :is(.muscle-focused, .mode-exercise).detail-open .body-stage .body-hud .hud-stimulus {
     bottom: 8%;
   }
 }
@@ -197,16 +197,16 @@
 }
 
 @media (max-width: 1100px) and (max-height: 700px) {
-  .muscle-focused.detail-open .body-hud-value {
+  :is(.muscle-focused, .mode-exercise).detail-open .body-hud-value {
     margin-top: 8px;
   }
-  .muscle-focused.detail-open .body-hud-value > strong {
+  :is(.muscle-focused, .mode-exercise).detail-open .body-hud-value > strong {
     font-size: 24px;
   }
-  .muscle-focused.detail-open .body-hud-value .hud-date {
+  :is(.muscle-focused, .mode-exercise).detail-open .body-hud-value .hud-date {
     font-size: 13px;
   }
-  .muscle-focused.detail-open .body-hud-value .hud-action-name {
+  :is(.muscle-focused, .mode-exercise).detail-open .body-hud-value .hud-action-name {
     font-size: 12px;
   }
 }

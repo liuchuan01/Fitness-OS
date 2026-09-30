@@ -40,7 +40,7 @@ export function BodyViewer3D({
   muscles,
   selectedMuscle,
   onMuscleSelect,
-  exerciseTargets,
+  exerciseTargets, exerciseName, onResetFocus,
   projectionLabel,
   onExplorationChange
 }: BodyViewer3DProps) {
@@ -69,7 +69,7 @@ export function BodyViewer3D({
   const [transitioning, setTransitioning] = useState(false);
   const [professionalMode, setProfessionalMode] = useState(false);
   const rotating =
-    modelReady && motion.visible && !motion.dragging && !exploring && !selectedMuscle && !transitioning;
+    modelReady && motion.visible && !motion.dragging && !exploring && !selectedMuscle && !exerciseTargets && !transitioning;
   const externallySelected = useMemo(
     () =>
       new Set([
@@ -165,10 +165,10 @@ export function BodyViewer3D({
         <IconButton
           label="重置视角"
           icon={RotateCcw}
-          onClick={() => setResetToken((value) => value + 1)}
+          onClick={() => { onResetFocus?.(); setResetToken((value) => value + 1); }}
         />
-        {selected.size > 0 && (
-          <IconButton label="清除选择" icon={X} onClick={() => onMuscleSelect(null)} />
+        {(selected.size > 0 || exerciseTargets) && (
+          <IconButton label="清除选择" icon={X} onClick={() => onResetFocus ? onResetFocus() : onMuscleSelect(null)} />
         )}
         <IconButton
           label={professionalMode ? "普通模式" : "专业模式"}
@@ -181,7 +181,7 @@ export function BodyViewer3D({
       <Canvas
         frameloop="demand"
         onPointerMissed={(event) => {
-          if (event.type === "click") onMuscleSelect(null);
+          if (event.type === "click") { if (selectedMuscle) onMuscleSelect(null); else onResetFocus?.(); }
         }}
         aria-label="Interactive 3D body"
         className="body-3d-canvas"
@@ -189,10 +189,10 @@ export function BodyViewer3D({
         dpr={[1, 1.25]}
         gl={{ antialias: true, preserveDrawingBuffer: true }}
       >
-        {selectedMuscle && modelReady && (
+        {(selectedMuscle || exerciseName) && modelReady && (
           <MuscleBackdrop
-            label={muscleLabels[selectedMuscle]}
-            anatomicalName={muscleBackdropNames[selectedMuscle]}
+            label={exerciseName ?? muscleLabels[selectedMuscle!]}
+            anatomicalName={exerciseName ? "MOVEMENT STUDY" : muscleBackdropNames[selectedMuscle!]}
             color={palette.muted}
           />
         )}
@@ -223,7 +223,7 @@ export function BodyViewer3D({
             ) : null}
           </Suspense>
         </BodyMotion>
-        <FocusCameraRig selected={selectedMuscle} ready={modelReady} reducedMotion={motion.reducedMotion} resetToken={resetToken} onTransition={setTransitioning} />
+        <FocusCameraRig selected={selectedMuscle} exerciseTargets={exerciseTargets} ready={modelReady} reducedMotion={motion.reducedMotion} resetToken={resetToken} onTransition={setTransitioning} />
         <OrbitControls
           enableDamping
           onStart={() => motion.setDragging(true)}

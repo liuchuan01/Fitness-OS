@@ -1,4 +1,6 @@
 import { useHudFocusTransition } from "./useHudFocusTransition";
+import { ExerciseHud } from "./ExerciseHud";
+import type { ExerciseViewModel } from "../../../shared/fitness/projection";
 import { HudCard } from "./HudCard";
 import { OverviewHud } from "./OverviewHud";
 import type { DailyWorkout, DashboardResponse } from "../../api/client";
@@ -9,6 +11,7 @@ type DashboardMetricsProps = {
   mode: string;
   dashboard: DashboardResponse["projection"] | null;
   dailyWorkout: DailyWorkout | null;
+  exercise?: ExerciseViewModel;
   focus?: {
     label: string;
     history: MuscleHistory | null;
@@ -16,15 +19,15 @@ type DashboardMetricsProps = {
   } | null;
 };
 
-export function DashboardMetrics({ mode, dashboard, dailyWorkout, focus }: DashboardMetricsProps) {
-  const hudRef = useHudFocusTransition(Boolean(focus));
+export function DashboardMetrics({ mode, dashboard, dailyWorkout, focus, exercise }: DashboardMetricsProps) {
+  const hudRef = useHudFocusTransition(Boolean(focus || exercise));
   const history = focus?.history;
   const placeholder = focus?.status === "error" ? "暂不可用" : "读取中";
   return (
     <div
       ref={hudRef}
-      className={`dashboard-hud body-hud ${focus ? "body-hud-focused" : mode === "overview" ? "body-hud-overview" : ""}`}
-      aria-label={focus ? "肌肉概览 HUD" : mode === "overview" ? "首页身体数据" : "当日训练 HUD"}
+      className={`dashboard-hud body-hud ${focus || exercise ? "body-hud-focused" : mode === "overview" ? "body-hud-overview" : ""}`}
+      aria-label={focus ? "肌肉概览 HUD" : exercise ? "动作概览 HUD" : mode === "overview" ? "首页身体数据" : "当日训练 HUD"}
     >
       {focus ? (
         <>
@@ -61,6 +64,8 @@ export function DashboardMetrics({ mode, dashboard, dailyWorkout, focus }: Dashb
             </strong>
           </HudCard>
         </>
+      ) : exercise ? (
+        <ExerciseHud exercise={exercise} date={dailyWorkout?.date} />
       ) : mode === "overview" ? (
         <OverviewHud dashboard={dashboard} />
       ) : (

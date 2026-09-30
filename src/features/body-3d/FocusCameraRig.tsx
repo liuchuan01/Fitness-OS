@@ -2,6 +2,7 @@ import { focusTransitionTiming, publishFocusFrame } from "../../design/focus-tra
 import { useFrame, useThree } from "@react-three/fiber";
 import { useLayoutEffect, useRef } from "react";
 import { Box3, MathUtils, Mesh, PerspectiveCamera, Vector3 } from "three";
+import type { BodyViewer3DProps } from "./types";
 import type { MuscleId } from "../../../shared/muscle-taxonomy";
 
 type Controls = {
@@ -24,6 +25,7 @@ type Transition = {
 };
 type FocusCameraRigProps = {
   selected: MuscleId | null;
+  exerciseTargets?: BodyViewer3DProps["exerciseTargets"];
   ready: boolean;
   reducedMotion: boolean;
   resetToken: number;
@@ -36,6 +38,7 @@ const ease = (value: number) => {
 
 export function FocusCameraRig({
   selected,
+  exerciseTargets,
   ready,
   reducedMotion,
   resetToken,
@@ -77,7 +80,7 @@ export function FocusCameraRig({
     }
     if (!ready) return;
     if (!home.current) home.current = pose();
-    const focusing = Boolean(selected && desktop);
+    const focusing = Boolean((selected || exerciseTargets) && desktop);
     const base = home.current;
     const destination = { target: base.target.clone(), offset: base.offset.clone() };
     if (focusing) {
@@ -86,7 +89,9 @@ export function FocusCameraRig({
       scene.traverse((node) => {
         if (
           node instanceof Mesh &&
-          node.userData.taxonomyMuscleId === selected &&
+          (selected
+            ? node.userData.taxonomyMuscleId === selected
+            : exerciseTargets?.primaryMuscles.includes(node.userData.taxonomyMuscleId)) &&
           !node.name.endsWith(".depth")
         ) {
           bounds.expandByObject(node);
@@ -142,6 +147,7 @@ export function FocusCameraRig({
     reducedMotion,
     resetToken,
     selected,
+    exerciseTargets,
     size.width,
     size.height,
     scene,

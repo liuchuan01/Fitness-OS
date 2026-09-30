@@ -108,7 +108,7 @@ for (const theme of ["neon", "graphite"]) {
     await page.getByRole("button", { name: "重置视角" }).click();
     await capture("overview");
     await choose(page, "手臂", "肱三头肌外侧头");
-    await page.getByRole("button", { name: "重置视角" }).click();
+    await expect(page.locator(".body-3d-shell")).toHaveAttribute("data-focus-motion", "idle");
     await page.mouse.move(0, 0);
     await expect(page.locator(".selection-panel")).toHaveCount(0);
     for (const [width, height] of [
@@ -118,6 +118,11 @@ for (const theme of ["neon", "graphite"]) {
     ]) {
       await page.setViewportSize({ width, height });
       await page.waitForTimeout(200);
+      // This is a pixel/occlusion review, not a wall-clock animation benchmark. Software
+      // WebGL can need several seconds per rendered frame at the largest viewport.
+      await page.waitForFunction(() =>
+        document.querySelector<HTMLElement>(".body-3d-shell")?.dataset.focusMotion === "idle"
+      );
       const comparison = await compareBackdrop(page);
       expect(comparison.visibleText).toBeGreaterThan(1000);
       expect(comparison.overwrittenBody).toBe(0);
@@ -135,6 +140,11 @@ for (const theme of ["neon", "graphite"]) {
     ]) {
       await page.setViewportSize({ width, height });
       await page.waitForTimeout(200);
+      // This is a pixel/occlusion review, not a wall-clock animation benchmark. Software
+      // WebGL can need several seconds per rendered frame at the largest viewport.
+      await page.waitForFunction(() =>
+        document.querySelector<HTMLElement>(".body-3d-shell")?.dataset.focusMotion === "idle"
+      );
       await capture(`${width}-short-name`);
     }
     await page.getByLabel("相关动作选择").getByRole("button").first().click();

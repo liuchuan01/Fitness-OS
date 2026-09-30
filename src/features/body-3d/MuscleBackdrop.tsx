@@ -32,7 +32,7 @@ export function MuscleBackdrop({ label, anatomicalName, color }: MuscleBackdropP
     if (size.width < 700 || window.innerWidth <= 1100) return null;
     const fontSize = Math.min(148, Math.max(66, size.width * 0.086), size.height * 0.148);
     const left = 42;
-    const height = Math.ceil(fontSize * 1.7);
+    const height = Math.ceil(fontSize * 3.7);
     const width = Math.ceil(size.width * 0.66 - left);
     const canvas = document.createElement("canvas");
     // A bounded texture, regenerated only for selection or viewport changes; no per-frame work.
@@ -44,14 +44,39 @@ export function MuscleBackdrop({ label, anatomicalName, color }: MuscleBackdropP
     context.font = `600 ${fontSize}px ${getComputedStyle(document.documentElement).fontFamily}`;
     context.fillStyle = color;
     context.textBaseline = "alphabetic";
-    context.fillText(label.split(" / ")[0], 0, fontSize * 0.9);
+    const available = width - fontSize * 0.65;
+    const lines = (text: string, limit: number, words: boolean) => {
+      const result: string[] = [];
+      let line = "";
+      for (const part of words ? text.split(/\s+/) : [...text]) {
+        const next = line ? `${line}${words ? " " : ""}${part}` : part;
+        if (line && context.measureText(next).width > limit) {
+          result.push(line);
+          line = part;
+        } else line = next;
+      }
+      if (line) result.push(line);
+      return result;
+    };
+    let baseline = fontSize * 0.9;
+    const title = label.split(" / ")[0];
+    const titleLines = [...title].length <= 10 ? [title] : lines(title, available, false);
+    for (const line of titleLines) {
+      context.fillText(line, 0, baseline, available);
+      baseline += fontSize * 1.02;
+    }
     const secondarySize = fontSize * 0.62;
     context.font = `600 ${secondarySize}px "Arial Narrow", "Liberation Sans Narrow", "Helvetica Neue", sans-serif`;
     context.globalAlpha = 0.7;
-    let cursor = fontSize * 0.45;
-    for (const letter of anatomicalName) {
-      context.fillText(letter, cursor, fontSize * 1.49);
-      cursor += context.measureText(letter).width + secondarySize * 0.035;
+    const indent = fontSize * 0.45;
+    const secondaryWidth = available - indent;
+    baseline -= fontSize * 0.43;
+    const secondaryLines = anatomicalName
+      .split(" · ")
+      .flatMap((part) => lines(part, secondaryWidth, true));
+    for (const line of secondaryLines) {
+      context.fillText(line, indent, baseline, secondaryWidth);
+      baseline += secondarySize * 1.02;
     }
     // Let long names recede into the body instead of ending on a hard rectangular edge.
     context.globalAlpha = 1;
@@ -68,7 +93,7 @@ export function MuscleBackdrop({ label, anatomicalName, color }: MuscleBackdropP
       texture,
       bounds: new Vector4(
         (2 * left + width) / size.width - 1,
-        1 - 2 * 0.48,
+        1 - 2 * (0.48 + (height - fontSize * 1.7) / 2 / size.height),
         width / size.width,
         height / size.height
       )
