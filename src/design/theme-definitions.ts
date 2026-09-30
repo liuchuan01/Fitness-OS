@@ -53,7 +53,3 @@ export const appThemes: Record<ThemeId, ThemeDefinition> = {
     }
   }
 };
-export const neonScales = {
-  cyan: { strong: neon.accent, medium: neon["accent-mid"], muted: neon["accent-muted"] },
-  magenta: { strong: neon.selection, medium: neon["selection-mid"], muted: neon["selection-muted"] }
-};

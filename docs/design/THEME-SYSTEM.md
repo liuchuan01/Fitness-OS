@@ -14,7 +14,7 @@
 
 主站取消“强调光效”开关，Neon 固定启用控件光晕及重点肌肉自发光，Graphite 保持无控件霓虹。旧 `glowEnabled: false` 存储自动归一为 true，保留主题选择；v1 存储字段暂留兼容。四角 HUD 使用共享 quiet 毛玻璃；展开时加深底色，保持人体优先。
 
-`/design-lab.html` 保留独立色卡／材质比较：真实 GLB 与 DOM 同步切换，控件光晕和材质自发光分别开关，用于诊断；它不写训练数据，也不承担外部主题导入。本轮未实现屏幕空间 Bloom、Agent iframe 主题同步或本地 JSON 包导入。iframe 内部 CSS 与 `ctx.theme.overrideTokens` 仍是独立边界，父页面换肤不能视为 Agent 全部换肤。
+独立色卡／材质比较 demo 已于 2026-09-30 按用户要求移除，生产构建只输出主站入口；正式主题、设置页示意预览及人体配色保留。本轮未实现屏幕空间 Bloom、Agent iframe 主题同步或本地 JSON 包导入。iframe 内部 CSS 与 `ctx.theme.overrideTokens` 仍是独立边界，父页面换肤不能视为 Agent 全部换肤。
 
 ## 2. 青／洋红方向板
 
@@ -144,7 +144,7 @@ Agent 通过现有可信 origin/source 校验的桥接机制扩展独立主题�
 
 ## 7. 历史样板验证记录
 
-以下为此前样板阶段的记录，保留当时的范围描述，不代表当前主站全量验证结果。
+以下为此前样板阶段的记录，保留当时的范围描述，不代表当前主站全量验证结果。相关 demo 入口与专用测试已于 2026-09-30 移除，以下 URL 不再作为操作入口。
 
 - 样板入口：启动 `npm run dev:web` 后访问 `http://127.0.0.1:5173/design-lab.html`，不依赖业务服务。生产构建也输出独立 `design-lab.html`，主站仍使用原主题。
 - 已审阅 Neon 桌面提案（历史截图路径：`../visual-regression/theme-lab/neon-desktop.png`，附件已移除）、Graphite 桌面对照（历史截图路径：`../visual-regression/theme-lab/graphite-desktop.png`，附件已移除）、Neon 手机提案（历史截图路径：`../visual-regression/theme-lab/neon-mobile.png`，附件已移除）。这些图的状态为 draft，不覆盖现有 approved 基线。

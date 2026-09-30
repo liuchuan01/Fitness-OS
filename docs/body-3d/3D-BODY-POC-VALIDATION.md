@@ -132,3 +132,7 @@ view, responsive layout, compression, and static asset budgets are validated.
 ## 当前身体探索与运动实现
 
 默认自转已恢复：`BodyMotion` 在 demand Canvas 上以不高于 24 Hz 调度模型组旋转，DPR 上限 1.25；探索、肌肉焦点、拖动期间暂停，后台不自动调度，reduced-motion 降低旋转速度而不禁止启动；删除播放／暂停按钮。运动调度由独立定时器请求 demand 绘制，不依赖上一渲染帧续接；角速度按实际帧间隔计算。分区预览只更新材质，不重建几何或修改领域强度。重置视角同时归零模型旋转。`tests/e2e/body-explorer.spec.ts` 使用实际 WebGL 像素变化验证旋转／静止／恢复，并覆盖两层 HUD、手机长列表点选与四角数据可见性。限频是资源控制策略，不宣称所有设备实测达到 24 FPS。
+
+## 2026-09-30 独立预览清理
+
+按用户要求删除 `3d-muscles/viewer.html`（CDN Three 独立预览）及设计实验专用 BodyStylePreview。GLB、manifest、contract、source map、来源许可、Blender 导出和三项校验脚本保留；后续人体浏览器验收统一使用正式 R3F 主站与 `tests/e2e/body-*.spec.ts`，历史研究中的 viewer URL 不再是操作入口。未改变模型资产或正式材质实现。

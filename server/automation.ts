@@ -72,15 +72,6 @@ export type AutomationProjection = {
   state: AutomationState;
   next_run_at?: string;
 };
-export const defaultSchedule: AutomationSchedule = {
-  schema_version: 1,
-  daily_plan: {
-    enabled: false,
-    local_time: "09:00",
-    time_zone: "Asia/Shanghai",
-    missed_run_policy: "run_once"
-  }
-};
 const emptyState: AutomationState = { schema_version: 2, daily_plan: {} };
 const retryDelaysMs = [60_000, 300_000] as const;
 

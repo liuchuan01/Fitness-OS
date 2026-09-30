@@ -39,7 +39,6 @@ async function checkThemeStyles() {
     "src/styles.css",
     "src/components/icon-button.css",
     "src/components/glass-card.css",
-    "src/features/design-lab/gradient-study.css",
     "src/features/body-3d/body-viewer.css",
     "src/features/chat/session-history.css",
     ...dashboardFiles

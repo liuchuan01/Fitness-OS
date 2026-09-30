@@ -2,12 +2,6 @@ import { setSchema, planSetSchema } from "../../shared/fitness/schema";
 import { z } from "zod";
 import { muscleIds } from "../../shared/muscle-taxonomy";
 
-export const healthSchema = z.object({
-  ok: z.literal(true),
-  service: z.literal("local-app-service"),
-  version: z.string()
-});
-
 const muscleVisualStateSchema = z.object({
   muscleId: z.enum(muscleIds),
   labelZh: z.string(),
@@ -150,7 +144,6 @@ export const planResponseSchema = z.object({
   sourcePlanFile: z.string()
 });
 
-export type HealthResponse = z.infer<typeof healthSchema>;
 export type DashboardResponse = z.infer<typeof dashboardResponseSchema>;
 export type TimelineWorkout = z.infer<typeof timelineWorkoutSchema>;
 export type DailyWorkout = z.infer<typeof dailyWorkoutSchema>;

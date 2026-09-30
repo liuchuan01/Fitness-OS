@@ -91,7 +91,6 @@ const finishWorkoutInputSchema = z.object({
     .default({})
 });
 
-export type FinishWorkoutInput = z.input<typeof finishWorkoutInputSchema>;
 
 export type FinishedWorkout = {
   workout: Workout;

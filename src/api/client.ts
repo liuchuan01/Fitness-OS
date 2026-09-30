@@ -2,7 +2,6 @@ import { ApiError, getJson, postJson, putJson } from "./http";
 import {
   dailyWorkoutResponseSchema,
   dashboardResponseSchema,
-  healthSchema,
   planResponseSchema,
   timelineResponseSchema
 } from "./schemas";
@@ -11,14 +10,7 @@ import {
   runAutomationResponseSchema,
   saveAutomationResponseSchema
 } from "./automation-schemas";
-import type {
-  DailyWorkout,
-  DashboardResponse,
-  HealthResponse,
-  PlanResponse,
-  TimelineWorkout,
-  TodayPlan
-} from "./schemas";
+import type { DailyWorkout, DashboardResponse, TimelineWorkout, TodayPlan } from "./schemas";
 import type { AutomationResponse } from "./automation-schemas";
 import { dshWebResponseSchema } from "./dsh-web-schemas";
 import { agentSettingsResponseSchema, type AgentSettings } from "./agent-settings-schemas";
@@ -32,24 +24,13 @@ export async function saveModelSettings(apiKey: string) {
   return (await putJson("/api/model/settings", { apiKey }, modelSettingsResponseSchema)).settings;
 }
 
-export type {
-  DailyWorkout,
-  DashboardResponse,
-  HealthResponse,
-  PlanResponse,
-  TimelineWorkout,
-  TodayPlan
-} from "./schemas";
+export type { DailyWorkout, DashboardResponse, TimelineWorkout, TodayPlan } from "./schemas";
 export type { AutomationResponse } from "./automation-schemas";
 export type { AgentSettings } from "./agent-settings-schemas";
 
 type RequestOptions = {
   signal?: AbortSignal;
 };
-
-export function getHealth(options?: RequestOptions): Promise<HealthResponse> {
-  return getJson("/api/health", healthSchema, options);
-}
 
 export function getDashboard(options?: RequestOptions): Promise<DashboardResponse> {
   return getJson("/api/dashboard", dashboardResponseSchema, options);
@@ -93,18 +74,6 @@ export async function getTodayPlan(
 
   try {
     return (await getJson(`/api/plans/today${suffix}`, planResponseSchema, options)).plan;
-  } catch (error) {
-    if (error instanceof ApiError && error.status === 404) return null;
-    throw error;
-  }
-}
-
-export async function getPlan(
-  date: string,
-  options?: RequestOptions
-): Promise<PlanResponse | null> {
-  try {
-    return await getJson(`/api/plans/${encodeURIComponent(date)}`, planResponseSchema, options);
   } catch (error) {
     if (error instanceof ApiError && error.status === 404) return null;
     throw error;
