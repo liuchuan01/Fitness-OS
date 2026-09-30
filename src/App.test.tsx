@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { subscribeDataChanges } from "./api/data-sync";
 vi.mock("./api/data-sync", () => ({ subscribeDataChanges: vi.fn(() => () => {}) }));
@@ -264,9 +264,52 @@ describe("App", () => {
     fireEvent.click(await screen.findByRole("button", { name: /Pull Day/ }));
 
     expect(await screen.findByText("Daily workout · 2026-06-19")).toBeInTheDocument();
+    expect(screen.queryByLabelText("今日计划")).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "收起训练时间线" })).toBeInTheDocument();
     expect(screen.getByLabelText("Search workouts")).toBeInTheDocument();
   });
+
+  it.each([false, true])(
+    "shows today's plan after selecting today (workout: %s)",
+    async (hasWorkout) => {
+      const original = fetch;
+      vi.stubGlobal(
+        "fetch",
+        vi.fn((input: RequestInfo | URL, init?: RequestInit) =>
+          String(input).includes("/api/workouts/2026-06-20")
+            ? Promise.resolve(
+                hasWorkout
+                  ? Response.json({
+                      ok: true,
+                      workout: {
+                        id: "workout-2026-06-20",
+                        date: "2026-06-20",
+                        title: "今日已完成训练",
+                        totalSets: 3,
+                        totalVolumeKg: 240,
+                        readiness: {},
+                        blocks: [],
+                        bodyProjection: []
+                      }
+                    })
+                  : Response.json({ error: "Not found" }, { status: 404 })
+              )
+            : original(input, init)
+        )
+      );
+      render(<App />);
+      await screen.findByRole("button", { name: "查看完整计划" });
+      fireEvent.click(screen.getByRole("button", { name: "展开训练时间线" }));
+      fireEvent.click(screen.getByRole("button", { name: /今天/ }));
+      const insights = within(screen.getByLabelText("Training insights"));
+      expect(
+        await insights.findByText(hasWorkout ? "今日已完成训练" : "当天没有训练记录")
+      ).toBeVisible();
+      expect(insights.getByLabelText("今日计划")).toHaveTextContent(todayPlanResponse.plan.title);
+      fireEvent.click(insights.getByRole("button", { name: "查看完整计划" }));
+      expect(screen.getByLabelText("今日计划详情")).toBeVisible();
+    }
+  );
 
   it("opens the full today plan and copies every set", async () => {
     const writeText = vi.fn(async () => undefined);

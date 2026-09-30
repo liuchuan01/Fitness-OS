@@ -321,3 +321,53 @@ test("loads the interactive 3D body smoke view", async ({ page }) => {
     fullPage: true
   });
 });
+
+for (const viewport of [
+  { width: 1440, height: 900 },
+  { width: 390, height: 844 }
+]) {
+  test(`shows today's plan from the timeline at ${viewport.width}px`, async ({
+    page
+  }, testInfo) => {
+    await page.setViewportSize(viewport);
+    await page.route("**/api/dashboard", async (route) => {
+      const response = await route.fetch();
+      const body = await response.json();
+      body.projection.date = "2026-06-20";
+      await route.fulfill({ json: body });
+    });
+    await page.route("**/api/workouts/2026-06-20", (route) =>
+      route.fulfill({ status: 404, json: { error: "Not found" } })
+    );
+    await page.goto("/");
+    const plan = page.getByRole("region", { name: "今日计划", exact: true });
+    await expect(plan.getByRole("button", { name: "查看完整计划" })).toBeAttached();
+    const title = await plan.locator(".plan-card-heading strong").textContent();
+    await page
+      .getByRole("button", {
+        name: viewport.width < 600 ? "训练记录" : "展开训练时间线",
+        exact: true
+      })
+      .click();
+    await page.getByRole("button", { name: /今天/ }).click();
+    await expect(page.getByText("当天没有训练记录")).toBeVisible();
+    // Close the mobile drawer so the detail sheet can be reviewed and used.
+    await page.getByRole("button", { name: "收起训练时间线" }).click();
+    await expect(plan).toContainText(title ?? "");
+    await expect(plan.getByRole("button", { name: "查看完整计划" })).toBeVisible();
+    await expect(page.getByLabel("3D model status")).toContainText("Model ready", {
+      timeout: 20_000
+    });
+    await page.evaluate(() => {
+      Object.defineProperty(document, "hidden", { configurable: true, value: true });
+      document.dispatchEvent(new Event("visibilitychange"));
+    });
+    await page.screenshot({
+      path: testInfo.outputPath("timeline-today-plan.png"),
+      animations: "disabled"
+    });
+    await plan.getByRole("button", { name: "查看完整计划" }).click();
+    await expect(page.getByLabel("今日计划详情")).toBeVisible();
+    await expect(page.locator(".plan-document-header h1")).toHaveText(title ?? "");
+  });
+}
