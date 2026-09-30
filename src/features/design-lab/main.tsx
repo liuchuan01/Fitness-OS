@@ -4,6 +4,8 @@ import { ArrowUpRight, Crosshair, RotateCcw } from "lucide-react";
 import { themes, neonScales, colorLevels, levelLabels, type ColorLevel } from "./themes";
 import "./visual-lab.css";
 
+const GradientStudy = lazy(() => import("./GradientStudy"));
+
 const BodyPreview = lazy(() => import("../body-3d/BodyStylePreview"));
 
 function VisualLab() {
@@ -42,7 +44,7 @@ function VisualLab() {
     <main className="visual-lab" style={style}>
       <header>
         <a href="/">AF / FITNESS OS</a>
-        <span>VISUAL STUDY · 03</span>
+        <a href="/design-lab.html?study=gradient">青 → 洋红渐变提案</a>
         <span className="draft">方向已认可 · 色阶待确认</span>
       </header>
       <section className="lab-intro">
@@ -255,4 +257,12 @@ function VisualLab() {
   );
 }
 
-createRoot(document.getElementById("root")!).render(<VisualLab />);
+createRoot(document.getElementById("root")!).render(
+  new URLSearchParams(window.location.search).get("study") === "gradient" ? (
+    <Suspense fallback={<p>正在准备色卡…</p>}>
+      <GradientStudy />
+    </Suspense>
+  ) : (
+    <VisualLab />
+  )
+);
