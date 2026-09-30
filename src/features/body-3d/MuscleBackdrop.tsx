@@ -16,24 +16,24 @@ const fragmentShader = `
   uniform sampler2D lettering;
   uniform vec3 ink;
   void main() {
-    float alpha = texture2D(lettering, vUv).a * 0.18;
+    float alpha = texture2D(lettering, vUv).a * 0.16;
     if (alpha < 0.001) discard;
     gl_FragColor = vec4(ink, alpha);
     #include <colorspace_fragment>
   }
 `;
 
-type MuscleBackdropProps = { label: string; color: string };
+type MuscleBackdropProps = { label: string; anatomicalName: string; color: string };
 
 /** Decorative only: the complete accessible name lives in the canvas title and history panel. */
-export function MuscleBackdrop({ label, color }: MuscleBackdropProps) {
+export function MuscleBackdrop({ label, anatomicalName, color }: MuscleBackdropProps) {
   const { size, invalidate } = useThree();
   const lettering = useMemo(() => {
     if (size.width < 700 || window.innerWidth <= 1100) return null;
-    const fontSize = Math.min(180, Math.max(80, size.width * 0.105), size.height * 0.18);
+    const fontSize = Math.min(148, Math.max(66, size.width * 0.086), size.height * 0.148);
     const left = 42;
-    const height = Math.ceil(fontSize * 1.5);
-    const width = Math.ceil(Math.min(label.length * fontSize + 8, size.width * 0.66 - left));
+    const height = Math.ceil(fontSize * 1.7);
+    const width = Math.ceil(size.width * 0.66 - left);
     const canvas = document.createElement("canvas");
     // A bounded texture, regenerated only for selection or viewport changes; no per-frame work.
     canvas.width = width * 2;
@@ -43,8 +43,24 @@ export function MuscleBackdrop({ label, color }: MuscleBackdropProps) {
     context.scale(2, 2);
     context.font = `600 ${fontSize}px ${getComputedStyle(document.documentElement).fontFamily}`;
     context.fillStyle = color;
-    context.textBaseline = "middle";
-    context.fillText(label, 0, height / 2);
+    context.textBaseline = "alphabetic";
+    context.fillText(label.split(" / ")[0], 0, fontSize * 0.9);
+    const secondarySize = fontSize * 0.62;
+    context.font = `600 ${secondarySize}px "Arial Narrow", "Liberation Sans Narrow", "Helvetica Neue", sans-serif`;
+    context.globalAlpha = 0.7;
+    let cursor = fontSize * 0.45;
+    for (const letter of anatomicalName) {
+      context.fillText(letter, cursor, fontSize * 1.49);
+      cursor += context.measureText(letter).width + secondarySize * 0.035;
+    }
+    // Let long names recede into the body instead of ending on a hard rectangular edge.
+    context.globalAlpha = 1;
+    context.globalCompositeOperation = "destination-in";
+    const edge = context.createLinearGradient(width - fontSize * 0.8, 0, width, 0);
+    edge.addColorStop(0, color);
+    edge.addColorStop(1, "transparent");
+    context.fillStyle = edge;
+    context.fillRect(0, 0, width, height);
     const texture = new CanvasTexture(canvas);
     texture.minFilter = LinearFilter;
     texture.generateMipmaps = false;
@@ -57,7 +73,7 @@ export function MuscleBackdrop({ label, color }: MuscleBackdropProps) {
         height / size.height
       )
     };
-  }, [label, color, size.width, size.height]);
+  }, [label, anatomicalName, color, size.width, size.height]);
   const uniforms = useMemo(
     () =>
       lettering

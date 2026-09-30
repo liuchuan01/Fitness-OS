@@ -252,6 +252,15 @@ lint、lint:design、lint:architecture、typecheck、完整 build 与 diff 空�
 
 lint、lint:architecture、lint:design、typecheck、完整 build 和 diff 空白检查通过；新增样板 CSS 已纳入颜色来源检查，候选色值集中在独立 TS 模块。新增 1 项浏览器测试验证三方案、两端色、滑杆键盘、色卡点选、390／320 宽度、无业务请求／GLB 请求及不写偏好；既有 2 项设计样板回归通过，原 GLB／主题／光效操作保持可用。构建保留既有 Three 大分包提示。未运行全量业务 E2E 或生产部署；仅提交独立 demo。
 
+
+## 2026-09-30 肌肉焦点双语海报排版
+
+在原背景大字上增加大写解剖名称：中文缩小约 18%，次行为中文 62% 字高、70% 透明度，向右错开 0.45 个中文字并紧密叠放，末端渐隐。67 项名称有完整类型映射；拉丁肌肉词干与英文训练分区明确区分，前臂集合使用英文。正文、正式分类及模型资产不变。契约见 DESIGN 第 6.3.1 节。
+
+浏览器实际审图：Neon／Graphite，1440×900、1728×1117、2560×1440 长名称，1440×900／1728×1117 短名称，以及 390×844 手机档案。另检查总览、肌肉焦点动作预览和历史定位后的动作页；文字不覆盖肌肉表面、不侵占 HUD／对话入口，手机隐藏背景文字。采用隔离训练 fixture，浏览器时钟固定 2026-06-21；服务端首页投影仍按运行日期 2026-09-30，历史定位进入 2026-06-19，不将浏览器时钟误称为固定服务端日期。模型就绪后暂停旋转、截图前显式绘制当前场景。证据：`test-results/visual-regression/muscle-poster-bilingual/{neon,graphite}/`。模拟 CSS 视口，不代表真实 Mac／Safari 字体与缩放验收。
+
+验证：lint、lint:design、lint:architecture、typecheck、完整 build 通过；58 项单元／组件测试、2 项双主题背景 E2E、全部三个 3D 校验通过。E2E 对三个桌面尺寸验证可见文字、人体内部零覆盖及真实遮挡，保留清除焦点、专业信息与手机无横向溢出检查。构建保留既有异步 Three chunk 体积提示。工作区另有并行配色改动，本轮仅负责双语背景排版；人体左移放大及 HUD 换位动画为用户新提出的待讨论方向，尚未实现。
+
 ## 2026-09-30 柔和桥接接入人体与负荷图例
 
 用户在三组色卡中选定柔和桥接，并要求左下角刺激／负荷说明同步使用色带。五个中间色提升为共享 `body-load-1…5` token，两端复用 accent／selection；样板和 Neon 人体使用同一 sRGB 通道插值。首页与训练日按现有 intensity 连续取色，零值／缺失保留灰色；Graphite、动作主练／参与、焦点覆盖、原有透明度／自发光与深度预绘制保留。领域 status、估算公式与用户数据未改。正式边界见 `DESIGN.md` 第 7.3 节。
@@ -261,3 +270,7 @@ lint、lint:architecture、lint:design、typecheck、完整 build 和 diff 空�
 固定 2026-06-21 与隔离 fixture，模型就绪后通过既有 visibility gate 暂停旋转。实际打开 Neon／Graphite 的 1440×900、390×844 截图，检查首页前后视角、训练日、动作、肌肉焦点；另用受控的零／低／中／高刺激投影确认实际 Three 材质颜色与同源色带一致。无数据仍灰色，低值偏青、中段呈雾蓝／灰紫、高值偏洋红，动作与焦点继续使用角色色。原训练日手机 Sheet 高度未改。截图包含并行的肌肉背景文字调整，不将其计入本轮配色实现。结果是待用户审阅的人体版本，不宣称全视角、全设备或完整 AA 验收。
 
 lint、lint:design、lint:architecture、typecheck、完整 build、58 项单元／组件（含 3 项颜色边界／插值／Graphite 回归）及三项 3D contract／runtime／source-map 检查通过。7 项聚焦 E2E 覆盖实际材质与图例、Neon／Graphite 旋转绘制顺序、选择器与 HUD 键盘／reduced-motion、空态／提示及色卡；最终图例避让和样板说明调整后相关两项复验通过。首次截图被并行测试清理，改在临时目录生成，再复制至已忽略的 `test-results/soft-load/`：`modes/` 保存模式／遮挡检查，`final/` 保存最终色带位置和色卡。最终首页截图以 `final/home-palette-*/overview-{expanded,mobile}.png` 为准。保留既有 Three 大分包及测试多实例提示；未执行全量业务集成、生产部署或真实模型调用。
+
+审图时发现原背景测试的主题存储 fixture 缺少必需的 `glowEnabled`，导致 Graphite 用例实际回退 Neon。本轮补齐字段并断言根节点 `data-theme`，再分别复验真实 Graphite 与 Neon；以上双主题结果以修正后的运行和截图为准。
+
+Neon 补验曾被外部终止（143），重试遇到共享 8788 端口占用；改用独立 8798／5188 后完整通过，临时配置已删除。

@@ -2,6 +2,7 @@ import { RotateCcw, X, ScanLine } from "lucide-react";
 import { IconButton } from "../../components/IconButton";
 import { useTheme } from "../../design/theme";
 import { MuscleBackdrop } from "./MuscleBackdrop";
+import { muscleBackdropNames } from "./muscle-backdrop-names";
 import { muscleLabels } from "../../../shared/muscle-taxonomy";
 import { BodyMotion } from "./BodyMotion";
 import { useBodyMotion } from "./useBodyMotion";
@@ -186,7 +187,11 @@ export function BodyViewer3D({
         gl={{ antialias: true, preserveDrawingBuffer: true }}
       >
         {selectedMuscle && modelReady && (
-          <MuscleBackdrop label={muscleLabels[selectedMuscle]} color={palette.muted} />
+          <MuscleBackdrop
+            label={muscleLabels[selectedMuscle]}
+            anatomicalName={muscleBackdropNames[selectedMuscle]}
+            color={palette.muted}
+          />
         )}
         <hemisphereLight args={[palette.text, palette.canvas, 0.9]} />
         <directionalLight position={[3, 5, 4]} color={palette.text} intensity={1.2} />

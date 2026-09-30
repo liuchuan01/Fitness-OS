@@ -78,13 +78,15 @@ for (const theme of ["neon", "graphite"]) {
   test(`${theme} background muscle name stays behind the body and leaves chat clear`, async ({
     page
   }, testInfo) => {
-    test.setTimeout(90_000);
+    test.setTimeout(120_000);
+    await page.clock.setFixedTime(new Date("2026-06-21T12:00:00Z"));
     await page.addInitScript((themeId) => {
-      localStorage.setItem("fitness:appearance:v1", JSON.stringify({ themeId }));
+      localStorage.setItem("fitness:appearance:v1", JSON.stringify({ themeId, glowEnabled: true }));
     }, theme);
     await page.setViewportSize({ width: 1728, height: 1117 });
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/");
+    await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
     await expect(page.getByLabel("3D model status")).toContainText("Model ready", {
       timeout: 20_000
     });
@@ -92,6 +94,19 @@ for (const theme of ["neon", "graphite"]) {
       Object.defineProperty(document, "hidden", { configurable: true, get: () => true });
       document.dispatchEvent(new Event("visibilitychange"));
     });
+    const capture = async (name: string) => {
+      await page.evaluate(async () => {
+        await document.fonts.ready;
+        const moduleUrl = "/node_modules/.vite/deps/@react-three_fiber.js";
+        const { _roots } = (await import(moduleUrl)) as typeof Fiber;
+        const canvas = document.querySelector<HTMLCanvasElement>(".body-3d-shell canvas")!;
+        const state = _roots.get(canvas)!.store.getState();
+        state.gl.render(state.scene, state.camera);
+      });
+      await page.screenshot({ path: testInfo.outputPath(`${name}.png`) });
+    };
+    await page.getByRole("button", { name: "重置视角" }).click();
+    await capture("overview");
     await choose(page, "手臂", "肱三头肌外侧头");
     await page.getByRole("button", { name: "重置视角" }).click();
     await page.mouse.move(0, 0);
@@ -114,6 +129,19 @@ for (const theme of ["neon", "graphite"]) {
     }
     await choose(page, "背部", "背阔肌");
     await expect(page.locator(".canvas-context")).toContainText("背阔肌");
+    for (const [width, height] of [
+      [1440, 900],
+      [1728, 1117]
+    ]) {
+      await page.setViewportSize({ width, height });
+      await page.waitForTimeout(200);
+      await capture(`${width}-short-name`);
+    }
+    await page.getByLabel("相关动作选择").getByRole("button").first().click();
+    await capture("exercise");
+    await page.locator(".muscle-history-link").first().click();
+    await page.locator('.exercise-card[aria-pressed="true"]').waitFor();
+    await capture("day");
     await choose(page, "背部", "下段竖脊肌");
     await expect(page.getByLabel("模型覆盖说明")).toContainText("模型近似显示");
     await page.getByRole("button", { name: "专业模式", exact: true }).click();
