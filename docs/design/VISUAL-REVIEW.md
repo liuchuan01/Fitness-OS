@@ -150,3 +150,17 @@ VISUAL_THEME=graphite VISUAL_OUTPUT=test-results/visual-regression/main-themes/g
 使用隔离测试工作区与 2026-06-20 计划夹具，在桌面 1440×900、手机 390×844 验证“时间线 → 今天 → 查看完整计划”。模型加载完成后通过页面隐藏调度门暂停自转再截图，已实际审阅计划卡片、文本、入口和手机 Sheet，未发现本次新增遮挡或横向溢出。截图保存在 `test-results/app-shows-today-s-plan-from-the-timeline-at-{1440,390}px-chromium/timeline-today-plan.png`，不提交截图。
 
 验证：新增测试先复现今日计划缺失；修复后 52 项单元／组件测试通过，覆盖今日有／无 workout 及历史日期隔离。5 项相关浏览器用例通过，包含桌面／手机今日计划、历史训练动作、无训练空态和完整计划复制。lint、架构检查、设计 token 检查、typecheck、完整 build 通过；仍有既有 Three 分包体积及测试多实例提示。本轮未运行真实模型或改写个人数据。
+
+## 2026-09-30 人体旋转遮挡修复
+
+本轮属于身体探索／视觉一致性缺陷修复。Overview、Day、Exercise 与 Muscle Focus 继续使用同一套主题和材质状态；新增加的肌肉深度预绘制决定每个像素最近的肌肉表面，消除透明网格前后排序带来的面积性混色。皮肤不写深度，保留低对比轮廓。颜色使用单次双面绘制，避免再次混入背面。显隐与拾取规则、模型几何、训练数据与自转速度未改动。正式规则见 `DESIGN.md` 第 6.4 节。
+
+使用隔离 fixture、固定日期 2026-06-21；Neon / Graphite 两套主题均验证实际生效。模型加载完成后通过既有页面隐藏调度门暂停自转，测试通过挂载的 renderer 固定视角，不新增生产调试接口。桌面 1440×900 检查正面、侧面、背面左右斜角及背面前后各 0.04 弧度；手机 390×844 检查背面概览和训练日／动作／焦点。reduced-motion 开启；既有 `body-explorer` 用例另行验证真实旋转像素、暂停、恢复、键盘关闭和手机点选。
+
+截图已实际打开检查：背阔肌、臀部、肩／上臂、腿部的负荷颜色保持表面覆盖，背面相邻视角没有原先整块突然变暗的混色；焦点与主练／参与颜色可辨认，四肢、头部与皮肤轮廓完整，手机概览与焦点 Sheet 上方保留身体。手机 Day 展开的既有高面板会覆盖大部分身体，本轮比较的是其底层 framebuffer，不把该截图算作布局验收，也未改动面板布局。原资产的三角面、凹凸与几何缝隙仍可见，本轮未平滑或修补几何。选中背阔肌仍可读取档案，真实网格点击、清除、分区探索、主题切换的相关回归通过。
+
+新回归 `tests/e2e/body-occlusion.spec.ts` 在固定视角反转肌肉颜色绘制顺序，直接比较 WebGL framebuffer；只有超过 2/255 的通道差异才计为变化。要求变化像素及其四邻域同时变化的内部像素数为零，单像素交界误差单独记录。测试还仅关闭深度预绘制作为反例，要求重新出现面积性混色，避免截图存在但断言无法识别缺陷。此测试不等于全角度／全 GPU 的逐像素保证。
+
+产物位于已忽略的 `test-results/rotation-occlusion/body-occlusion-*/`：`{theme}-{front,side,left,beforeBack,back,afterBack,right}.png`、`{theme}-mobile-back.png`、`{theme}-{390,1440}-{focus,exercise,day}.png`。相关交互回归截图在 `test-results/body-regression/`，不提交图片。
+
+验证结果：lint、lint:architecture、lint:design、typecheck、完整 build、52 项单元／组件、23 项既有相关 E2E 与 2 项新增遮挡 E2E 通过；三项 `validate:3d-*` 通过。source-map 首次因本机缺少原始素材失败，随后按 source-map 锁定的 revision 下载索引及引用 STL 至临时目录，通过 `BODYPARTS3D_DIR` 指定后复验通过；没有修改校验脚本或运行时资产。普通模式对照实测 draw calls 为 137，预绘制替代原透明双面额外颜色绘制，不宣称达到低端真机 FPS 指标。构建仍有既有 Three 异步分包体积提示，单元测试仍有既有 Three 多实例提示；本轮不涉及 DSH、数据写入或生产发布，未运行相关集成与部署验收。

@@ -17,6 +17,7 @@ import type { ThreeEvent } from "@react-three/fiber";
 import type { Object3D } from "three";
 import type { MuscleId, MuscleVisualState } from "../../../shared/fitness/index";
 import type { BodyViewer3DProps, ModelContract } from "./types";
+import { addMuscleDepthPrepass } from "./muscle-depth";
 
 const MODEL_URL = "/models/bodyparts3d/bodyparts3d-fitness-taxonomy-draco.glb";
 
@@ -73,6 +74,7 @@ export function BodyModelScene({
     const scene = gltf.scene.clone(true);
     frameModel(scene);
     prepareModel(scene, targetBindings, palette, skinOpacity);
+    addMuscleDepthPrepass(scene);
     return scene;
   }, [gltf.scene, targetBindings, palette, skinOpacity]);
   useEffect(
@@ -278,6 +280,7 @@ function prepareModel(
       opacity: taxonomyMuscleId ? 0.82 : 0.18,
       roughness: 0.68,
       side: DoubleSide,
+      forceSinglePass: true,
       transparent: true
     });
     node.renderOrder = 2;
