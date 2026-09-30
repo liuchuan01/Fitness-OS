@@ -1,9 +1,10 @@
-import { ArrowLeft, Palette, SlidersHorizontal, Clock3 } from "lucide-react";
+import { ArrowLeft, Palette, SlidersHorizontal, Clock3, FileUp } from "lucide-react";
 import { IconButton } from "../../components/IconButton";
 import { SettingsCard } from "./SettingsCard";
 import { DeepSeekSettings } from "./DeepSeekSettings";
 import "./settings.css";
 import { ThemeChoices } from "../appearance/ThemeChoices";
+import { MotionCoachImport } from "./MotionCoachImport";
 import { useEffect, useState } from "react";
 import {
   getAgentSettings,
@@ -97,6 +98,14 @@ export function AutomationSettings({ onClose }: { onClose(): void }) {
             description="选择适合你的视觉风格"
           >
             <ThemeChoices />
+          </SettingsCard>
+          <SettingsCard
+            title="训练记录导入"
+            eyebrow="TRAINING DATA"
+            icon={FileUp}
+            description="从 AI Motion Coach 导入本地训练"
+          >
+            <MotionCoachImport />
           </SettingsCard>
           {projection && agentSettings ? (
             <>

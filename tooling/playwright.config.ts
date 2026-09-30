@@ -15,22 +15,19 @@ export default defineConfig({
   webServer: [
     {
       cwd: fileURLToPath(new URL("..", import.meta.url)),
-      command: "PORT=8788 node scripts/start-e2e-service.mjs",
-      url: "http://127.0.0.1:8788/api/health",
-      reuseExistingServer: false
-    },
-    {
-      cwd: fileURLToPath(new URL("..", import.meta.url)),
-      command:
-        "FITNESS_API_ORIGIN=http://127.0.0.1:8788 npm run dev:web -- --port 5178 --strictPort",
-      url: "http://127.0.0.1:5178",
+      command: "node scripts/start-e2e-service.mjs",
+      env: { PORT: "5178" },
+      url: "http://127.0.0.1:5178/api/health",
       reuseExistingServer: false
     }
   ],
   projects: [
     {
       name: "chromium",
-      use: { ...devices["Desktop Chrome"] }
+      use: {
+        ...devices["Desktop Chrome"],
+        ...(process.env.PLAYWRIGHT_CHANNEL ? { channel: process.env.PLAYWRIGHT_CHANNEL } : {})
+      }
     }
   ]
 });
