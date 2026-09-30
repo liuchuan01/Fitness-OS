@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
 import { ModelPreferences } from "./ModelPreferences";
-import { modelPreferencesFixture } from "../../../tests/fixtures/model-preferences";
+import { modelPreferencesFixture } from "../../../../tests/fixtures/model-preferences";
 
 afterEach(() => {
   cleanup();

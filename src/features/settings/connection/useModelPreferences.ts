@@ -4,7 +4,7 @@ import {
   saveModelPreferences,
   type ModelPreferences,
   type ModelSelection
-} from "../../api/model-preferences";
+} from "../../../api/model-preferences";
 
 export function useModelPreferences() {
   const [preferences, setPreferences] = useState<ModelPreferences>();

@@ -1,6 +1,6 @@
 import { ThemeProvider } from "../design/theme";
 import { useEffect, useState } from "react";
-import { AutomationSettings } from "../features/automation/AutomationSettings";
+import { SettingsPage } from "../features/settings/SettingsPage";
 import { Dashboard } from "./Dashboard";
 
 export function App() {
@@ -22,7 +22,7 @@ function AppContent() {
   }, []);
   if (settingsPage)
     return (
-      <AutomationSettings
+      <SettingsPage
         initialSection={
           new URLSearchParams(window.location.hash.split("?")[1]).get("section") === "connection"
             ? "connection"

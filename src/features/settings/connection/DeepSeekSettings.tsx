@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { getModelSettings, saveModelSettings } from "../../api/client";
-import type { ModelSettings } from "../../api/model-settings-schemas";
-import { ApiError } from "../../api/http";
+import { getModelSettings, saveModelSettings } from "../../../api/client";
+import type { ModelSettings } from "../../../api/model-settings-schemas";
+import { ApiError } from "../../../api/http";
 import { ModelPreferences } from "./ModelPreferences";
 import { DshMark } from "./DshMark";
-import { SettingsCard } from "./SettingsCard";
+import { SettingsCard } from "../SettingsCard";
 
 export function DeepSeekSettings() {
   const [model, setModel] = useState<ModelSettings>();

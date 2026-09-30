@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import type { ThemeDefinition } from "../../design/theme-definitions";
+import type { ThemeDefinition } from "../../../design/theme-definitions";
 
 /** Lightweight layout illustration, not a second WebGL scene or live training data. */
 export function ThemePreview({ theme }: { theme: ThemeDefinition }) {

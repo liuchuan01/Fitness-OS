@@ -326,3 +326,10 @@ lint、lint:design、lint:architecture、typecheck、完整 build、58 项单元
 复用 `scripts/review-visuals.mjs`，仅在临时副本将端口改为本轮隔离服务，使用原 fixture、2026-06-21 固定日期与旋转暂停，输出 `test-results/cleanup-visuals/`。实际审阅 1440×900／390×844 的 Overview、肌肉焦点、相关动作预览、历史动作视图以及手机设置：人体完整显示，HUD、背景名称、连续图例与底部面板可见，未见 demo 删除造成的资源缺失。脚本名为 day 的截图实际保留已选历史动作（Exercise），不冒充独立 Day 模式审图。另审阅 E2E 生成的 Graphite 桌面／手机设置，主题切换和示意预览保留。
 
 以上是本次清理后的浏览器抽查，不构成新的视觉方向批准或真机性能验收。详细测试结果见技术架构第 13 节。
+
+
+## 2026-09-30 设置模块职责归位
+
+设置工作区迁至 `features/settings`，入口为 SettingsPage，外观／教练／自动计划／模型连接分区归位。原 CSS 文件内容与 DOM 类名保留，教练及自动计划提取为受控表单，所有草稿和独立保存行为保持原契约。
+
+`appearance.spec.ts` 在隔离 fixture 服务 8796／前端 5196 上 6 项通过。两主题 × 1440×900、390×844、320×844 × 四分区的截图位于 `test-results/settings-boundary/`，全部检查单一可见卡片与无横向溢出；实际审阅 Neon 桌面教练、Graphite 手机自动计划、Neon 320px 模型连接，导航、表单与材质未出现目录迁移造成的缺失。覆盖主题持久化、入口跳转、键盘／reduced-motion、切换保留草稿和各项独立保存。无需重新批准视觉方向；并行人体焦点改动不由这组设置截图验收。

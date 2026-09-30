@@ -24,7 +24,7 @@
 
 ## DeepSeek Harness 设置页品牌标识
 
-`src/features/automation/DshMark.tsx` 的鲸鱼路径复用 [官方 FishLogo.tsx](https://github.com/deepseek-ai/deepseek-harness/blob/639ed015397290b3745d163aafe02ffee4aa3f84/packages/client/ui-primitives/src/FishLogo.tsx)，保留路径与比例，使用主题文字色。标识仅用于说明本应用原生集成 DSH，不代表官方背书；参见[品牌使用规范](https://github.com/deepseek-ai/deepseek-harness/blob/639ed015397290b3745d163aafe02ffee4aa3f84/BRAND_GUIDELINES.md)。
+`src/features/settings/connection/DshMark.tsx` 的鲸鱼路径复用 [官方 FishLogo.tsx](https://github.com/deepseek-ai/deepseek-harness/blob/639ed015397290b3745d163aafe02ffee4aa3f84/packages/client/ui-primitives/src/FishLogo.tsx)，保留路径与比例，使用主题文字色。标识仅用于说明本应用原生集成 DSH，不代表官方背书；参见[品牌使用规范](https://github.com/deepseek-ai/deepseek-harness/blob/639ed015397290b3745d163aafe02ffee4aa3f84/BRAND_GUIDELINES.md)。
 
 上游许可证全文：
 

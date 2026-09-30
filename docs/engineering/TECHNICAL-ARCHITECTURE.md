@@ -133,6 +133,7 @@ src/
   api/                      # HTTP、Zod response schema、API 类型
   components/               # 无业务含义的共享展示组件
   features/
+    settings/               # 设置工作区：外观、教练、自动计划、模型连接
     dashboard/              # Dashboard 数据协调
     timeline/               # 训练时间线
     workouts/               # 训练详情与洞察
@@ -508,7 +509,7 @@ MVP 测试重点：
 | 模块 | 现状与判断 | 拆分方向 |
 | --- | --- | --- |
 | `src/app`、`src/features` | 页面编排与业务功能基本分开；无 feature 反向引用 app | 保留当前纵向组织，避免为文件行数拆展示碎片 |
-| `src/features/automation` | 同时容纳设置工作区、密钥、模型与自动任务，命名已窄于实际职责 | 下次设置扩展时归入 settings，自动计划保留功能子边界；本轮不做纯移动 |
+| `src/features/settings` | 已按后续授权收拢设置工作区；原 automation 目录移除 | 页面编排与四个设置分区分离，详见第 14 节 |
 | `server/app.ts` | 已把 HTTP JSON 和静态文件处理抽到 `server/http`；仍集中业务路由及实例生命周期 | 后续按 fitness、automation、DSH/settings 分路由，以显式依赖注入处理函数；app 保留装配、启动和关闭 |
 | `server/data-store.ts` | 605 行，混合计划终结、workout 写入、查询投影与文件操作 | 优先分离查询和写入用例；原子覆盖、新建排他写入、备份与路径审计必须保持不同语义，不能盲目合并为一个 writeYaml |
 | `server/automation.ts` | 567 行，状态机、时区计算、执行前检查、文件审计集中 | 优先提取纯 occurrence／时区计算，其次文件审计；claim、lease、retry、串行队列仍由同一 Scheduler 持有 |
@@ -516,7 +517,7 @@ MVP 测试重点：
 | `shared/fitness` | schema、纯计算、投影、肌肉历史已分离 | 保留；设置／调度 schema 存在多处定义，统一前需核对 strict、输入默认值与响应投影差异 |
 | 架构门禁 | 已检查 TSX 规模与部分 import 方向，但未完整检查 shared 纯度、循环依赖、动态 import 或未使用导出 | 现有 lint 通过仅证明所覆盖规则；后续增加解析器驱动的依赖检查时纳入这些边界 |
 
-本轮只实施可独立回归的 HTTP 提取；其他拆分是评估建议，尚未实施。业务写入、调度成功判定、DSH Session 和生产部署行为保持原契约。验证结果见本节后续记录。
+清理阶段只实施可独立回归的 HTTP 提取；设置边界随后按用户授权实施，见第 14 节，其余拆分仍是建议。业务写入、调度成功判定、DSH Session 和生产部署行为保持原契约。验证结果见本节后续记录。
 
 ### 本轮验证记录
 
@@ -525,3 +526,24 @@ MVP 测试重点：
 - 默认 E2E 端口 8788 被已有服务占用，改用临时配置的 8797／5197。首批完成 19 项，其中 17 项通过，手机探索超时与 3D 零像素两项失败；保持断言及超时，单 worker 独立复验两项均通过。随后补跑的 Neon 遮挡验证通过。合计覆盖 20 项通过，不宣称一次性全量通过或已定位偶发失败根因。
 - 后续检测到其他工作正在修改聚焦、HUD 与肌肉档案文件；Graphite 遮挡用例等待原相关动作入口时主动中断，余下 15 项未运行。停止在持续变化的工作树上扩大验收，保留并行改动。上述构建／审图仅代表运行时点的内容，不能代替并行 UI 修改后的最终整体验收。
 - 固定夹具／日期的桌面和手机实际审图见 `docs/design/VISUAL-REVIEW.md`。Three 异步 chunk 大于 500 kB、单元测试的多 Three 实例提示仍存在；未调整告警阈值。
+
+## 14. 设置功能边界
+
+按用户授权，将原 `src/features/automation` 中的完整设置工作区收拢到 `src/features/settings`。应用仅通过 `SettingsPage` 进入设置，`#/settings` 与 `#/settings?section=connection` 路由保持原行为。
+
+```text
+src/features/settings/
+  SettingsPage.tsx           # 导航、页面草稿、教练／调度请求与保存反馈
+  SettingsCard.tsx           # 设置功能私有的共享展示卡片
+  settings.css              # 设置工作区及表单样式
+  appearance/               # 主题选择和布局示意
+  coach/CoachSettings.tsx    # 教练指令受控表单
+  automation/AutomationSettings.tsx  # 自动计划受控表单、运行状态和操作
+  connection/               # 密钥、模型偏好、DSH 标识、hook 及其测试
+```
+
+`SettingsPage` 拥有教练与自动计划的草稿、已保存值和异步动作；两个分区组件接收值与回调，不发请求。密钥和模型偏好继续由 connection 内组件／hook 独立管理。分区容器保留挂载，通过 hidden 切换，防止切换时丢失未保存输入。四类设置保持独立保存，服务端调度、Host 生命周期和 API 契约不变。
+
+外观选择仅被设置使用，因此随设置收拢；应用级 ThemeProvider、主题定义与 token 仍位于 `src/design`。`SettingsCard` 仍为功能私有，底层材质依赖共享 GlassCard。保留现有 CSS 类名与视觉参数，避免纯目录调整扩散为视觉重构。设计门禁路径与 DSH 标识来源文档同步更新，不留旧路径转发模块。
+
+本轮验证：lint、lint:architecture、lint:design、typecheck、58 项单元／组件与完整 build 通过；隔离端口运行 `appearance.spec.ts` 的 6 项 E2E 全通过，覆盖两主题、1440／390／320px 四分区、路由、草稿保留、教练／调度独立保存与模型设置。实际审图见 VISUAL-REVIEW。本轮未改后端，不重复声称完成真实模型调用或生产部署；工作区并行的人体／HUD 改动不纳入设置提交。

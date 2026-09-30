@@ -45,8 +45,8 @@ async function checkThemeStyles() {
       .filter((name) => name.endsWith(".css"))
       .map((name) => `src/features/dashboard/${name}`),
     "src/features/muscles/muscle-picker.css",
-    "src/features/appearance/appearance.css",
-    "src/features/automation/settings.css"
+    "src/features/settings/appearance/appearance.css",
+    "src/features/settings/settings.css"
   ];
   const violations = [];
   for (const file of files) {
