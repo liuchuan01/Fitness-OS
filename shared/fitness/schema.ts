@@ -154,7 +154,6 @@ export const stimulusRulesSchema = z.object({
 
 export type Workout = z.infer<typeof workoutSchema>;
 export type Plan = z.infer<typeof planSchema>;
-export type PlanDraft = z.infer<typeof planDraftSchema>;
 export type MuscleMap = z.infer<typeof muscleMapSchema>;
 export type Readiness = z.infer<typeof readinessSchema>;
 export type StimulusRules = z.infer<typeof stimulusRulesSchema>;

@@ -1,4 +1,5 @@
 import { useHudFocusTransition } from "./useHudFocusTransition";
+import { MuscleHud } from "./MuscleHud";
 import { ExerciseHud } from "./ExerciseHud";
 import type { ExerciseViewModel } from "../../../shared/fitness/projection";
 import { HudCard } from "./HudCard";
@@ -19,51 +20,30 @@ type DashboardMetricsProps = {
   } | null;
 };
 
-export function DashboardMetrics({ mode, dashboard, dailyWorkout, focus, exercise }: DashboardMetricsProps) {
+export function DashboardMetrics({
+  mode,
+  dashboard,
+  dailyWorkout,
+  focus,
+  exercise
+}: DashboardMetricsProps) {
   const hudRef = useHudFocusTransition(Boolean(focus || exercise));
-  const history = focus?.history;
-  const placeholder = focus?.status === "error" ? "暂不可用" : "读取中";
   return (
     <div
       ref={hudRef}
       className={`dashboard-hud body-hud ${focus || exercise ? "body-hud-focused" : mode === "overview" ? "body-hud-overview" : ""}`}
-      aria-label={focus ? "肌肉概览 HUD" : exercise ? "动作概览 HUD" : mode === "overview" ? "首页身体数据" : "当日训练 HUD"}
+      aria-label={
+        focus
+          ? "肌肉概览 HUD"
+          : exercise
+            ? "动作概览 HUD"
+            : mode === "overview"
+              ? "首页身体数据"
+              : "当日训练 HUD"
+      }
     >
       {focus ? (
-        <>
-          <HudCard anchored position="recovery" label="最近涉及训练" detail={focus.label}>
-            <strong className="hud-date">
-              {history ? (history.lastTrainedDate?.replace(/-/g, ".") ?? "暂无记录") : placeholder}
-            </strong>
-          </HudCard>
-          <HudCard anchored position="load" label="近 7 日训练" detail="关联该肌肉的训练次数">
-            <strong>
-              {history?.weekly.sessions ?? "—"}
-              <small>次</small>
-            </strong>
-          </HudCard>
-          <HudCard anchored position="volume" label="主练 / 参与" detail="近 7 日 · 记录组数">
-            <strong>
-              {history?.weekly.primarySets ?? "—"}
-              <em>/</em>
-              {history?.weekly.secondarySets ?? "—"}
-              <small>组</small>
-            </strong>
-          </HudCard>
-          <HudCard anchored
-            position="stimulus"
-            label="上次怎么练"
-            detail={
-              history?.history[0]?.exercises[0]
-                ? `${history.history[0].exercises[0].sets.length} 组 · 完整记录见右侧详情`
-                : "历史依据 · 从一次训练开始"
-            }
-          >
-            <strong className="hud-action-name">
-              {history ? (history.history[0]?.exercises[0]?.name ?? "尚无关联动作") : placeholder}
-            </strong>
-          </HudCard>
-        </>
+        <MuscleHud history={focus.history} status={focus.status} />
       ) : exercise ? (
         <ExerciseHud exercise={exercise} date={dailyWorkout?.date} />
       ) : mode === "overview" ? (

@@ -22,3 +22,10 @@ export function subscribeFocusFrames(
   stage?.addEventListener(frameEvent, listener);
   return () => stage?.removeEventListener(frameEvent, listener);
 }
+
+/** Use usable canvas space so opening a panel does not abruptly remove desktop focus. */
+export function focusComposition(width: number, height: number, viewportWidth: number) {
+  const enabled = viewportWidth >= 900 && width >= 560 && height >= 360;
+  const compact = width < 700 || viewportWidth <= 1100 || height < 600;
+  return { enabled, compact, zoom: compact ? 1.12 : 1.22, shift: compact ? 0.12 : 0.16 };
+}

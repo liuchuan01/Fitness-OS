@@ -13,7 +13,7 @@ export default defineConfig({
     outDir: fromRoot("dist"),
     emptyOutDir: true,
     rollupOptions: {
-      input: { app: fromRoot("index.html"), designLab: fromRoot("design-lab.html") },
+      input: { app: fromRoot("index.html") },
       output: {
         manualChunks(id) {
           if (id.includes("/node_modules/react/") || id.includes("/node_modules/react-dom/")) {

@@ -96,7 +96,7 @@ npm run test
 npm run build
 ```
 
-Verify `viewer.html` on desktop and mobile, including:
+Verify the main application on desktop and mobile (the standalone viewer was removed on 2026-09-30), including:
 
 ```txt
 model loads without console errors

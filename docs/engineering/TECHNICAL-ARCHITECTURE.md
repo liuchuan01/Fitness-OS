@@ -35,7 +35,7 @@ DSH Host Agent
 
 本地服务可以先用 Node.js 实现，职责是：
 
-* 读取和写入 `fitness-os/` 下的 YAML / Markdown。
+* 读取和写入独立工作区 `fitness/` 下的 YAML / Markdown；资源、配置和 runtime 按数据架构分离。
 * 保护 AI API key，不暴露给浏览器。
 * 做 schema validation。
 * 做 deterministic stimulus / recovery calculation。
@@ -60,7 +60,6 @@ TypeScript
 Three.js
 @react-three/fiber
 @react-three/drei
-zustand
 yaml
 zod
 Vitest
@@ -121,7 +120,7 @@ AI Boundary
 
 构建与测试配置集中在 `tooling/`（Vite、Vitest、Playwright 及三个 TypeScript 子项目）。根目录 `tsconfig.json` 保留项目引用入口，`eslint.config.js` 保留自动发现入口。统一通过根目录 npm scripts 运行，不要求使用者记忆配置路径。
 
-Vite 以项目根为前端根，保留 `index.html` 和 `design-lab.html` 两个标准 HTML 入口，避免 `src/api/` 模块 URL 与 `/api` 代理冲突；静态资源仍来自根目录 `public/`，环境文件仍从项目根读取，构建输出仍为根目录 `dist/`，服务端输出仍为 `dist-server/`。Playwright 的服务工作目录、测试目录与输出目录均显式配置；URL `/` 与 `/design-lab.html` 保持原行为。
+Vite 以项目根为前端根，仅保留 `index.html` 标准 HTML 入口，避免 `src/api/` 模块 URL 与 `/api` 代理冲突；静态资源仍来自根目录 `public/`，环境文件仍从项目根读取，构建输出仍为根目录 `dist/`，服务端输出仍为 `dist-server/`。Playwright 的服务工作目录、测试目录与输出目录均显式配置；主站 URL `/` 保持原行为；独立设计实验页已于 2026-09-30 按用户要求移除。
 
 开源源码使用 Apache-2.0，第三方资源见 [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md)。截图是本地验收产物，默认写入已忽略的 `test-results/visual-regression/`；公开仓库不保存历史截图附件。
 
@@ -134,6 +133,7 @@ src/
   api/                      # HTTP、Zod response schema、API 类型
   components/               # 无业务含义的共享展示组件
   features/
+    settings/               # 设置工作区：外观、教练、自动计划、模型连接
     dashboard/              # Dashboard 数据协调
     timeline/               # 训练时间线
     workouts/               # 训练详情与洞察
@@ -154,7 +154,8 @@ shared/
 
 server/
   index.ts                   # 进程入口与环境路径装配
-  app.ts                     # 当前 HTTP service composition
+  app.ts                     # 服务装配、生命周期与业务路由
+  http/                      # JSON 协议处理与静态文件响应，无业务依赖
   data-store.ts              # YAML 文件边界与原子写入
   automation.ts              # Scheduler、claim、retry 与运行状态
 ```
@@ -292,7 +293,7 @@ target。动作映射和确定性计算直接产出 67-ID 分数，避免同一�
 优点：
 
 * 已按解剖结构分件。
-* 当前 demo 已验证可在 Three.js 中加载。
+* 当前正式 GLB 已用于 Three.js 运行时。
 
 问题：
 
@@ -432,15 +433,7 @@ type MuscleVisualState = {
 }
 ```
 
-颜色规则来自 `../product/PRD.md`：
-
-```txt
-Gray = 未训练
-Blue = 轻刺激
-Orange = 正常刺激
-Red = 高刺激
-Purple = 恢复不足
-```
+颜色规则以 `docs/design/DESIGN.md` 第 7.3／7.4 节及共享主题 token 为准：Neon 使用青至洋红柔和桥接，Graphite 使用冷灰蓝至暖沙色连续色带；零负荷与缺失为灰色，动作与焦点使用独立语义。领域离散 status 不能替代人体连续取色。
 
 ---
 
@@ -502,3 +495,55 @@ MVP 测试重点：
 ## 12. 肌肉历史查询边界
 
 新增能力以 [MUSCLE-HISTORY.md](../data/MUSCLE-HISTORY.md) 为数据与交互权威契约。`Dashboard` 拥有业务选择；3D 只接收投影和选中回调；查询 hook 拥有请求取消与错误状态；服务端拥有文件读取和纯函数投影。当前不引入新 store、数据库、Agent 工具或持久缓存。
+
+## 13. 2026-09-30 清理与结构评估
+
+本轮属于“无用代码清理与模块边界审查”。删除设计实验入口、主题／渐变提案、专用 BodyStylePreview、旧 3d-muscles/viewer.html 和两份 demo E2E；正式 theme、color-scale、人体渲染与主题测试继续保留。移除没有调用方的前端 getHealth／getPlan 封装及 health response schema，服务端健康检查和按日期读取计划接口仍有部署／集成用途。移除 demo 遗留的 neonScales、未使用的 defaultSchedule 副本和五个孤立类型；有效调度默认值仍由 agent-settings 持有。移除直接依赖 zustand；R3F／Drei 仍间接依赖它，因此 lockfile 中出现 zustand 不代表清理失败。
+
+### 结论与边界
+
+生产 TS／TSX 相对导入扫描覆盖 91 个模块、200 条边（包含类型导入），未发现循环。此扫描不涵盖包内部依赖或计算得到的动态路径，不能替代完整依赖门禁。
+
+当前适合继续使用一个 Node 服务加按功能组织的前端。`src`、`server`、`shared`、`dsh-fitness`、`resources` 和工作区数据已经承担不同职责，不需要为目录整齐引入 monorepo、多服务、DI 容器或通用 repository 框架。仓库内的两个 DSH 包是 Host 加载边界，不能按“独立页面不用了”删除。`tests/fixtures` 的示例和 adapter、迁移 CLI、3D 资产生成与验证脚本都有测试或维护用途，不属于废弃 demo。
+
+| 模块 | 现状与判断 | 拆分方向 |
+| --- | --- | --- |
+| `src/app`、`src/features` | 页面编排与业务功能基本分开；无 feature 反向引用 app | 保留当前纵向组织，避免为文件行数拆展示碎片 |
+| `src/features/settings` | 已按后续授权收拢设置工作区；原 automation 目录移除 | 页面编排与四个设置分区分离，详见第 14 节 |
+| `server/app.ts` | 已把 HTTP JSON 和静态文件处理抽到 `server/http`；仍集中业务路由及实例生命周期 | 后续按 fitness、automation、DSH/settings 分路由，以显式依赖注入处理函数；app 保留装配、启动和关闭 |
+| `server/data-store.ts` | 605 行，混合计划终结、workout 写入、查询投影与文件操作 | 优先分离查询和写入用例；原子覆盖、新建排他写入、备份与路径审计必须保持不同语义，不能盲目合并为一个 writeYaml |
+| `server/automation.ts` | 567 行，状态机、时区计算、执行前检查、文件审计集中 | 优先提取纯 occurrence／时区计算，其次文件审计；claim、lease、retry、串行队列仍由同一 Scheduler 持有 |
+| `server/onboarding.ts` | 415 行，建档流程与 revision／路径／锁保护共存 | 随写入用例拆分提取保护原语，保留 profile revision 的一致性边界 |
+| `shared/fitness` | schema、纯计算、投影、肌肉历史已分离 | 保留；设置／调度 schema 存在多处定义，统一前需核对 strict、输入默认值与响应投影差异 |
+| 架构门禁 | 已检查 TSX 规模与部分 import 方向，但未完整检查 shared 纯度、循环依赖、动态 import 或未使用导出 | 现有 lint 通过仅证明所覆盖规则；后续增加解析器驱动的依赖检查时纳入这些边界 |
+
+清理阶段只实施可独立回归的 HTTP 提取；设置边界随后按用户授权实施，见第 14 节，其余拆分仍是建议。业务写入、调度成功判定、DSH Session 和生产部署行为保持原契约。验证结果见本节后续记录。
+
+### 本轮验证记录
+
+- lint、architecture lint、design lint、typecheck、58 项单元／组件测试、完整生产 build 与三项 3D 资产校验通过；最终构建仅含 `dist/index.html`。删除孤立导出后重新执行了静态检查、58 项测试和构建；自动化／HTTP 17 项集成复验通过。
+- 全量 45 项集成测试通过，包含真实已安装 DSH Host 的本地 adapter 和临时空工作区凭据流程；不代表真实模型调用或生产部署。
+- 默认 E2E 端口 8788 被已有服务占用，改用临时配置的 8797／5197。首批完成 19 项，其中 17 项通过，手机探索超时与 3D 零像素两项失败；保持断言及超时，单 worker 独立复验两项均通过。随后补跑的 Neon 遮挡验证通过。合计覆盖 20 项通过，不宣称一次性全量通过或已定位偶发失败根因。
+- 后续检测到其他工作正在修改聚焦、HUD 与肌肉档案文件；Graphite 遮挡用例等待原相关动作入口时主动中断，余下 15 项未运行。停止在持续变化的工作树上扩大验收，保留并行改动。上述构建／审图仅代表运行时点的内容，不能代替并行 UI 修改后的最终整体验收。
+- 固定夹具／日期的桌面和手机实际审图见 `docs/design/VISUAL-REVIEW.md`。Three 异步 chunk 大于 500 kB、单元测试的多 Three 实例提示仍存在；未调整告警阈值。
+
+## 14. 设置功能边界
+
+按用户授权，将原 `src/features/automation` 中的完整设置工作区收拢到 `src/features/settings`。应用仅通过 `SettingsPage` 进入设置，`#/settings` 与 `#/settings?section=connection` 路由保持原行为。
+
+```text
+src/features/settings/
+  SettingsPage.tsx           # 导航、页面草稿、教练／调度请求与保存反馈
+  SettingsCard.tsx           # 设置功能私有的共享展示卡片
+  settings.css              # 设置工作区及表单样式
+  appearance/               # 主题选择和布局示意
+  coach/CoachSettings.tsx    # 教练指令受控表单
+  automation/AutomationSettings.tsx  # 自动计划受控表单、运行状态和操作
+  connection/               # 密钥、模型偏好、DSH 标识、hook 及其测试
+```
+
+`SettingsPage` 拥有教练与自动计划的草稿、已保存值和异步动作；两个分区组件接收值与回调，不发请求。密钥和模型偏好继续由 connection 内组件／hook 独立管理。分区容器保留挂载，通过 hidden 切换，防止切换时丢失未保存输入。四类设置保持独立保存，服务端调度、Host 生命周期和 API 契约不变。
+
+外观选择仅被设置使用，因此随设置收拢；应用级 ThemeProvider、主题定义与 token 仍位于 `src/design`。`SettingsCard` 仍为功能私有，底层材质依赖共享 GlassCard。保留现有 CSS 类名与视觉参数，避免纯目录调整扩散为视觉重构。设计门禁路径与 DSH 标识来源文档同步更新，不留旧路径转发模块。
+
+本轮验证：lint、lint:architecture、lint:design、typecheck、58 项单元／组件与完整 build 通过；隔离端口运行 `appearance.spec.ts` 的 6 项 E2E 全通过，覆盖两主题、1440／390／320px 四分区、路由、草稿保留、教练／调度独立保存与模型设置。实际审图见 VISUAL-REVIEW。本轮未改后端，不重复声称完成真实模型调用或生产部署；工作区并行的人体／HUD 改动不纳入设置提交。

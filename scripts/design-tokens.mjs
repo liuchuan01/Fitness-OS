@@ -39,15 +39,14 @@ async function checkThemeStyles() {
     "src/styles.css",
     "src/components/icon-button.css",
     "src/components/glass-card.css",
-    "src/features/design-lab/gradient-study.css",
     "src/features/body-3d/body-viewer.css",
     "src/features/chat/session-history.css",
     ...dashboardFiles
       .filter((name) => name.endsWith(".css"))
       .map((name) => `src/features/dashboard/${name}`),
     "src/features/muscles/muscle-picker.css",
-    "src/features/appearance/appearance.css",
-    "src/features/automation/settings.css"
+    "src/features/settings/appearance/appearance.css",
+    "src/features/settings/settings.css"
   ];
   const violations = [];
   for (const file of files) {

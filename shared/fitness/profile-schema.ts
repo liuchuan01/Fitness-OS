@@ -179,7 +179,6 @@ export const nutritionMetricsSchema = z
       ),
     "Nutrition requires a reported value"
   );
-export type Profile = z.infer<typeof profileSchema>;
 export type Program = z.infer<typeof programSchema>;
 export const onboardingStateSchema = z.object({
   stage: z.enum([

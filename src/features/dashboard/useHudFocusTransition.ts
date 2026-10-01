@@ -1,4 +1,4 @@
-import { subscribeFocusFrames } from "../../design/focus-transition";
+import { focusComposition, subscribeFocusFrames } from "../../design/focus-transition";
 import { useLayoutEffect, useRef } from "react";
 
 const positions = ["recovery", "load", "volume", "stimulus"] as const;
@@ -10,10 +10,12 @@ export function useHudFocusTransition(focused: boolean) {
   useLayoutEffect(() => {
     const container = root.current;
     if (!container) return;
+    const composition = () =>
+      focusComposition(container.clientWidth, container.clientHeight, window.innerWidth);
     const syncLayout = () => {
-      container.dataset.focusRail = String(
-        focused && container.clientWidth >= 700 && window.innerWidth > 1100
-      );
+      const { enabled, compact } = composition();
+      container.dataset.focusRail = String(focused && enabled);
+      container.dataset.focusCompact = String(compact);
     };
     syncLayout();
     const cards = positions.flatMap((position) => {
@@ -30,11 +32,7 @@ export function useHudFocusTransition(focused: boolean) {
     };
     const prepare = (before: Map<string, DOMRect>) => {
       cancel();
-      if (
-        container.clientWidth < 700 ||
-        window.innerWidth <= 1100 ||
-        !container.closest(".body-stage")?.querySelector("canvas")
-      )
+      if (!composition().enabled || !container.closest(".body-stage")?.querySelector("canvas"))
         return;
       for (const { position, element } of cards) {
         const old = before.get(position);
@@ -66,8 +64,11 @@ export function useHudFocusTransition(focused: boolean) {
       previous.current = measure();
     });
     const observer = new ResizeObserver(() => {
+      const before = measure();
+      const oldRail = container.dataset.focusRail;
       syncLayout();
-      if (container.clientWidth < 700 || window.innerWidth <= 1100) cancel();
+      if (!composition().enabled) cancel();
+      else if (oldRail !== container.dataset.focusRail) prepare(before);
       previous.current = measure();
     });
     observer.observe(container);

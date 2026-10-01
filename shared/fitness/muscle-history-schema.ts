@@ -62,4 +62,3 @@ export const muscleHistoryResponseSchema = z.object({
 });
 
 export type MuscleHistory = z.infer<typeof muscleHistorySchema>;
-export type RelatedExercise = MuscleHistory["relatedExercises"][number];

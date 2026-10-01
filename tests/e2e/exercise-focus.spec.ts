@@ -85,7 +85,9 @@ for (const preference of ["reduce", "no-preference"] as const) {
       await page.setViewportSize({ width, height });
       // Allow the canvas resize observer to start its camera adjustment before waiting for it.
       await page.waitForTimeout(200);
-      await expect(page.locator(".body-3d-shell")).toHaveAttribute("data-focus-motion", "idle");
+      await page.waitForFunction(() =>
+        document.querySelector<HTMLElement>(".body-3d-shell")?.dataset.focusMotion === "idle"
+      );
       const cards = await page.locator(".body-hud-card").evaluateAll((elements) =>
         elements.map((el) => {
           const r = el.getBoundingClientRect();

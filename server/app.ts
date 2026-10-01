@@ -1,7 +1,8 @@
-import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
-import { readFile } from "node:fs/promises";
+import { createServer } from "node:http";
 import { randomBytes } from "node:crypto";
-import { extname, join, normalize } from "node:path";
+import { join } from "node:path";
+import { applyJsonHeaders, readJsonBody, writeError, writeJson } from "./http/json.js";
+import { serveStatic } from "./http/static.js";
 import { DshHostAgentRuntime, type AgentRuntime } from "./agent-runtime.js";
 import { AutomationScheduler } from "./automation.js";
 import { resolveWorkspacePaths } from "./workspace.js";
@@ -313,27 +314,7 @@ export function createLocalService(options: LocalServiceOptions) {
     }
 
     if (request.method === "GET" && options.staticRoot && !url.pathname.startsWith("/api/")) {
-      try {
-        const requested =
-          url.pathname === "/"
-            ? "index.html"
-            : normalize(decodeURIComponent(url.pathname)).replace(/^\/+/, "");
-        if (requested.startsWith("..")) throw new Error("Invalid static path");
-        let body: Buffer;
-        let file = join(options.staticRoot, requested);
-        try {
-          body = await readFile(file);
-        } catch (error) {
-          if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
-          file = join(options.staticRoot, "index.html");
-          body = await readFile(file);
-        }
-        response.setHeader("Content-Type", contentType(file));
-        response.writeHead(200);
-        response.end(body);
-      } catch (error) {
-        writeError(response, 404, error, "Static asset not found");
-      }
+      await serveStatic(url, response, options.staticRoot);
       return;
     }
 
@@ -356,65 +337,4 @@ export function createLocalService(options: LocalServiceOptions) {
     dshWebHost.close();
   });
   return server;
-}
-
-function contentType(file: string) {
-  return (
-    (
-      {
-        ".html": "text/html; charset=utf-8",
-        ".js": "text/javascript; charset=utf-8",
-        ".css": "text/css; charset=utf-8",
-        ".svg": "image/svg+xml",
-        ".wasm": "application/wasm",
-        ".glb": "model/gltf-binary",
-        ".png": "image/png",
-        ".woff2": "font/woff2"
-      } as Record<string, string>
-    )[extname(file)] ?? "application/octet-stream"
-  );
-}
-
-function applyJsonHeaders(response: ServerResponse) {
-  response.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:5173");
-  response.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,OPTIONS");
-  response.setHeader("Access-Control-Allow-Headers", "Content-Type");
-  response.setHeader("Content-Type", "application/json; charset=utf-8");
-}
-
-function writeError(
-  response: ServerResponse<IncomingMessage>,
-  status: number,
-  error: unknown,
-  fallback: string
-) {
-  writeJson(response, status, {
-    ok: false,
-    error: error instanceof Error ? error.message : fallback
-  });
-}
-
-function writeJson(response: ServerResponse<IncomingMessage>, status: number, body: unknown) {
-  response.writeHead(status);
-  response.end(JSON.stringify(body));
-}
-
-async function readJsonBody(request: IncomingMessage) {
-  const chunks: Buffer[] = [];
-  let size = 0;
-
-  for await (const chunk of request) {
-    const buffer = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
-    size += buffer.length;
-    if (size > 1_000_000) throw new Error("Request body exceeds 1 MB");
-    chunks.push(buffer);
-  }
-
-  if (chunks.length === 0) throw new Error("Request body is required");
-
-  try {
-    return JSON.parse(Buffer.concat(chunks).toString("utf8")) as unknown;
-  } catch {
-    throw new Error("Request body must be valid JSON");
-  }
 }

@@ -1,6 +1,6 @@
 import { useId } from "react";
-import { useTheme } from "../../design/theme";
-import { appThemes, themeIds } from "../../design/theme-definitions";
+import { useTheme } from "../../../design/theme";
+import { appThemes, themeIds } from "../../../design/theme-definitions";
 import "./appearance.css";
 import { ThemePreview } from "./ThemePreview";
 
