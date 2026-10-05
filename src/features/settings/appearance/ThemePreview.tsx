@@ -1,9 +1,21 @@
-import type { CSSProperties } from "react";
+import { useState, type CSSProperties } from "react";
 import type { ThemeDefinition } from "../../../design/theme-definitions";
 
 /** Lightweight layout illustration, not a second WebGL scene or live training data. */
 export function ThemePreview({ theme }: { theme: ThemeDefinition }) {
   const colors = theme.palette;
+  const [failedPreview, setFailedPreview] = useState<string | undefined>();
+  if (theme.assetUrls.preview && failedPreview !== theme.assetUrls.preview) {
+    return (
+      <img
+        className="theme-preview theme-preview-image"
+        src={theme.assetUrls.preview}
+        alt=""
+        loading="lazy"
+        onError={() => setFailedPreview(theme.assetUrls.preview)}
+      />
+    );
+  }
   return (
     <span
       className="theme-preview"

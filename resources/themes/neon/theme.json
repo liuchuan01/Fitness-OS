@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "id": "neon",
+  "name": "Neon / 青与洋红",
+  "description": "青与洋红，局部光效与柔和负荷色带。",
+  "version": "1.0.0",
+  "appearance": "dark",
+  "tokens": {
+    "background.canvas": "#070912",
+    "background.surface": "#111422",
+    "background.raised": "#1b2032",
+    "text.primary": "#f1f5ff",
+    "text.muted": "#a4afc5",
+    "interaction.primary": "#00e5ff",
+    "interaction.primarySoft": "#57b8c3",
+    "interaction.primaryMuted": "#789da2",
+    "interaction.selection": "#ff477e",
+    "interaction.selectionSoft": "#cb718c",
+    "interaction.selectionMuted": "#aa8792",
+    "status.warning": "#e5ad72",
+    "status.danger": "#ff8e8e",
+    "status.success": "#75d6af",
+    "border.default": "rgba(164, 175, 197, 0.16)",
+    "border.strong": "rgba(164, 175, 197, 0.32)",
+    "surface.glass": "rgba(12, 16, 28, 0.88)",
+    "surface.glassRaised": "rgba(22, 28, 44, 0.94)",
+    "body.skin": "#415767",
+    "body.unbound": "#364956",
+    "body.noData": "#536878",
+    "load.low": "#789da2",
+    "load.moderate": "#57b8c3",
+    "load.high": "#cb718c",
+    "load.peak": "#ff477e"
+  },
+  "effects": {
+    "glow": true,
+    "edgeAnimation": true
+  },
+  "body": {
+    "focusEmission": 0.48,
+    "baseEmission": 0.06,
+    "loadColors": ["#00e5ff", "#65c3d7", "#8aaabd", "#a292b1", "#bb7da5", "#dc6594", "#ff477e"]
+  }
+}

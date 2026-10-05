@@ -344,3 +344,20 @@ lint、lint:design、lint:architecture、typecheck、完整 build、58 项单元
 实际审图覆盖 Neon／Graphite 的 1180×900（两侧栏保留、人体画布不足旧 700px 门槛）、1440×900、1024×900（原窗口门槛以下）与 390×844。验证海报存在、相机左移、四卡右对齐且互不重叠、原位展开不移动摘要，以及七日过滤和每组参数。手机通过点按读取完整参数，无横向溢出。Chromium 模拟视口与系统偏好，不代表真实 Mac／Safari 流畅度验收。
 
 验证：隔离副本（`5f332b8` 加本轮改动）通过 58 项单元／组件、三项 3D 校验与 10 项相关 E2E，覆盖身体探索 4、动作聚焦 2、双主题窗口化详情 2、普通／减少动态效果进出同步 2。当前分支合入设置模块归位后，再通过 lint、lint:design、lint:architecture、typecheck 和完整构建。保留既有 Three chunk 体积提示。动作 resize 审图沿用实际 idle 等待，运动中间帧与同步断言保留；不以软件 WebGL 下截图等待时长宣称真机性能。最终截图保存在已忽略的 `test-results/visual-regression/focus-density/{neon,graphite}/`，已实际检查侧栏展开、窄屏、详情和手机图。未运行完整业务集成或生产部署。
+
+
+## 目录安装主题包（2026-10-01）
+
+本轮将 Neon／Graphite 迁入声明式包，并通过同一协议接入安装示例 Slate Studio。作者指南见 `THEME-PACK-AUTHORING.md`；主题包仅控制主站外观与人体材质，Agent iframe 和亮色主题不在本轮范围。
+
+验证使用独立临时工作区复制 fixture，启动编译后的 Node 服务与 `dist/` 页面。第三主题在构建完成后才复制进工作区，不修改业务源码或重启服务。主题生命周期 E2E 验证动态发现、真实预览图片、CSS 与人体同主题、草稿与肌肉选择保留、跨标签同步、503 保留选择、恢复、缺失可选资源和卸载回退。
+
+审图使用固定日期 2026-06-21、fixture dashboard 投影、1440×900／390×844、模型 ready 后暂停旋转。`review-visuals.mjs` 新增 `VISUAL_ORIGIN` 以便使用隔离生产服务；捕获前等待聚焦转场结束，并区分已选动作与清除选择后的 Day，避免将转场中间帧或 Exercise 误标为 Day。手机 Day 同时保留展开详情与关闭详情的审图方式。
+
+本轮截图保存在忽略目录 `test-results/visual-regression/theme-pack/`，按 neon／graphite／slate-studio 分目录；不是像素差异基线或用户批准记录。检查重点是主题风格变化后人体／图例同源、玻璃层级、字体回退、工具触控区与窄屏可读性。预览为示意，不代表训练数据。
+
+静态检查、完整构建、65 项单元／组件、52 项集成及三项 3D 资源校验通过。构建保留既有 Three 异步块超过 500 kB 提示；单元测试仍有既有 Three 多实例警告。本轮没有生产部署、完整 WCAG 认证或真实 Host 主题同步验收。7 个相关 E2E 文件共 27 个唯一用例通过：appearance、home-palette、muscle-backdrop、theme-pack、app、body-explorer、muscle-history。新增生产主题用例在补截图准备时曾因后台标签暂停按需渲染而等待 idle 超时，显式 bringToFront 后隔离复验通过；追加主题模糊参数与人体主题同步断言后再次通过，未放宽断言或超时。
+
+已实际检查三主题 × Overview／Day／Exercise／Muscle Focus × 桌面／手机共 24 个核心场景，以及设置、选择器和 HUD 展开。Neon 保留青／洋红语义，Graphite 保留冷暖中性与静态弱边缘，Slate Studio 的衬线标题、较小圆角、玻璃模糊与材质参数生效；未发现本次换肤引入的布局异常。手机 Day 关闭详情后人体完整可见，展开详情继续沿用现有 Sheet 行为。该结论是本轮审图记录，不替代用户审阅或全部设备测试。
+
+生产主题生命周期最终补图另存 `test-results/visual-regression/theme-pack-production/`，包含 Slate 设置与人体的桌面／手机图。

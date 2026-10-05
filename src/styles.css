@@ -4,14 +4,7 @@
 :root {
   color: var(--text);
   background: var(--canvas);
-  font-family:
-    Inter,
-    ui-sans-serif,
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
+  font-family: var(--font-body);
   color-scheme: dark;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -89,7 +82,7 @@ textarea:focus-visible {
   border: 0;
   background: transparent;
   color: var(--text);
-  font-family: "Space Grotesk", Inter, sans-serif;
+  font-family: var(--font-heading);
   font-size: 0.88rem;
   font-weight: 600;
 }
@@ -102,7 +95,7 @@ textarea:focus-visible {
   border: 1px solid color-mix(in srgb, var(--accent) 42%, transparent);
   border-radius: 8px;
   color: var(--accent);
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-numeric);
   font-size: 0.6875rem;
 }
 
@@ -115,7 +108,7 @@ textarea:focus-visible {
 .mode-indicator span,
 .eyebrow {
   color: var(--accent-mid);
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-numeric);
   font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.1em;
@@ -124,7 +117,7 @@ textarea:focus-visible {
 
 .mode-indicator strong {
   color: var(--muted);
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-numeric);
   font-size: 0.72rem;
   font-weight: 500;
 }
@@ -260,9 +253,7 @@ textarea:focus-visible {
 }
 .automation-panel header span {
   color: var(--accent);
-  font:
-    600 0.65rem "JetBrains Mono",
-    monospace;
+  font: 600 0.65rem var(--font-numeric);
   letter-spacing: 0.12em;
 }
 .automation-panel h2 {
@@ -375,9 +366,7 @@ textarea:focus-visible {
 .automation-status dd {
   margin: 0;
   color: var(--text);
-  font:
-    0.72rem "JetBrains Mono",
-    monospace;
+  font: 0.72rem var(--font-numeric);
   text-align: right;
 }
 .automation-error {
@@ -421,7 +410,7 @@ textarea:focus-visible {
 }
 
 .rail-toggle span {
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-numeric);
   font-size: 0.6rem;
   letter-spacing: 0.14em;
 }
@@ -455,7 +444,7 @@ textarea:focus-visible {
   border-radius: 12px;
   background: transparent;
   color: var(--muted);
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-numeric);
   font-size: 0.72rem;
 }
 
@@ -492,7 +481,7 @@ textarea:focus-visible {
 .timeline-heading h1,
 .context-heading h2 {
   margin: 6px 0 0;
-  font-family: "Space Grotesk", Inter, sans-serif;
+  font-family: var(--font-heading);
   font-weight: 600;
 }
 
@@ -576,7 +565,7 @@ textarea:focus-visible {
 
 .timeline-entry small {
   color: var(--muted);
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-numeric);
   font-size: 0.6875rem;
 }
 
@@ -631,9 +620,7 @@ textarea:focus-visible {
   border-radius: 12px;
   background: var(--accent);
   color: var(--canvas);
-  font:
-    700 0.95rem "JetBrains Mono",
-    monospace;
+  font: 700 0.95rem var(--font-numeric);
 }
 
 .body-stage:has(.agent-chat-launcher) .hud-volume,
@@ -686,9 +673,7 @@ textarea:focus-visible {
   border-radius: 8px;
   background: color-mix(in srgb, var(--canvas) 76%, transparent);
   color: var(--accent-mid);
-  font:
-    600 0.64rem/1 "JetBrains Mono",
-    monospace;
+  font: 600 0.64rem/1 var(--font-numeric);
   letter-spacing: 0.04em;
   backdrop-filter: blur(14px) saturate(120%);
 }
@@ -808,14 +793,14 @@ textarea:focus-visible {
 .canvas-context p {
   margin: 0;
   color: var(--muted);
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-numeric);
   font-size: 0.6875rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 .canvas-context strong {
-  font-family: "Space Grotesk", Inter, sans-serif;
+  font-family: var(--font-heading);
   font-size: clamp(1.25rem, 1.5vw, 1.7rem);
   font-weight: 600;
 }
@@ -927,7 +912,7 @@ textarea:focus-visible {
   padding-bottom: 8px;
   border-bottom: 1px solid color-mix(in srgb, var(--muted) 10%, transparent);
   color: var(--accent);
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-numeric);
   font-size: 0.6875rem;
   letter-spacing: 0.08em;
 }
@@ -977,7 +962,7 @@ textarea:focus-visible {
 
 .hud-muscle > b {
   color: var(--muted);
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-numeric);
   font-size: 0.6875rem;
   font-weight: 500;
 }
@@ -986,7 +971,7 @@ textarea:focus-visible {
   margin-left: 2px;
   color: var(--muted);
   content: "组";
-  font-family: Inter, sans-serif;
+  font-family: var(--font-body);
   font-size: 0.6875rem;
 }
 
@@ -1021,7 +1006,7 @@ textarea:focus-visible {
 
 .metric > strong {
   color: var(--text);
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-numeric);
   font-size: 1.2rem;
   font-weight: 600;
 }
@@ -1177,7 +1162,7 @@ textarea:focus-visible {
 }
 
 .hero-metric > strong {
-  font-family: "Space Grotesk", Inter, sans-serif;
+  font-family: var(--font-heading);
   font-size: clamp(3rem, 4.3vw, 4.25rem);
   font-weight: 600;
   line-height: 0.86;
@@ -1193,7 +1178,7 @@ textarea:focus-visible {
 
 .hero-metric b {
   color: var(--muted);
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-numeric);
   font-size: 0.78rem;
 }
 
@@ -1386,7 +1371,7 @@ textarea:focus-visible {
 
 .plan-open-action b {
   color: var(--accent);
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-numeric);
   font-size: 0.9rem;
 }
 
@@ -1397,7 +1382,7 @@ textarea:focus-visible {
 
 .plan-block > span {
   color: var(--accent);
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-numeric);
   letter-spacing: 0.08em;
 }
 
@@ -1425,7 +1410,7 @@ textarea:focus-visible {
 }
 
 .plan-exercise small {
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-numeric);
   white-space: nowrap;
 }
 
@@ -1522,7 +1507,7 @@ textarea:focus-visible {
   max-width: 820px;
   margin: 0;
   color: var(--text);
-  font-family: "Space Grotesk", Inter, sans-serif;
+  font-family: var(--font-heading);
   font-size: clamp(2rem, 3.5vw, 3.6rem);
   font-weight: 600;
   line-height: 1.2;
@@ -1545,7 +1530,7 @@ textarea:focus-visible {
 
 .plan-document-meta b {
   color: var(--text);
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-numeric);
   font-size: 1rem;
 }
 
@@ -1611,7 +1596,7 @@ textarea:focus-visible {
 
 .plan-detail-block-heading > span {
   color: var(--accent);
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-numeric);
   font-size: 0.6875rem;
 }
 
@@ -1644,7 +1629,7 @@ textarea:focus-visible {
 .plan-exercise-index {
   padding-top: 2px;
   color: var(--muted);
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-numeric);
   font-size: 0.6875rem;
 }
 
@@ -1685,13 +1670,13 @@ textarea:focus-visible {
 
 .plan-set-list span {
   color: var(--muted);
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-numeric);
   font-size: 0.6875rem;
 }
 
 .plan-set-list strong {
   color: var(--muted);
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-numeric);
   font-size: 0.6875rem;
   font-weight: 500;
   line-height: 1.5;
@@ -1718,7 +1703,7 @@ textarea:focus-visible {
 
 .plan-context-metrics b {
   color: var(--text);
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-numeric);
   font-size: 1.05rem;
 }
 
@@ -1751,7 +1736,7 @@ textarea:focus-visible {
 
 .plan-stimulus-row small {
   color: var(--muted);
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-numeric);
   font-size: 0.6875rem;
 }
 
@@ -2113,7 +2098,6 @@ textarea:focus-visible {
   .body-3d-hud {
     bottom: 88px;
   }
-
 }
 
 @media (max-width: 767px) {

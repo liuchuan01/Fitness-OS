@@ -108,3 +108,7 @@ API Key 只由 DSH 官方凭据机制或启动环境管理，不写入普通 YAM
 ### 模型配置兼容边界
 
 配置后台已收敛为 DeepSeek Key；旧 `settings.model` 字段仅保留解析与迁移兼容，不再由 Fitness UI/API 修改，也不覆盖 Host 默认模型。DSH 内置目录与默认路由的事实说明见 [DSH 集成文档](../dsh-integration/DSH-FITNESS-INTEGRATION.md#模型与密钥设置收敛)。凭据仍独立存储，不迁入普通设置。
+
+### 外观主题资源
+
+内置主题位于应用 `resources/themes/`；第三方主题安装到 `<WORKSPACE_ROOT>/themes/`，属于外观扩展资源，不属于 `fitness/` 个人训练库、`config/settings.yaml` 或 `runtime/`。选择偏好仍保存在浏览器。主题包不能修改训练数据、计算规则或肌肉映射，目录发现不触发训练数据刷新。

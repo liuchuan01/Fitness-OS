@@ -24,10 +24,15 @@ const fragmentShader = `
   }
 `;
 
-type MuscleBackdropProps = { label: string; anatomicalName: string; color: string };
+type MuscleBackdropProps = {
+  label: string;
+  anatomicalName: string;
+  color: string;
+  fontFamily: string;
+};
 
 /** Decorative only: the complete accessible name lives in the canvas title and history panel. */
-export function MuscleBackdrop({ label, anatomicalName, color }: MuscleBackdropProps) {
+export function MuscleBackdrop({ label, anatomicalName, color, fontFamily }: MuscleBackdropProps) {
   const { size, invalidate } = useThree();
   const lettering = useMemo(() => {
     if (!focusComposition(size.width, size.height, window.innerWidth).enabled) return null;
@@ -42,7 +47,7 @@ export function MuscleBackdrop({ label, anatomicalName, color }: MuscleBackdropP
     const context = canvas.getContext("2d");
     if (!context) return null;
     context.scale(2, 2);
-    context.font = `600 ${fontSize}px ${getComputedStyle(document.documentElement).fontFamily}`;
+    context.font = `600 ${fontSize}px ${fontFamily}`;
     context.fillStyle = color;
     context.textBaseline = "alphabetic";
     const available = width - fontSize * 0.65;
@@ -99,7 +104,7 @@ export function MuscleBackdrop({ label, anatomicalName, color }: MuscleBackdropP
         height / size.height
       )
     };
-  }, [label, anatomicalName, color, size.width, size.height]);
+  }, [label, anatomicalName, color, fontFamily, size.width, size.height]);
   const uniforms = useMemo(
     () =>
       lettering

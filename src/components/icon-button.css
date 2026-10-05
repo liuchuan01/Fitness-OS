@@ -9,13 +9,13 @@
   padding: 0;
   flex-shrink: 0;
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: calc(var(--theme-radius) * 0.75);
   background: var(--glass);
   color: var(--muted);
   transition:
-    color 150ms ease,
-    background 150ms ease,
-    border-color 150ms ease;
+    color var(--motion-duration) ease,
+    background var(--motion-duration) ease,
+    border-color var(--motion-duration) ease;
 }
 .icon-button.icon-button:hover {
   color: var(--accent);

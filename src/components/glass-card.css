@@ -7,14 +7,14 @@
   position: relative;
 }
 .glass-card {
-  --glass-base-fill: color-mix(in srgb, var(--glass) 48%, transparent);
+  --glass-base-fill: color-mix(in srgb, var(--glass) var(--theme-fill-opacity), transparent);
   --glass-fill: var(--glass-base-fill);
-  --glass-blur: 8px;
-  --glass-edge-opacity: 0.38;
+  --glass-blur: var(--theme-blur);
+  --glass-edge-opacity: var(--theme-edge-opacity);
   --glass-shadow: var(--shadow-panel);
   isolation: isolate;
   border: 1px solid var(--border);
-  border-radius: var(--glass-radius, 16px);
+  border-radius: var(--glass-radius, var(--theme-radius));
   background:
     linear-gradient(
       135deg,
@@ -54,23 +54,23 @@
   pointer-events: none;
 }
 .glass-card:is(:hover, :focus-within, [open], [data-expanded="true"])::before {
-  animation: glass-edge-drift 18s linear infinite;
+  animation: var(--theme-edge-animation);
 }
 .glass-card--quiet {
-  --glass-fill: color-mix(in srgb, var(--glass) 34%, transparent);
-  --glass-blur: 5px;
-  --glass-edge-opacity: 0.22;
+  --glass-fill: color-mix(in srgb, var(--glass) var(--theme-quiet-fill-opacity), transparent);
+  --glass-blur: var(--theme-quiet-blur);
+  --glass-edge-opacity: var(--theme-quiet-edge-opacity);
   --glass-shadow: none;
 }
 .glass-card--quiet[data-expanded="true"] {
-  --glass-fill: color-mix(in srgb, var(--glass-raised) 58%, transparent);
-  --glass-blur: 8px;
-  --glass-edge-opacity: 0.38;
+  --glass-fill: color-mix(
+    in srgb,
+    var(--glass-raised) var(--theme-expanded-fill-opacity),
+    transparent
+  );
+  --glass-blur: var(--theme-expanded-blur);
+  --glass-edge-opacity: var(--theme-edge-opacity);
   --glass-shadow: var(--shadow-panel);
-}
-:root[data-theme="graphite"] .glass-card::before {
-  animation: none;
-  opacity: 0.16;
 }
 @keyframes glass-edge-drift {
   to {

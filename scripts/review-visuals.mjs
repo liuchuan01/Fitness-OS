@@ -40,7 +40,11 @@ try {
         JSON.stringify({ themeId, glowEnabled: true })
       );
     }, process.env.VISUAL_THEME ?? "neon");
-    await page.goto("http://127.0.0.1:5173");
+    await page.goto(process.env.VISUAL_ORIGIN ?? "http://127.0.0.1:5173");
+    await page.waitForFunction(
+      (theme) => globalThis.document.documentElement.dataset.theme === theme,
+      process.env.VISUAL_THEME ?? "neon"
+    );
     await page
       .locator(".technical-status")
       .filter({ hasText: "Model ready" })
@@ -53,7 +57,19 @@ try {
     });
     await page.getByRole("button", { name: "重置视角" }).click();
     const capture = async (mode) => {
-      await page.evaluate(() => globalThis.document.fonts.ready);
+      await page.waitForFunction(() => {
+        const scene = globalThis.document.querySelector(".body-3d-shell");
+        return !scene || scene.getAttribute("data-focus-motion") === "idle";
+      });
+      await page.evaluate(async () => {
+        await globalThis.document.fonts.ready;
+        await Promise.all(
+          globalThis.document
+            .getAnimations()
+            .filter((animation) => Number.isFinite(animation.effect?.getComputedTiming().endTime))
+            .map((animation) => animation.finished.catch(() => {}))
+        );
+      });
       await page.screenshot({ path: `${output}/${name}-${mode}.png` });
     };
     await capture("overview");
@@ -87,6 +103,13 @@ try {
     await capture("exercise");
     await page.locator(".muscle-history-link").first().click();
     await page.locator('.exercise-card[aria-pressed="true"]').waitFor();
+    await capture("workout-exercise");
+    await page.getByRole("button", { name: "清除选择", exact: true }).click();
+    await page.locator('.body-3d-shell[data-focus-motion="idle"]').waitFor();
+    if (name === "mobile") {
+      await capture("day-detail");
+      await page.getByRole("button", { name: "关闭详情", exact: true }).click();
+    }
     await capture("day");
     await page.getByRole("button", { name: "配置后台", exact: true }).click();
     await page.getByRole("heading", { name: "界面外观" }).waitFor();

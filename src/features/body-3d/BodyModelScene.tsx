@@ -1,5 +1,5 @@
 import { bodyLoadColor } from "../../design/body-load";
-import defaultPalette from "../../design/tokens.json";
+import { appThemes } from "../../design/theme-definitions";
 import { useLoader, useThree } from "@react-three/fiber";
 import { useCallback, useEffect, useMemo } from "react";
 import {
@@ -20,6 +20,7 @@ import type { MuscleId, MuscleVisualState } from "../../../shared/fitness/index"
 import type { BodyViewer3DProps, ModelContract } from "./types";
 import { addMuscleDepthPrepass } from "./muscle-depth";
 
+const defaultPalette = appThemes.neon.palette;
 const MODEL_URL = "/models/bodyparts3d/bodyparts3d-fitness-taxonomy-draco.glb";
 
 type MeshBinding = {
@@ -35,6 +36,8 @@ type BodyModelSceneProps = {
   focusEmission?: number;
   baseEmission?: number;
   skinOpacity?: number;
+  roughness?: number;
+  metalness?: number;
   secondaryColor?: string;
   regionMuscles: MuscleId[];
   exerciseTargets?: BodyViewer3DProps["exerciseTargets"];
@@ -54,6 +57,8 @@ export function BodyModelScene({
   focusEmission = 0.28,
   baseEmission = 0.06,
   skinOpacity = 0.12,
+  roughness = 0.68,
+  metalness = 0.04,
   secondaryColor = palette.blue,
   contract,
   regionMuscles,
@@ -76,10 +81,10 @@ export function BodyModelScene({
   const model = useMemo(() => {
     const scene = gltf.scene.clone(true);
     frameModel(scene);
-    prepareModel(scene, targetBindings, palette, skinOpacity);
+    prepareModel(scene, targetBindings, palette, skinOpacity, roughness, metalness);
     addMuscleDepthPrepass(scene);
     return scene;
-  }, [gltf.scene, targetBindings, palette, skinOpacity]);
+  }, [gltf.scene, targetBindings, palette, skinOpacity, roughness, metalness]);
   useEffect(
     () => () => {
       model.traverse((node) => {
@@ -233,7 +238,9 @@ function prepareModel(
   scene: Object3D,
   targetBindings: Map<string, MeshBinding>,
   palette: typeof defaultPalette,
-  skinOpacity: number
+  skinOpacity: number,
+  roughness: number,
+  metalness: number
 ) {
   scene.traverse((node) => {
     if (!(node instanceof Mesh)) return;
@@ -258,9 +265,9 @@ function prepareModel(
       depthWrite: false,
       emissive: taxonomyMuscleId ? palette.gray : palette.surface,
       emissiveIntensity: taxonomyMuscleId ? 0.1 : 0.02,
-      metalness: 0.04,
+      metalness,
       opacity: taxonomyMuscleId ? 0.82 : 0.18,
-      roughness: 0.68,
+      roughness,
       side: DoubleSide,
       forceSinglePass: true,
       transparent: true

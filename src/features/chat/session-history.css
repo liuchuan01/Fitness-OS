@@ -22,9 +22,7 @@
 }
 .session-history header span {
   color: var(--accent-mid);
-  font:
-    10px ui-monospace,
-    monospace;
+  font: 10px var(--font-numeric);
   letter-spacing: 0.18em;
 }
 .session-history h2 {
@@ -142,9 +140,7 @@
   overflow-wrap: anywhere;
 }
 .session-history__record time {
-  font:
-    10px ui-monospace,
-    monospace;
+  font: 10px var(--font-numeric);
   color: var(--muted);
 }
 .session-history__record small {

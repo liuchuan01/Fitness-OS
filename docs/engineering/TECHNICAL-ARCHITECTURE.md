@@ -547,3 +547,16 @@ src/features/settings/
 外观选择仅被设置使用，因此随设置收拢；应用级 ThemeProvider、主题定义与 token 仍位于 `src/design`。`SettingsCard` 仍为功能私有，底层材质依赖共享 GlassCard。保留现有 CSS 类名与视觉参数，避免纯目录调整扩散为视觉重构。设计门禁路径与 DSH 标识来源文档同步更新，不留旧路径转发模块。
 
 本轮验证：lint、lint:architecture、lint:design、typecheck、58 项单元／组件与完整 build 通过；隔离端口运行 `appearance.spec.ts` 的 6 项 E2E 全通过，覆盖两主题、1440／390／320px 四分区、路由、草稿保留、教练／调度独立保存与模型设置。实际审图见 VISUAL-REVIEW。本轮未改后端，不重复声称完成真实模型调用或生产部署；工作区并行的人体／HUD 改动不纳入设置提交。
+
+
+## 15. 声明式主题包
+
+主题协议位于 `shared/themes`，内置包位于 `resources/themes`，用户安装目录为 `<WORKSPACE_ROOT>/themes/<id>/theme.json`。主题不属于 `fitness/` 训练数据，也不参与训练 schema、计算或 Scheduler 审计。服务端主题模块在读取目录时校验配置与资源并返回目录及诊断；前端通过 `src/api` 获取，注册表不依赖固定主题 ID。页面刷新即可发现新增包，无需重启服务或重新构建。
+
+`src/design` 把已校验主题转换为同源 CSS 变量与人体材质参数。内置包是离线回退，生成的 `tokens.css` 仅承载启动默认值；运行时应用同一适配结果。字体和预览为声明式包内资源，不执行第三方 JavaScript 或 CSS。包内资源走专用资源路由，不能沿用缺文件回退 `index.html` 的 SPA 路由行为。
+
+外观偏好仍为浏览器级状态，与教练／调度草稿及 DSH 会话独立。主题变化不重建业务页面状态。目录读取失败时不得把不可用误判为卸载并覆盖用户偏好；目录完整且所选包确定不存在时回退内置主题。资源准备失败有降级与诊断，切换使用同一个已解析快照。
+
+生产镜像已有 `resources/` 复制和完整工作区挂载，内置包随镜像发布，安装包随工作区保留。主题目录不是构建产物，不写入 `dist/`。作者指南、模板、版本及资源限制见 `docs/design/THEME-PACK-AUTHORING.md`。Agent Surface 维持独立主题边界，本增量不声明真实 Host 已同步换肤。
+
+本增量验证：lint、lint:design、lint:architecture、typecheck、65 项单元／组件、52 项集成、完整 build、3D contract／source-map／runtime 校验通过。7 个相关 E2E 文件共 27 个唯一用例通过，覆盖生产构建后目录安装与卸载、资源、跨标签同步和业务状态保留。三主题两视口四模式已实际审图，详细范围、一次截图准备失败及复验记录见 VISUAL-REVIEW；未进行生产部署或 Agent Host 主题同步验收。

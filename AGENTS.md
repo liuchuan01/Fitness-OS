@@ -32,9 +32,13 @@
 - 3D 运行时资源使用轻量 GLB/glTF，不批量加载原始 STL；人体只包含皮肤和训练相关肌肉，四肢完整，不包含骨骼、器官或生殖器。
 - UI 必须遵守 `Body is the Interface`：人体先于数字、面板和技术状态获得注意力；避免满屏霓虹、扫描线、厚描边和常驻聊天栏。
 
-- 视觉改动必须遵守 `docs/design/DESIGN.md` 第 7、10、19 节；复用 `src/design/tokens.json`、`IconButton` 与 `GlassCard` / `.glass-card`，执行 `npm run lint:design`，按固定视口实际审图。人体负荷使用设计第 7.3／7.4 节的 Neon 柔和桥接与 Graphite 冷暖中性色带，不得自行扩展多色热力或用 Unicode 代替工具图标。
+- 视觉改动必须遵守 `docs/design/DESIGN.md` 第 7、10、19 节；复用 `resources/themes/` 主题包及 `src/design` 适配器、`IconButton` 与 `GlassCard` / `.glass-card`，执行 `npm run lint:design`，按固定视口实际审图。人体负荷使用设计第 7.3／7.4 节的 Neon 柔和桥接与 Graphite 冷暖中性色带，不得自行扩展多色热力或用 Unicode 代替工具图标。
 
 ## 当前路线图
+
+### 当前增量：目录安装主题包
+
+按用户授权推进声明式主题包：内置 Neon／Graphite 与 `<WORKSPACE_ROOT>/themes/<id>/theme.json` 使用同一校验协议，刷新目录即可发现，不依赖重新构建或重启服务。外观配置包括语义颜色、字体预设与本地 WOFF2、玻璃材质、有限动效和人体材质／灯光；布局、训练语义、模型映射和可访问行为仍由产品拥有。作者契约见 `docs/design/THEME-PACK-AUTHORING.md`，工程边界见技术架构第 15 节。Agent iframe 同步与亮色主题未纳入本增量。静态检查、65 项单元／组件、52 项集成、完整 build、三项 3D 资源校验及 27 项相关 E2E 通过；三主题四模式的桌面／手机已实际审图，记录见 VISUAL-REVIEW。
 
 ### 当前增量：设置模块职责归位
 

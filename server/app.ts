@@ -2,6 +2,7 @@ import { createServer } from "node:http";
 import { randomBytes } from "node:crypto";
 import { join } from "node:path";
 import { applyJsonHeaders, readJsonBody, writeError, writeJson } from "./http/json.js";
+import { serveThemes } from "./themes/http.js";
 import { serveStatic } from "./http/static.js";
 import { DshHostAgentRuntime, type AgentRuntime } from "./agent-runtime.js";
 import { AutomationScheduler } from "./automation.js";
@@ -76,6 +77,15 @@ export function createLocalService(options: LocalServiceOptions) {
       response.end();
       return;
     }
+
+    if (
+      request.method === "GET" &&
+      (await serveThemes(url, response, {
+        builtin: paths.builtinThemesRoot,
+        installed: paths.themesRoot
+      }))
+    )
+      return;
 
     if (request.method === "GET" && url.pathname === "/api/data-events") {
       dataSync.subscribe(response);

@@ -1,7 +1,8 @@
 import { RotateCcw, X, ScanLine } from "lucide-react";
 import { IconButton } from "../../components/IconButton";
 import { useTheme } from "../../design/theme";
-import { MuscleBackdrop } from "./MuscleBackdrop";
+import { BodyProjectionLegend } from "./BodyProjectionLegend";
+import { BodyThemeEnvironment } from "./BodyThemeEnvironment";
 import { muscleBackdropNames } from "./muscle-backdrop-names";
 import { muscleLabels } from "../../../shared/muscle-taxonomy";
 import { BodyMotion } from "./BodyMotion";
@@ -40,7 +41,9 @@ export function BodyViewer3D({
   muscles,
   selectedMuscle,
   onMuscleSelect,
-  exerciseTargets, exerciseName, onResetFocus,
+  exerciseTargets,
+  exerciseName,
+  onResetFocus,
   projectionLabel,
   onExplorationChange
 }: BodyViewer3DProps) {
@@ -69,7 +72,13 @@ export function BodyViewer3D({
   const [transitioning, setTransitioning] = useState(false);
   const [professionalMode, setProfessionalMode] = useState(false);
   const rotating =
-    modelReady && motion.visible && !motion.dragging && !exploring && !selectedMuscle && !exerciseTargets && !transitioning;
+    modelReady &&
+    motion.visible &&
+    !motion.dragging &&
+    !exploring &&
+    !selectedMuscle &&
+    !exerciseTargets &&
+    !transitioning;
   const externallySelected = useMemo(
     () =>
       new Set([
@@ -165,10 +174,17 @@ export function BodyViewer3D({
         <IconButton
           label="重置视角"
           icon={RotateCcw}
-          onClick={() => { onResetFocus?.(); setResetToken((value) => value + 1); }}
+          onClick={() => {
+            onResetFocus?.();
+            setResetToken((value) => value + 1);
+          }}
         />
         {(selected.size > 0 || exerciseTargets) && (
-          <IconButton label="清除选择" icon={X} onClick={() => onResetFocus ? onResetFocus() : onMuscleSelect(null)} />
+          <IconButton
+            label="清除选择"
+            icon={X}
+            onClick={() => (onResetFocus ? onResetFocus() : onMuscleSelect(null))}
+          />
         )}
         <IconButton
           label={professionalMode ? "普通模式" : "专业模式"}
@@ -181,7 +197,10 @@ export function BodyViewer3D({
       <Canvas
         frameloop="demand"
         onPointerMissed={(event) => {
-          if (event.type === "click") { if (selectedMuscle) onMuscleSelect(null); else onResetFocus?.(); }
+          if (event.type === "click") {
+            if (selectedMuscle) onMuscleSelect(null);
+            else onResetFocus?.();
+          }
         }}
         aria-label="Interactive 3D body"
         className="body-3d-canvas"
@@ -189,16 +208,19 @@ export function BodyViewer3D({
         dpr={[1, 1.25]}
         gl={{ antialias: true, preserveDrawingBuffer: true }}
       >
-        {(selectedMuscle || exerciseName) && modelReady && (
-          <MuscleBackdrop
-            label={exerciseName ?? muscleLabels[selectedMuscle!]}
-            anatomicalName={exerciseName ? "MOVEMENT STUDY" : muscleBackdropNames[selectedMuscle!]}
-            color={palette.muted}
-          />
-        )}
-        <hemisphereLight args={[palette.text, palette.canvas, 0.9]} />
-        <directionalLight position={[3, 5, 4]} color={palette.text} intensity={1.2} />
-        <directionalLight position={[-3, 1, -2]} color={palette["accent-mid"]} intensity={0.55} />
+        <BodyThemeEnvironment
+          theme={theme}
+          backdrop={
+            (selectedMuscle || exerciseName) && modelReady
+              ? {
+                  label: exerciseName ?? muscleLabels[selectedMuscle!],
+                  anatomicalName: exerciseName
+                    ? "MOVEMENT STUDY"
+                    : muscleBackdropNames[selectedMuscle!]
+                }
+              : null
+          }
+        />
         <BodyMotion enabled={rotating} reducedMotion={motion.reducedMotion} resetToken={resetToken}>
           <Suspense fallback={null}>
             {meta ? (
@@ -208,6 +230,8 @@ export function BodyViewer3D({
                 secondaryColor={palette["selection-mid"]}
                 baseEmission={theme.body.baseEmission}
                 skinOpacity={theme.body.skinOpacity}
+                roughness={theme.body.roughness}
+                metalness={theme.body.metalness}
                 focusEmission={glowEnabled ? theme.body.focusEmission : 0}
                 hovered={hovered}
                 contract={meta.contract}
@@ -223,7 +247,14 @@ export function BodyViewer3D({
             ) : null}
           </Suspense>
         </BodyMotion>
-        <FocusCameraRig selected={selectedMuscle} exerciseTargets={exerciseTargets} ready={modelReady} reducedMotion={motion.reducedMotion} resetToken={resetToken} onTransition={setTransitioning} />
+        <FocusCameraRig
+          selected={selectedMuscle}
+          exerciseTargets={exerciseTargets}
+          ready={modelReady}
+          reducedMotion={motion.reducedMotion}
+          resetToken={resetToken}
+          onTransition={setTransitioning}
+        />
         <OrbitControls
           enableDamping
           onStart={() => motion.setDragging(true)}
@@ -250,69 +281,15 @@ export function BodyViewer3D({
         </span>
       </div>
 
-      <div className="body-projection-label" aria-label="身体投影图例">
-        <span className="body-projection-title">
-          {exerciseTargets
-            ? "动作涉及部位 · 非刺激评分"
-            : selectedMuscle
-              ? "肌肉焦点"
-              : region
-                ? "部位探索"
-                : (projectionLabel ?? "训练负荷估算")}
-        </span>
-        <span className="body-projection-keys">
-          {(selectedMuscle || region) && (
-            <span>
-              <i className="projection-swatch projection-focus" />
-              当前焦点
-            </span>
-          )}
-          {exerciseTargets ? (
-            <>
-              <span>
-                <i className="projection-swatch projection-primary" />
-                主练
-              </span>
-              <span>
-                <i className="projection-swatch projection-secondary" />
-                参与
-              </span>
-            </>
-          ) : !selectedMuscle && !region ? (
-            theme.body.loadColors ? (
-              <span>
-                低刺激
-                <i
-                  className="projection-swatch projection-continuous"
-                  style={{
-                    background: `linear-gradient(90deg, ${theme.body.loadColors.join(",")})`
-                  }}
-                />
-                高刺激
-              </span>
-            ) : (
-              <>
-                <span>
-                  <i className="projection-swatch projection-load" />
-                  低至高刺激
-                </span>
-                <span>
-                  <i className="projection-swatch projection-warning" />
-                  高负荷
-                </span>
-              </>
-            )
-          ) : null}
-        </span>
-        <div className="body-selection-context" aria-label="模型覆盖说明">
-          {selectedDetails.filter((detail) => professionalMode || detail.coverage === "partial").map((detail) => (
-            <span key={detail.id}>
-              {detail.label}{detail.coverage === "partial" ? " · 模型近似显示" : ""}
-              {professionalMode ? ` · ${detail.id} · ${detail.coverage}` : ""}
-            </span>
-          ))}
-        </div>
-      </div>
+      <BodyProjectionLegend
+        exerciseTargets={!!exerciseTargets}
+        selectedMuscle={!!selectedMuscle}
+        region={!!region}
+        projectionLabel={projectionLabel}
+        loadColors={theme.body.loadColors}
+        selectedDetails={selectedDetails}
+        professionalMode={professionalMode}
+      />
     </div>
   );
 }

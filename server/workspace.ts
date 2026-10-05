@@ -46,6 +46,8 @@ export function resolveWorkspacePaths(
     configRoot,
     runtimeRoot,
     dshHome,
+    themesRoot: join(workspaceRoot, "themes"),
+    builtinThemesRoot: join(applicationRoot, "resources", "themes"),
     settingsFile: join(configRoot, "settings.yaml"),
     resourcesRoot: join(applicationRoot, "resources", "fitness")
   };

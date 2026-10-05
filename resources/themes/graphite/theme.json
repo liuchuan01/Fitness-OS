@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "id": "graphite",
+  "name": "Graphite / 无霓虹",
+  "description": "冷暖中性色带与安静的玻璃层次。",
+  "version": "1.0.0",
+  "appearance": "dark",
+  "tokens": {
+    "background.canvas": "#111316",
+    "background.surface": "#1b1e23",
+    "background.raised": "#282d34",
+    "text.primary": "#f3f4f6",
+    "text.muted": "#b0b7c1",
+    "interaction.primary": "#b7d2e5",
+    "interaction.primarySoft": "#9eafb9",
+    "interaction.primaryMuted": "#88969f",
+    "interaction.selection": "#dac6ac",
+    "interaction.selectionSoft": "#bcae9a",
+    "interaction.selectionMuted": "#a39b8e",
+    "status.warning": "#e5ad72",
+    "status.danger": "#ff8e8e",
+    "status.success": "#75d6af",
+    "border.default": "rgba(176, 183, 193, 0.17)",
+    "border.strong": "rgba(176, 183, 193, 0.34)",
+    "surface.glass": "rgba(23, 26, 31, 0.92)",
+    "surface.glassRaised": "rgba(37, 42, 48, 0.96)",
+    "body.skin": "#535d66",
+    "body.unbound": "#484f57",
+    "body.noData": "#68737e",
+    "load.low": "#88969f",
+    "load.moderate": "#b7d2e5",
+    "load.high": "#bcae9a",
+    "load.peak": "#dac6ac"
+  },
+  "effects": {
+    "glow": false,
+    "edgeAnimation": false
+  },
+  "body": {
+    "focusEmission": 0.12,
+    "baseEmission": 0.035,
+    "loadColors": ["#b7d2e5", "#b6c8d9", "#b7becd", "#beb8c2", "#c8bab9", "#d2bfb1", "#dac6ac"]
+  },
+  "material": {
+    "edgeOpacity": 0.16,
+    "quietEdgeOpacity": 0.16
+  }
+}

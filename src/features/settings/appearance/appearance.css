@@ -188,3 +188,20 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+.theme-preview-image {
+  width: 100%;
+  object-fit: cover;
+}
+.theme-diagnostics {
+  margin-top: 16px;
+  font-size: 12px;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.theme-diagnostics summary {
+  cursor: pointer;
+}
+.theme-choices > button {
+  margin-top: 12px;
+}

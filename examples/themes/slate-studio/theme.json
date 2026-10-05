@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "id": "slate-studio",
+  "name": "Slate Studio / 石板工作室",
+  "description": "低光效、较实的玻璃与衬线标题；用于演示安装后扩展的暗色主题。",
+  "version": "1.0.0",
+  "appearance": "dark",
+  "tokens": {
+    "background.canvas": "#14191d",
+    "background.surface": "#1e262c",
+    "background.raised": "#303b43",
+    "text.primary": "#f3f4f6",
+    "text.muted": "#b0b7c1",
+    "interaction.primary": "#b7d2e5",
+    "interaction.primarySoft": "#9eafb9",
+    "interaction.primaryMuted": "#88969f",
+    "interaction.selection": "#dac6ac",
+    "interaction.selectionSoft": "#bcae9a",
+    "interaction.selectionMuted": "#a39b8e",
+    "status.warning": "#e5ad72",
+    "status.danger": "#ff8e8e",
+    "status.success": "#75d6af",
+    "border.default": "rgba(176, 183, 193, 0.17)",
+    "border.strong": "rgba(176, 183, 193, 0.34)",
+    "surface.glass": "rgba(23, 26, 31, 0.92)",
+    "surface.glassRaised": "rgba(37, 42, 48, 0.96)",
+    "body.skin": "#535d66",
+    "body.unbound": "#484f57",
+    "body.noData": "#68737e",
+    "load.low": "#88969f",
+    "load.moderate": "#b7d2e5",
+    "load.high": "#bcae9a",
+    "load.peak": "#dac6ac"
+  },
+  "effects": {
+    "glow": false,
+    "edgeAnimation": false,
+    "duration": 150
+  },
+  "body": {
+    "focusEmission": 0.12,
+    "baseEmission": 0.035,
+    "loadColors": [
+      "#b7d2e5",
+      "#b6c8d9",
+      "#b7becd",
+      "#beb8c2",
+      "#c8bab9",
+      "#d2bfb1",
+      "#dac6ac"
+    ],
+    "roughness": 0.8,
+    "metalness": 0.02
+  },
+  "material": {
+    "edgeOpacity": 0.16,
+    "blur": 12,
+    "quietBlur": 8,
+    "expandedBlur": 12,
+    "radius": 12,
+    "fillOpacity": 0.6,
+    "quietFillOpacity": 0.4,
+    "expandedFillOpacity": 0.7
+  },
+  "author": "Fitness OS contributors",
+  "typography": {
+    "body": "sans",
+    "heading": "serif",
+    "numeric": "mono"
+  },
+  "assets": {
+    "preview": "preview.png"
+  }
+}

@@ -24,9 +24,10 @@
     "generate:3d-audit": "node scripts/generate-3d-coverage-audit.mjs",
     "e2e": "playwright test --config tooling/playwright.config.ts",
     "validate": "npm run lint && npm run lint:design && npm run lint:architecture && npm run typecheck && npm run test && npm run test:integration && npm run e2e",
-    "design:tokens": "node scripts/design-tokens.mjs",
-    "lint:design": "node scripts/design-tokens.mjs --check",
-    "design:review": "node scripts/review-visuals.mjs"
+    "design:tokens": "tsx scripts/design-tokens.mjs",
+    "lint:design": "tsx scripts/design-tokens.mjs --check",
+    "design:review": "node scripts/review-visuals.mjs",
+    "validate:theme": "tsx scripts/validate-theme.ts"
   },
   "dependencies": {
     "@ai-fitness-os/dsh-fitness-automation-bridge": "file:dsh-fitness/automation-bridge",
