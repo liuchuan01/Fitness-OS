@@ -99,3 +99,53 @@
   --theme-edge-animation: none;
   --motion-duration: 150ms;
 }
+
+[data-theme="orbital"] {
+  --canvas: #f3f5f4;
+  --surface: #e7ebea;
+  --raised: #ffffff;
+  --text: #20282c;
+  --muted: #5c6a70;
+  --accent: #214bc1;
+  --accent-mid: #3766ad;
+  --accent-muted: #638593;
+  --selection: #08747e;
+  --selection-mid: #246e76;
+  --selection-muted: #6e9495;
+  --warning: #905909;
+  --danger: #b64043;
+  --success: #1d7253;
+  --border: rgba(55, 73, 81, 0.18);
+  --border-strong: rgba(55, 73, 81, 0.34);
+  --glass: rgba(248, 250, 249, 0.94);
+  --glass-raised: rgba(255, 255, 255, 0.98);
+  --skin: #87979a;
+  --unbound: #7c8b91;
+  --gray: #60727a;
+  --blue: #75c9d4;
+  --orange: #4699ce;
+  --red: #2b61c5;
+  --purple: #2546bb;
+  --body-load-1: #75c9d4;
+  --body-load-2: #5bb3cf;
+  --body-load-3: #4699ce;
+  --body-load-4: #347dca;
+  --body-load-5: #2b61c5;
+  --shadow-panel: 0 20px 60px rgba(0, 0, 0, 0.1);
+  --glow-accent: none;
+  --glow-selection: none;
+  --font-body: "Inter", "Noto Sans SC", system-ui, -apple-system, sans-serif;
+  --font-heading: "Inter", "Noto Sans SC", system-ui, -apple-system, sans-serif;
+  --font-numeric: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+  --theme-radius: 10px;
+  --theme-blur: 8px;
+  --theme-quiet-blur: 5px;
+  --theme-expanded-blur: 10px;
+  --theme-fill-opacity: 72%;
+  --theme-quiet-fill-opacity: 60%;
+  --theme-expanded-fill-opacity: 88%;
+  --theme-edge-opacity: 0.12;
+  --theme-quiet-edge-opacity: 0.08;
+  --theme-edge-animation: none;
+  --motion-duration: 150ms;
+}

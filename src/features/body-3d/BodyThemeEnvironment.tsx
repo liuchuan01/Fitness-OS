@@ -8,6 +8,8 @@ type BodyThemeEnvironmentProps = {
 
 export function BodyThemeEnvironment({ theme, backdrop }: BodyThemeEnvironmentProps) {
   const { palette, body } = theme;
+  const lightColor =
+    body.lightColor ?? (theme.appearance === "light" ? palette.raised : palette.text);
   return (
     <>
       {backdrop && (
@@ -17,10 +19,10 @@ export function BodyThemeEnvironment({ theme, backdrop }: BodyThemeEnvironmentPr
           fontFamily={theme.cssVariables["--font-body"]}
         />
       )}
-      <hemisphereLight args={[palette.text, palette.canvas, body.hemisphereIntensity]} />
+      <hemisphereLight args={[lightColor, palette.canvas, body.hemisphereIntensity]} />
       <directionalLight
         position={[3, 5, 4]}
-        color={palette.text}
+        color={lightColor}
         intensity={body.keyLightIntensity}
       />
       <directionalLight

@@ -8,7 +8,7 @@
 
 迁移前代码审计快照（历史估算依据，不是当前代码计数）：`src/` 有 8 个 CSS 文件、3,306 行；`src/styles.css` 2,488 行，其中正则扫描发现 268 次十六进制或 rgb/rgba 颜色写法、130 种不同字面值。这是迁移规模指标，不等于 130 个有效设计 token。其余主要散落在选择器、HUD、会话样式中；4 个 TSX 文件有 inline style，须区分布局数值与主题值，不能机械删除。
 
-当前运行时以 `resources/themes/{neon,graphite}/theme.json` 为内置主题包，以 `<WORKSPACE_ROOT>/themes/<id>/theme.json` 为用户包。`shared/themes/schema.ts` 定义严格协议，服务扫描后返回已解析的主题目录；前端统一将同一份主题转换为 CSS 变量和 Three 材质。`src/design/tokens.css` 是内置包的生成产物；浏览器同步载入同一内置包作为首屏回退。旧 `tokens.json` 与 `graphite.json` 已移除，不再维护平行颜色来源。历史 blue/orange/purple 键只存在于内部兼容适配，作者使用语义键。
+当前运行时以 `resources/themes/{neon,graphite,orbital}/theme.json` 为内置主题包，以 `<WORKSPACE_ROOT>/themes/<id>/theme.json` 为用户包。`shared/themes/schema.ts` 定义严格协议，服务扫描后返回已解析的主题目录；前端统一将同一份主题转换为 CSS 变量和 Three 材质。`src/design/tokens.css` 是内置包的生成产物；浏览器同步载入同一内置包作为首屏回退。旧 `tokens.json` 与 `graphite.json` 已移除，不再维护平行颜色来源。历史 blue/orange/purple 键只存在于内部兼容适配，作者使用语义键。
 
 设置页的界面外观分区从主题目录渲染名称、简介和预览。主题包在应用构建和启动后放入目录，刷新页面即可发现。浏览器保存所选 ID 并跨标签页同步，业务日期、动作、肌肉与未保存的设置草稿不因换肤清空。非法包单独隔离；确定移除的所选主题回退 Neon；目录暂时读取失败不能当作卸载并覆盖偏好。
 
@@ -78,7 +78,7 @@ Neon 保留局部控件光晕和重点肌肉自发光；Graphite 保留安静表
 
 ### 已实施的主题包 v1
 
-包的最小必需字段为 `schemaVersion: 1`、`id`、`name`、`version` 与 `appearance: "dark"`；其余白名单字段使用协议默认值。完整字段、范围、默认值、字体与预览声明见 [作者指南](THEME-PACK-AUTHORING.md)。模板位于 `examples/themes/slate-studio/`，校验入口为 `npm run validate:theme -- <包目录>`。
+包的最小必需字段为 `schemaVersion: 1`、`id`、`name`、`version` 与 `appearance: "dark" | "light"`；其余白名单字段使用协议默认值。完整字段、范围、默认值、字体与预览声明见 [作者指南](THEME-PACK-AUTHORING.md)。模板位于 `examples/themes/slate-studio/`，校验入口为 `npm run validate:theme -- <包目录>`。
 
 服务每次读取主题目录时执行 schema、目录归属和资源边界检查。包不能覆盖 API、业务规则、人体映射、键盘行为或页面布局。未知键、非法数值、不兼容版本和 ID 冲突提供诊断。DOM 与 3D 使用统一解析后的主题；资源缺失走可读回退。
 
@@ -124,7 +124,7 @@ Agent 同步继续作为后续独立增量：需通过可信 origin/source 的�
 
 ## 6. 推进边界
 
-主站内置主题和运行时目录主题包使用同一协议，当前验收记录见 VISUAL-REVIEW.md 与技术架构。Agent 同步、亮色主题与更多资源槽位仍为后续增量；优先顺序统一写在 AGENTS.md。实现与色卡获批不自动构成主站全部标准场景的最终视觉批准。
+主站内置主题和运行时目录主题包使用同一协议，当前验收记录见 VISUAL-REVIEW.md 与技术架构。亮色第三主题 Orbital 已按 2026-10-05 用户授权接入，见 DESIGN 第 7.5 节。Agent 同步与更多资源槽位仍为后续增量；优先顺序统一写在 AGENTS.md。实现与色卡获批不自动构成主站全部标准场景的最终视觉批准。
 
 ## 7. 历史样板验证记录
 

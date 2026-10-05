@@ -560,3 +560,11 @@ src/features/settings/
 生产镜像已有 `resources/` 复制和完整工作区挂载，内置包随镜像发布，安装包随工作区保留。主题目录不是构建产物，不写入 `dist/`。作者指南、模板、版本及资源限制见 `docs/design/THEME-PACK-AUTHORING.md`。Agent Surface 维持独立主题边界，本增量不声明真实 Host 已同步换肤。
 
 本增量验证：lint、lint:design、lint:architecture、typecheck、65 项单元／组件、52 项集成、完整 build、3D contract／source-map／runtime 校验通过。7 个相关 E2E 文件共 27 个唯一用例通过，覆盖生产构建后目录安装与卸载、资源、跨标签同步和业务状态保留。三主题两视口四模式已实际审图，详细范围、一次截图准备失败及复验记录见 VISUAL-REVIEW；未进行生产部署或 Agent Host 主题同步验收。
+
+### 15.1 亮色主题与读取／切换边界修复（2026-10-05）
+
+新增 Orbital 内置亮色包，默认 Neon 不变。共享保留 ID 列表位于 `shared/themes/builtins.ts`，前端内置回退与服务端禁止覆盖使用同一组 ID。协议 v1 兼容增加 light 与可选照明色，暗色包的照明默认行为不变；亮色默认取 raised，Orbital 显式使用白光。
+
+主题文件读取先校验路径组件及最终普通文件类型，再以 NOFOLLOW／NONBLOCK 打开并复查 fstat，避免 FIFO 在类型检查前阻塞线程池。资源不合规则隔离诊断；合法包仍可回退。字体预载期间单选项跟随 pending ID，重新选择当前主题能取消旧请求，并由原 sequence 防止迟到结果覆盖。
+
+本轮验证：静态检查、66 项单元／组件、完整 build、三项 3D 资源检查与主题 CLI 通过。全量集成初次 53/54，凭据恢复保存超时的文件两项独立复验通过，合计覆盖 54 项，不宣称已定位偶发根因。10 项相关 E2E 通过，覆盖三主题设置、人体材质／图例与生产目录包生命周期。最终文字对比度调整后重新通过 design lint 和 build，实际审图范围见 VISUAL-REVIEW。未进行生产部署或 Agent iframe 主题同步验证。

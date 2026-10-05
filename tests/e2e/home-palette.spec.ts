@@ -5,7 +5,7 @@ import { buildDashboardProjection } from "../../shared/fitness/index";
 import type * as Fiber from "@react-three/fiber";
 import type { Mesh, MeshStandardMaterial } from "three";
 
-for (const theme of ["neon", "graphite"] as const) {
+for (const theme of ["neon", "graphite", "orbital"] as const) {
   test(`${theme} renders continuous load colors and matching legend with an integrated timeline heading`, async ({
     page
   }, testInfo) => {
@@ -52,6 +52,10 @@ for (const theme of ["neon", "graphite"] as const) {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/");
     await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
+    await expect(page.locator("html")).toHaveCSS(
+      "color-scheme",
+      theme === "orbital" ? "light" : "dark"
+    );
     await expect(page.getByLabel("3D model status")).toContainText("Model ready");
     await page.evaluate(() => {
       Object.defineProperty(document, "hidden", { configurable: true, get: () => true });
@@ -90,7 +94,11 @@ for (const theme of ["neon", "graphite"] as const) {
     const gradient = await legend
       .locator(".projection-continuous")
       .evaluate((node) => getComputedStyle(node).backgroundImage);
-    expect(gradient).toContain(theme === "neon" ? "rgb(162, 146, 177)" : "rgb(190, 184, 194)");
+    expect(gradient).toContain(
+      { neon: "rgb(162, 146, 177)", graphite: "rgb(190, 184, 194)", orbital: "rgb(70, 153, 206)" }[
+        theme
+      ]
+    );
     const materialColors = await page.evaluate(async () => {
       const moduleUrl = "/node_modules/.vite/deps/@react-three_fiber.js";
       const { _roots } = (await import(moduleUrl)) as typeof Fiber;
@@ -103,10 +111,18 @@ for (const theme of ["neon", "graphite"] as const) {
       });
       return result;
     });
-    expect(materialColors.pec_major_mid).toBe(theme === "neon" ? "ff477e" : "dac6ac");
-    expect(materialColors.rectus_femoris).toBe(theme === "neon" ? "a292b1" : "beb8c2");
-    expect(materialColors.deltoid_anterior).toBe(theme === "neon" ? "06e3fd" : "b7d1e4");
-    expect(materialColors.latissimus_dorsi).toBe(theme === "neon" ? "536878" : "68737e");
+    expect(materialColors.pec_major_mid).toBe(
+      { neon: "ff477e", graphite: "dac6ac", orbital: "2546bb" }[theme]
+    );
+    expect(materialColors.rectus_femoris).toBe(
+      { neon: "a292b1", graphite: "beb8c2", orbital: "4699ce" }[theme]
+    );
+    expect(materialColors.deltoid_anterior).toBe(
+      { neon: "06e3fd", graphite: "b7d1e4", orbital: "8dd8db" }[theme]
+    );
+    expect(materialColors.latissimus_dorsi).toBe(
+      { neon: "536878", graphite: "68737e", orbital: "60727a" }[theme]
+    );
     await page.getByRole("button", { name: "展开训练时间线" }).click();
     const legendBounds = (await legend.boundingBox())!;
     const launcherBounds = (await page.locator(".agent-chat-launcher").boundingBox())!;

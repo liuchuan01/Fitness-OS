@@ -20,7 +20,7 @@ export function ThemeChoices() {
                   type="radio"
                   name={name}
                   value={theme.id}
-                  checked={theme.id === themeId}
+                  checked={theme.id === (pendingThemeId ?? themeId)}
                   onChange={() => setThemeId(theme.id)}
                 />
                 <span>

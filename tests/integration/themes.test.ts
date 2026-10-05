@@ -1,4 +1,6 @@
-import { mkdtemp, mkdir, writeFile, rm, symlink } from "node:fs/promises";
+import { mkdtemp, mkdir, writeFile, rm, symlink, open } from "node:fs/promises";
+import { constants } from "node:fs";
+import { execFileSync } from "node:child_process";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import type { AddressInfo } from "node:net";
@@ -40,6 +42,48 @@ const roots = () => ({
 });
 
 describe("主题包运行时契约", () => {
+  it.skipIf(process.platform === "win32")("FIFO 清单和可选资源不会阻塞目录扫描", async () => {
+    const root = await install("custom", { ...minimal, assets: { preview: "preview.png" } });
+    for (const path of ["preview.png", "theme.json"]) {
+      const fifo = join(root, path);
+      await rm(fifo, { force: true });
+      execFileSync("mkfifo", [fifo]);
+      let timer: ReturnType<typeof setTimeout> | undefined;
+      const scan = readThemeCatalog(roots());
+      try {
+        const result = await Promise.race([
+          scan,
+          new Promise<never>((_, reject) => {
+            timer = setTimeout(() => reject(new Error("FIFO blocked catalog")), 1000);
+          })
+        ]);
+        expect(result.themes.some((theme) => theme.id === "neon")).toBe(true);
+        expect(result.themes.some((theme) => theme.id === "custom")).toBe(path !== "theme.json");
+        expect(result.diagnostics.some((entry) => entry.message.includes("文件类型"))).toBe(true);
+      } finally {
+        clearTimeout(timer);
+        // Also release an old implementation's blocked reader if this regression fails.
+        const writer = await open(fifo, constants.O_WRONLY | constants.O_NONBLOCK).catch(
+          () => null
+        );
+        await writer?.close();
+        await scan;
+        await rm(fifo);
+      }
+    }
+  });
+
+  it("亮色内置包通过目录发现，目录不可用时也不能被安装包覆盖", async () => {
+    const catalog = await readThemeCatalog(roots());
+    expect(catalog.themes.find((theme) => theme.id === "orbital")?.appearance).toBe("light");
+    await install("orbital", { ...minimal, id: "orbital" });
+    const missingBuiltins = await readThemeCatalog({
+      ...roots(),
+      builtin: join(workspace, "missing")
+    });
+    expect(missingBuiltins.themes).toHaveLength(0);
+    expect(missingBuiltins.diagnostics.some((entry) => entry.message.includes("重复"))).toBe(true);
+  });
   it("资源内容变化会更新URL版本，目录名称不匹配不注册", async () => {
     const root = await install("custom", { ...minimal, typography: { font: "font.woff2" } });
     await writeFile(join(root, "font.woff2"), "wOF2first-content");
@@ -86,7 +130,7 @@ describe("主题包运行时契约", () => {
     server = createLocalService({ version: "test", workspaceRoot: workspace });
     await new Promise<void>((done) => server!.listen(0, "127.0.0.1", done));
     const url = `http://127.0.0.1:${(server.address() as AddressInfo).port}/api/themes`;
-    expect((await fetchCatalog(url)).themes).toHaveLength(2);
+    expect((await fetchCatalog(url)).themes).toHaveLength(3);
     const root = await install("custom", minimal);
     expect((await fetchCatalog(url)).themes.map((theme: { id: string }) => theme.id)).toContain(
       "custom"
@@ -102,7 +146,7 @@ describe("主题包运行时契约", () => {
       "builtin"
     );
     await rm(root, { recursive: true });
-    expect((await fetchCatalog(url)).themes).toHaveLength(2);
+    expect((await fetchCatalog(url)).themes).toHaveLength(3);
   });
 
   it("单个坏包可诊断，目录不可读取与确定不存在区分", async () => {

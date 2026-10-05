@@ -4,6 +4,7 @@ import { ThemeProvider, useTheme } from "./theme";
 import { appThemes, resolveTheme, type ThemeDefinition } from "./theme-definitions";
 import { appearanceKey, legacyAppearanceKey, parseAppearance, readAppearance } from "./appearance";
 import { getThemes } from "../api/themes";
+import { ThemeChoices } from "../features/settings/appearance/ThemeChoices";
 vi.mock("../api/themes", () => ({ getThemes: vi.fn() }));
 const installed = resolveTheme({
   ...appThemes.graphite,
@@ -54,6 +55,44 @@ beforeEach(() => {
 });
 
 describe("theme preferences and catalog lifecycle", () => {
+  it("cancels pending font preparation when the user reselects the active radio", async () => {
+    const loaded = deferred<FontFace>();
+    vi.stubGlobal(
+      "FontFace",
+      class {
+        load() {
+          return loaded.promise;
+        }
+      }
+    );
+    Object.defineProperty(document, "fonts", { value: { add: vi.fn() }, configurable: true });
+    const custom = resolveTheme({
+      ...installed,
+      assetUrls: { font: "/api/themes/forest/assets/cancel.woff2" }
+    });
+    vi.mocked(getThemes).mockResolvedValue(catalog([appThemes.neon, custom]));
+    try {
+      render(
+        <ThemeProvider>
+          <ThemeChoices />
+        </ThemeProvider>
+      );
+      const choice = await screen.findByRole("radio", { name: /Forest/ });
+      await waitFor(() => expect(readAppearance().themeId).toBe("neon"));
+      fireEvent.click(choice);
+      expect(choice).toBeChecked();
+      expect(screen.getByRole("status")).toHaveTextContent("正在准备主题");
+      fireEvent.click(screen.getByRole("radio", { name: /Neon/ }));
+      await act(async () => {
+        loaded.resolve({} as FontFace);
+      });
+      expect(document.documentElement.dataset.theme).toBe("neon");
+      expect(readAppearance().themeId).toBe("neon");
+      expect(screen.queryByRole("status")).not.toBeInTheDocument();
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
   it("migrates disabled v1 glow while accepting structurally valid installed IDs", async () => {
     localStorage.setItem(
       legacyAppearanceKey,

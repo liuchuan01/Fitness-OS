@@ -49,12 +49,12 @@ test("appearance lives only in settings, persists theme and migrates disabled gl
   await expect(page.locator("html")).toHaveAttribute("data-glow", "on");
 });
 
-test("settings sections fit desktop and narrow screens in both themes", async ({
+test("settings sections fit desktop and narrow screens in all three themes", async ({
   page
 }, testInfo) => {
   await mockCredentials(page);
   await page.goto("/#/settings");
-  for (const theme of ["Neon", "Graphite"]) {
+  for (const theme of ["Neon", "Graphite", "Orbital"]) {
     await openSection(page, "界面外观");
     await page.getByRole("radio", { name: new RegExp(theme) }).check();
     for (const width of [1440, 390, 320]) {

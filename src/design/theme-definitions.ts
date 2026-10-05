@@ -1,5 +1,7 @@
 import neon from "../../resources/themes/neon/theme.json";
 import graphite from "../../resources/themes/graphite/theme.json";
+import orbital from "../../resources/themes/orbital/theme.json";
+import type { builtinThemeIds } from "../../shared/themes/builtins";
 import { parseThemePackage, themeTokenMap, type ResolvedTheme } from "../../shared/themes/schema";
 type Palette = Record<
   | keyof typeof themeTokenMap
@@ -74,7 +76,11 @@ export function resolveTheme(theme: ResolvedTheme): ThemeDefinition {
 }
 const builtin = (value: unknown) =>
   resolveTheme({ ...parseThemePackage(value), source: "builtin", assetUrls: {} });
-export const appThemes = { neon: builtin(neon), graphite: builtin(graphite) };
+export const appThemes = {
+  neon: builtin(neon),
+  graphite: builtin(graphite),
+  orbital: builtin(orbital)
+} satisfies Record<(typeof builtinThemeIds)[number], ThemeDefinition>;
 export const themeIds = Object.keys(appThemes);
 export const neonLoadColors = appThemes.neon.body.loadColors;
 export const graphiteLoadColors = appThemes.graphite.body.loadColors;

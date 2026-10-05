@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { constants } from "node:fs";
 import { lstat, open, readdir } from "node:fs/promises";
 import { join, resolve, sep } from "node:path";
+import { builtinThemeIds } from "../../shared/themes/builtins.js";
 import {
   parseThemePackage,
   type ResolvedTheme,
@@ -28,9 +29,13 @@ async function readPackageFile(root: string, relative: string, maximum: number) 
     throw new Error("主题目录不能是符号链接");
   for (const segment of segments) {
     current = join(current, segment);
-    if ((await lstat(current)).isSymbolicLink()) throw new Error("主题资源不能是符号链接");
+    const info = await lstat(current);
+    if (info.isSymbolicLink()) throw new Error("主题资源不能是符号链接");
+    if (current === target ? !info.isFile() : !info.isDirectory())
+      throw new Error("主题文件类型不符合限制");
   }
-  const file = await open(target, constants.O_RDONLY | constants.O_NOFOLLOW);
+  // A file can be replaced after lstat; a FIFO must never block the I/O pool.
+  const file = await open(target, constants.O_RDONLY | constants.O_NOFOLLOW | constants.O_NONBLOCK);
   try {
     const info = await file.stat();
     if (!info.isFile() || info.size > maximum) throw new Error("主题文件类型或大小不符合限制");
@@ -115,7 +120,7 @@ export async function readThemeCatalog(roots: ThemeRoots): Promise<ThemeCatalog>
       try {
         const result = await validateThemeDirectory(join(root, entry.name));
         if (
-          (source === "installed" && ["neon", "graphite"].includes(result.theme.id)) ||
+          (source === "installed" && builtinThemeIds.some((id) => id === result.theme.id)) ||
           catalog.themes.some((theme) => theme.id === result.theme.id)
         )
           throw new Error("主题 ID 重复，不能覆盖已有主题");

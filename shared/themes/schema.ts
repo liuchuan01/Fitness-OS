@@ -81,7 +81,7 @@ export const themePackageSchema = z
     description: z.string().max(300).default(""),
     author: z.string().max(100).optional(),
     version: z.string().regex(/^\d+\.\d+\.\d+$/),
-    appearance: z.literal("dark"),
+    appearance: z.enum(["dark", "light"]),
     tokens: themeTokensSchema.default({}),
     typography: z
       .object({
@@ -120,6 +120,7 @@ export const themePackageSchema = z
         focusEmission: bounded(0, 1, 0.48),
         baseEmission: bounded(0, 0.3, 0.06),
         skinOpacity: bounded(0.05, 0.3, 0.12),
+        lightColor: color.optional(),
         hemisphereIntensity: bounded(0, 3, 0.9),
         keyLightIntensity: bounded(0, 3, 1.2),
         fillLightIntensity: bounded(0, 3, 0.55),
