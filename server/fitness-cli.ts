@@ -2,7 +2,12 @@ import { readFile } from "node:fs/promises";
 import { isAbsolute, relative, resolve, join } from "node:path";
 import { parse } from "yaml";
 import { planSchema } from "../shared/fitness/index.js";
-import { finalizePlanFile, finishWorkoutFromPlan, validateFitnessData } from "./data-store.js";
+import {
+  finalizePlanFile,
+  finishWorkoutFromPlan,
+  validateFitnessData,
+  importWorkoutFromFile
+} from "./data-store.js";
 import { resolveWorkspacePaths } from "./workspace.js";
 import { initializeWorkspace } from "./workspace-init.js";
 import { migrateLegacyWorkspace } from "./workspace-migration.js";
@@ -63,6 +68,13 @@ try {
       sourcePlanFile: record.sourcePlanFile,
       computed: record.plan.computed_expected_stimulus
     };
+  } else if (command === "import" && subject === "workout" && args[0] && args[1]) {
+    const imported = await importWorkoutFromFile(
+      { dataRoot },
+      await yaml(args[0]),
+      resolve(args[1])
+    );
+    result = { workoutFile: imported.workoutFile, computed: imported.computed };
   } else if (command === "finish-workout" && subject && args[0]) {
     const finished = await finishWorkoutFromPlan(
       { dataRoot },
@@ -75,7 +87,7 @@ try {
     result = { workoutFile: finished.workoutFile, computed: finished.computed };
   } else {
     throw new Error(
-      "Usage: fitness init | migrate <legacy-app> | onboarding status | draft profile <yaml> | commit profile|program <yaml> | validate all | validate plan <path> | finalize plan <runtime-draft-or-plan> | finish-workout <plan> <actual-yaml> [--confirmed-as-planned]"
+      "Usage: fitness init | migrate <legacy-app> | onboarding status | draft profile <yaml> | commit profile|program <yaml> | validate all | validate plan <path> | finalize plan <runtime-draft-or-plan> | import workout <draft-yaml> <source-file> | finish-workout <plan> <actual-yaml> [--confirmed-as-planned]"
     );
   }
   console.log(JSON.stringify(result));

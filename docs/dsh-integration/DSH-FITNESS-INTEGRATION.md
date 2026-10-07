@@ -275,3 +275,19 @@ Fitness Host 仍不读取 `config/settings.yaml` 的旧 model 字段生成 `agen
 验证入口：`DeepSeekSettings.test.tsx` 覆盖正常保存、读取失败后的保存恢复、环境凭据只读；`tests/integration/empty-workspace-credentials.test.ts` 使用临时空工作区启动真实 `npm run dev`，通过 Vite 页面与实际 DSH Host 验证首次写入和刷新。第二种场景仅注入初次 GET 503，恢复后 PUT 仍写入真实临时凭据存储。使用虚构 Key，不调用真实模型。当前机器正常首次启动未复现读取失败，因此这些结果不能证明用户机器上的服务失败原因已修复。
 
 本地服务在 `npm run dev` 终端记录 DSH Host 启动、就绪和退出原因，以及 `/api/model/settings` 或 `/api/model/preferences` 返回 503 时的 Host 状态与对应 bridge 类型。Host 启动日志不输出带浏览器 token 的 URL；退出原因仅保留错误摘要并遮盖已知密钥。工作区从其他路径恢复时，`runtime/dsh` 可能包含无法在新路径使用的 Session 和安装目录缓存；若 Host 报目录类型冲突或 Session 所属路径冲突，先停止服务，归档整个 `runtime/dsh` 后再启动，保留 `fitness/` 和 `config/`。归档的旧 Session 不自动迁移。
+
+## 2026-10-07 可选 TextIn 文件解析
+
+设置 → 文件解析管理 `config/settings.yaml` 的 `xparse.enabled` 与 `xparse.allowPaid`，旧配置缺少此分节时均默认为 false。开关与凭据分别保存，不覆盖教练、模型或自动计划设置。页面说明开启后在对话中提供 DSH 可访问的文件路径、链接或附件，由 DSH 解析和整理健身记录；用户电脑路径必须先上传或变为服务可访问的文件。PDF、图片与 Office 使用 TextIn 云端，结构化 CSV/JSON/YAML 可以直接本地读取。
+
+项目运行时依赖锁定 `xparse-cli@2.5.0`。npm 分发 Node 启动器和平台 Go 二进制，随部署安装，Host 不让 Agent 安装或升级。`fitness-automation-bridge` 的原生 Skill provider 提供 `xparse-parse`，正文位于应用包的 `xparse-skill/`；上游快照固定为 intsig-textin/xparse-skills `3662e0be9750cb57796a768015fc1e5fff29a793`，项目入口明确覆盖其安装、认证、输出目录和可用命令规则。
+
+开关关闭时 provider 不返回技能，技能正文加载返回不存在，`xparse` 工具注销；开启时注册同一原生工具。设置监听（250 ms）与每轮 `agent/pre-step` 同步目录缓存，每次执行及凭据解析后再次检查开关，配置缺失/损坏按关闭处理。无需重启 Host。关闭会取消当前本地 CLI 进程，但不能撤销已提交云端 Task；历史 Session 中读过的指令和结果不会被删除，不能承诺模型遗忘历史知识。
+
+原生 `xparse` 工具通过无 Shell 的参数数组调用项目 CLI，仅开放解析、额度、文档导航和解析 Task 的 run/status/read/export/debug/resume/continue。禁用任意 endpoint、profile、认证、输出目录、安装和 verbose 参数；Host 固定 TextIn 国内 endpoint，输出与缓存位于工作区 `runtime/xparse/`。Task 上下文私有文件由 Host 创建、调用后删除；非零退出码和上游结构化错误原样保留（凭据值遮盖），不会把进程退出等同业务导入成功。默认 auto 免费优先；未允许付费时拦截 paid、任务 resume/continue 等可能恢复已授权付费工作的操作。云端任务标识必须保留，超时不允许重复创建任务。这个入口不提供服务端语义抽取或篡改检测。
+
+凭据采用 App ID / Secret Code，作为一个 JSON 值经 DSH credentialsController 原子写入引用 `FITNESS_XPARSE_APP_CREDENTIALS`，默认落在工作区 `config/dsh-credentials.yaml`，不写普通 settings 或训练 YAML。GET 只返回 configured/writable；PUT 成功后页面清空输入，失败保留草稿，显式清除调用原生 unset。可以通过同名环境变量提供 JSON 对象 `{ "appId": "…", "secretCode": "…" }`，此时遵循原生只读覆盖规则。解析时从 credentials provider 按次读取，通过子进程环境注入，不传命令行或 Agent 参数；强制 app-key 身份，不继承 CLI 的个人 OAuth 登录。当前没有 OAuth 网页登录接入；已有全局 CLI 登录不会自动导入。保存凭据不代表已验证真实 TextIn 连通性。
+
+边界：这是现有单机单用户 Host 的配置，不是多租户账号隔离。原生 guard 同时拒绝常见 Shell 工具直接调用 xparse-cli / 安装技能 / 引用其凭据，但字符串检测不是通用 Shell 沙箱；拥有任意同 UID Shell 和文件访问的 Agent 仍可能通过自编程、网络或读取应用文件绕过。当前保证项目提供的发现、加载与执行入口受开关控制，不声称阻止恶意任意代码。需要强制全局隔离时必须增加独立进程身份、文件权限与网络策略，不用提示词或正则冒充。
+
+历史 workout 通过独立 `import workout <draft-yaml> <source-file>` 命令落盘；不伪造计划。来源归档、确定性计算、重复日期拒绝与路径保护见数据架构。Task 结果和 DSH Session 均不是训练数据源；导入完成以 Fitness CLI 与 validate all 为准。

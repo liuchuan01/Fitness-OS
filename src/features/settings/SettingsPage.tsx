@@ -1,4 +1,5 @@
-import { ArrowLeft, Palette, SlidersHorizontal, Clock3, KeyRound } from "lucide-react";
+import { ArrowLeft, Palette, SlidersHorizontal, Clock3, KeyRound, FileInput } from "lucide-react";
+import { XparseSettings } from "./xparse/XparseSettings";
 import { IconButton } from "../../components/IconButton";
 import { SettingsCard } from "./SettingsCard";
 import { DeepSeekSettings } from "./connection/DeepSeekSettings";
@@ -22,7 +23,8 @@ const sections = [
   { id: "appearance", label: "界面外观", icon: Palette },
   { id: "coach", label: "教练偏好", icon: SlidersHorizontal },
   { id: "schedule", label: "自动计划", icon: Clock3 },
-  { id: "connection", label: "模型连接", icon: KeyRound }
+  { id: "connection", label: "模型连接", icon: KeyRound },
+  { id: "xparse", label: "文件解析", icon: FileInput }
 ] as const;
 type SettingsSection = (typeof sections)[number]["id"];
 
@@ -34,6 +36,7 @@ export function SettingsPage({
   initialSection?: SettingsSection;
 }) {
   const [active, setActive] = useState<SettingsSection>(initialSection);
+  const [xparseVisited, setXparseVisited] = useState(initialSection === "xparse");
   const [savedCoach, setSavedCoach] = useState("");
   const [savedSchedule, setSavedSchedule] = useState("");
   const [projection, setProjection] = useState<AutomationResponse>();
@@ -121,6 +124,7 @@ export function SettingsPage({
                 aria-controls={`settings-${id}`}
                 onClick={() => {
                   setActive(id);
+                  if (id === "xparse") setXparseVisited(true);
                   setMessage("");
                 }}
               >
@@ -135,6 +139,9 @@ export function SettingsPage({
             </p>
           </nav>
           <div className="settings-workspace">
+            <div id="settings-xparse" hidden={active !== "xparse"}>
+              {xparseVisited ? <XparseSettings /> : null}
+            </div>
             <div id="settings-connection" hidden={active !== "connection"}>
               <DeepSeekSettings />
             </div>

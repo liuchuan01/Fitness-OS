@@ -9,6 +9,8 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
+    "@deepseek-ai/dsh-tools": "0.1.5-rc.2",
+    "xparse-cli": "2.5.0",
     "yaml": "^2.6.1"
   },
   "license": "Apache-2.0"

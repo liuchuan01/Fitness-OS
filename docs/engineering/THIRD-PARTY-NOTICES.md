@@ -51,3 +51,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
+
+## TextIn xParse
+
+- 项目：[intsig-textin/xparse-skills](https://github.com/intsig-textin/xparse-skills)，上游 Skill 快照 `3662e0be9750cb57796a768015fc1e5fff29a793`。
+- CLI：npm `xparse-cli@2.5.0` 及对应平台二进制包，由项目依赖管理。
+- 许可：MIT，Copyright (c) 2026 Intsig。上游 Skill 与 references 原文保存在 `dsh-fitness/automation-bridge/xparse-skill/upstream/`，同目录 LICENSE 保留声明；项目适配入口另行编写，不修改上游快照。

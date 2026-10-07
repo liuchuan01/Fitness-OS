@@ -26,7 +26,9 @@ function AppContent() {
         initialSection={
           new URLSearchParams(window.location.hash.split("?")[1]).get("section") === "connection"
             ? "connection"
-            : "appearance"
+            : new URLSearchParams(window.location.hash.split("?")[1]).get("section") === "xparse"
+              ? "xparse"
+              : "appearance"
         }
         onClose={() => {
           window.location.hash = "/";

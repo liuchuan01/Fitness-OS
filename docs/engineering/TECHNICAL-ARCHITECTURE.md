@@ -568,3 +568,11 @@ src/features/settings/
 主题文件读取先校验路径组件及最终普通文件类型，再以 NOFOLLOW／NONBLOCK 打开并复查 fstat，避免 FIFO 在类型检查前阻塞线程池。资源不合规则隔离诊断；合法包仍可回退。字体预载期间单选项跟随 pending ID，重新选择当前主题能取消旧请求，并由原 sequence 防止迟到结果覆盖。
 
 本轮验证：静态检查、66 项单元／组件、完整 build、三项 3D 资源检查与主题 CLI 通过。全量集成初次 53/54，凭据恢复保存超时的文件两项独立复验通过，合计覆盖 54 项，不宣称已定位偶发根因。10 项相关 E2E 通过，覆盖三主题设置、人体材质／图例与生产目录包生命周期。最终文字对比度调整后重新通过 design lint 和 build，实际审图范围见 VISUAL-REVIEW。未进行生产部署或 Agent iframe 主题同步验证。
+
+## 16. 可选文件解析与历史迁移（2026-10-07）
+
+设置模块增加 xparse 分区，首次进入才读取其配置与凭据，切换分区保留草稿。共享协议位于 shared/xparse.ts；普通开关复用 application settings 的分节锁和原子写入；凭据沿用 Fitness 同源 API → 认证 loopback bridge → DSH credentialsController，不建立平行凭据库。页面、设置写入和云端解析的成功状态分开。
+
+原生技能及受控 CLI runner 位于 dsh-fitness/automation-bridge；CLI 是锁定版本的 production dependency，Docker 现有 node_modules 与 dsh-fitness 拷贝路径覆盖其平台包、Skill 及引用文件。目录注册、取消和凭据读取均属 Host，Fitness service 不持有会话消息副本。第三方 CLI 执行采用参数数组、超时/取消、输出上限与固定输出目录，密钥不进入 argv 或模型参数。
+
+历史 workout 新入口复用 data-store 的计算输入、路径检查与排他写入。未调整训练 schema 或计算公式。单条导入是提交单位，来源归档可先于正式记录提交，跨日期批次不保证事务。能力与安全边界详见 DSH 集成文档“可选 TextIn 文件解析”。

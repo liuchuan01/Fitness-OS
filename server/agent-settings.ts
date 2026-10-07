@@ -3,6 +3,7 @@ import { randomUUID } from "node:crypto";
 import { dirname, resolve } from "node:path";
 import { parse, stringify } from "yaml";
 import { z } from "zod";
+import { xparseSettingsSchema } from "../shared/xparse.js";
 
 export const defaultAgentInstructions = `你是 AI Fitness OS 的健身教练，用中文与用户协作。
 先读取工作区 AGENTS.md，按照任务地图读取当前档案、周期与训练数据。
@@ -58,7 +59,8 @@ export const applicationSettingsSchema = z
     schema_version: z.literal(1),
     agent: agentSettingsSchema,
     automation: automationSettingsSchema,
-    model: modelSettingsSchema
+    model: modelSettingsSchema,
+    xparse: xparseSettingsSchema.default({ enabled: false, allowPaid: false })
   })
   .strict();
 export type ApplicationSettings = z.output<typeof applicationSettingsSchema>;
@@ -80,7 +82,7 @@ export async function readApplicationSettings(file: string): Promise<Application
 }
 // Queue read/merge/write by canonical filename, including callers from different service instances.
 const writes = new Map<string, Promise<unknown>>();
-export async function saveSettingsSection<K extends "agent" | "automation" | "model">(
+export async function saveSettingsSection<K extends "agent" | "automation" | "model" | "xparse">(
   file: string,
   section: K,
   value: unknown

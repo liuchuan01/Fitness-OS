@@ -1,4 +1,4 @@
-import { createHash } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import { buildMuscleHistory } from "../shared/fitness/muscle-history.js";
 import {
   muscleHistoryQuerySchema,
@@ -17,7 +17,7 @@ import {
   realpath,
   lstat
 } from "node:fs/promises";
-import { dirname, join, relative, resolve } from "node:path";
+import { basename, dirname, join, relative, resolve } from "node:path";
 import { parse, stringify } from "yaml";
 import {
   buildDashboardProjection,
@@ -90,7 +90,6 @@ const finishWorkoutInputSchema = z.object({
     })
     .default({})
 });
-
 
 export type FinishedWorkout = {
   workout: Workout;
@@ -261,6 +260,52 @@ export async function validateFitnessData(
   }
   if (!planPath) await validateOnboardingData({ fitnessRoot: options.dataRoot });
   return { plans: planFiles.length, workouts: workoutFiles.length };
+}
+
+export async function importWorkoutFromFile(
+  options: FitnessDataStoreOptions,
+  input: unknown,
+  sourceFile: string
+): Promise<FinishedWorkout> {
+  const draft = workoutSchema
+    .omit({ computed: true, source_plan_file: true, source_import_file: true })
+    .strict()
+    .parse(input);
+  const workoutFile = join(
+    options.dataRoot,
+    "workouts",
+    draft.date.slice(0, 4),
+    `${draft.date}.yaml`
+  );
+  if (await pathExists(workoutFile)) throw new Error(`Workout already exists for ${draft.date}`);
+  const { muscleMap, stimulusRules } = await readCalculationInputs(options);
+  const computed = calculateStimulus(draft, muscleMap, stimulusRules);
+  if (!(await lstat(sourceFile)).isFile()) throw new Error("Import source must be a regular file");
+  const source = await readFile(sourceFile);
+  const hash = createHash("sha256").update(source).digest("hex");
+  const sourceName = basename(sourceFile)
+    .replace(/[^a-zA-Z0-9._-]/g, "_")
+    .slice(-100);
+  const sourceImportFile = `imports/raw/${hash}-${sourceName}`;
+  const archive = join(options.dataRoot, sourceImportFile);
+  await assertSafeParent(options.dataRoot, archive);
+  const temporary = `${archive}.${randomUUID()}.tmp`;
+  await writeFile(temporary, source, { flag: "wx", mode: 0o600 });
+  try {
+    try {
+      await link(temporary, archive);
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== "EEXIST") throw error;
+      if (!(await readFile(archive)).equals(source))
+        throw new Error("Import archive content mismatch");
+    }
+  } finally {
+    await unlink(temporary);
+  }
+  const workout = workoutSchema.parse({ ...draft, source_import_file: sourceImportFile, computed });
+  await assertSafeParent(options.dataRoot, workoutFile);
+  await writeYamlNew(workoutFile, workout);
+  return { workout, workoutFile: relative(options.dataRoot, workoutFile), computed };
 }
 
 export async function finishWorkoutFromPlan(

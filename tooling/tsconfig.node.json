@@ -18,6 +18,7 @@
     "../server",
     "../shared",
     "../tests/integration",
+    "../tests/fixtures",
     "playwright.config.ts",
     "vitest.integration.config.ts"
   ]

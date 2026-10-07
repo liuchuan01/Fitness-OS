@@ -4,6 +4,7 @@ import { createHash, timingSafeEqual } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { parse } from "yaml";
 import { registerModelPreferences } from "./model-preferences.js";
+import { registerXparse } from "./xparse.js";
 
 export const inject = [
   "webServer",
@@ -13,7 +14,10 @@ export const inject = [
   "credentialsController",
   "settings",
   "agentDefaultModel",
-  "llm"
+  "llm",
+  "credentials",
+  "skills",
+  "tools"
 ];
 
 const routePath = "/fitness-automation-bridge";
@@ -38,6 +42,10 @@ export function apply(ctx) {
   const runs = new Map();
   const bootstrap = bootstrapInteractiveSession(ctx);
   const settingsFile = requiredEnvironment("FITNESS_DSH_AGENT_SETTINGS_FILE");
+  ctx.effect(
+    () => registerXparse(ctx, { settingsFile, secret, matchesSecret, readBody }),
+    "fitness xparse"
+  );
 
   ctx.effect(
     () =>

@@ -31,7 +31,8 @@ export function apply(ctx) {
         JSON.stringify({
           sessionId: options.sessionId,
           model: options.model,
-          reasoningEffort: options.reasoningEffort
+          reasoningEffort: options.reasoningEffort,
+          tools: options.tools.map((tool) => tool.name)
         }) + "\n"
       );
       const system = JSON.stringify(

@@ -112,3 +112,11 @@ API Key 只由 DSH 官方凭据机制或启动环境管理，不写入普通 YAM
 ### 外观主题资源
 
 内置主题位于应用 `resources/themes/`；第三方主题安装到 `<WORKSPACE_ROOT>/themes/`，属于外观扩展资源，不属于 `fitness/` 个人训练库、`config/settings.yaml` 或 `runtime/`。选择偏好仍保存在浏览器。主题包不能修改训练数据、计算规则或肌肉映射，目录发现不触发训练数据刷新。
+
+## 2026-10-07 外部历史记录导入
+
+`fitness import workout <draft-yaml> <source-file>` 接受单日实际 workout 草稿及本地原始文件。允许字段复用 workout schema；computed、source_plan_file、source_import_file 由入口禁止模型提供。CLI 不要求或创建训练计划，不推测 RPE、体重和完成情况，复用公共动作与确定性刺激计算。
+
+原始常规文件按 SHA256 与清理后的文件名原子归档到 `fitness/imports/raw/`，记录通过 source_import_file 引用；同来源可以复用，内容不一致或符号链接越界拒绝。正式 workout 使用既有排他新建与原子链接，目标日期已有记录拒绝覆盖。一天多次训练由 Agent 在确认实际事实后合并为一天的草稿，不隐式覆盖既有日期。单条落盘后运行 validate all；批次不是跨文件事务，需明确报告部分成功与冲突，已成功记录不能重写。归档成功而正式写入失败可能留下未引用的原始文件，保留以便恢复，不宣称整批回滚。
+
+草稿与解析输出位于 runtime/imports 和 runtime/xparse，不能成为第二份正式训练数据库。TextIn 凭据仍由 DSH 官方凭据机制管理；具体开关和云端边界见 DSH 集成文档。

@@ -11,6 +11,7 @@ import { getOnboardingState } from "./onboarding.js";
 import { DataSync } from "./data-sync.js";
 import { DshWebHost } from "./dsh-web-host.js";
 import { readAgentSettings, saveAgentSettings } from "./agent-settings.js";
+import { serveXparseSettings } from "./xparse-http.js";
 import {
   buildDashboardFromFiles,
   finishWorkoutFromPlan,
@@ -171,9 +172,16 @@ export function createLocalService(options: LocalServiceOptions) {
       return;
     }
 
+    if (url.pathname === "/api/xparse/settings") {
+      await serveXparseSettings(request, response, paths.settingsFile);
+      return;
+    }
+
     if (
       (request.method === "GET" || request.method === "PUT") &&
-      ["/api/model/settings", "/api/model/preferences"].includes(url.pathname)
+      ["/api/model/settings", "/api/model/preferences", "/api/xparse/credentials"].includes(
+        url.pathname
+      )
     ) {
       response.setHeader("Cache-Control", "no-store");
       try {
@@ -190,9 +198,11 @@ export function createLocalService(options: LocalServiceOptions) {
         if (dshWebHost.status().status !== "ready")
           throw new Error("模型配置服务尚未就绪，请稍后重试。");
         const bridgePath =
-          url.pathname === "/api/model/preferences"
-            ? "fitness-model-preferences"
-            : "fitness-model-settings";
+          url.pathname === "/api/xparse/credentials"
+            ? "fitness-xparse-credentials"
+            : url.pathname === "/api/model/preferences"
+              ? "fitness-model-preferences"
+              : "fitness-model-settings";
         const result = await fetch(`http://127.0.0.1:${dshPort}/${bridgePath}`, {
           method: request.method,
           headers: { "Content-Type": "application/json", "x-fitness-bridge-secret": bridgeSecret },
@@ -205,7 +215,12 @@ export function createLocalService(options: LocalServiceOptions) {
         console.error(
           `[Fitness] ${request.method} ${url.pathname} unavailable: Host ${hostStatus.status}; ${url.pathname === "/api/model/preferences" ? "model preferences" : "credential"} bridge request failed`
         );
-        writeJson(response, 503, { ok: false, error: "模型配置服务暂时不可用，请稍后重试。" });
+        writeJson(response, 503, {
+          ok: false,
+          error: url.pathname.startsWith("/api/xparse/")
+            ? "TextIn 凭据服务暂时不可用，请稍后重试。"
+            : "模型配置服务暂时不可用，请稍后重试。"
+        });
       }
       return;
     }
