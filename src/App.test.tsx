@@ -380,6 +380,17 @@ describe("App", () => {
     act(() =>
       receive({
         v: 1,
+        type: "fitness.data-invalid",
+        message: "workouts/2026/2026-06-19.yaml: has stale or missing computed",
+        at: new Date().toISOString()
+      })
+    );
+    expect(screen.getByText(/workouts\/2026\/2026-06-19.yaml: has stale or missing computed/)).toBeVisible();
+    expect(screen.getByRole("button", { name: /Pull Day/ })).toBeVisible();
+    expect(requests()).toBe(count);
+    act(() =>
+      receive({
+        v: 1,
         type: "fitness.data-changed",
         revision: "next",
         changed: ["workouts"],

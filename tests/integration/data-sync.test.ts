@@ -83,7 +83,11 @@ it("publishes validated atomic edits, rejects broken YAML, and recovers without 
   const draftResponse = await fetch(`http://127.0.0.1:${address.port}/api/plans/2026-06-20`);
   expect(draftResponse.status).toBe(422);
   expect(await readFile(file, "utf8")).toBe(draftText);
-  expect((await next()).type).toBe("fitness.data-invalid");
+  const staleComputed = await next();
+  expect(staleComputed.type).toBe("fitness.data-invalid");
+  if (staleComputed.type !== "fitness.data-invalid") throw new Error("Expected invalid data");
+  expect(staleComputed.message).toContain("plans/2026/2026-06-20.generated.yaml");
+  expect(staleComputed.message).toContain("computed_expected_stimulus");
   await writeFile(file, "blocks: [broken");
   expect((await next()).type).toBe("fitness.data-invalid");
   await writeFile(file + ".tmp", original.replace("title:", "title: 已更新 ·"));

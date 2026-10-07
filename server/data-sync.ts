@@ -111,9 +111,15 @@ export class DataSync {
         changed: ["dashboard", "today-plan", "workouts"],
         at: new Date().toISOString()
       });
-    } catch {
+    } catch (error) {
       if (generation !== this.generation) return;
-      this.publish({ v: 1, type: "fitness.data-invalid", at: new Date().toISOString() });
+      const message = error instanceof Error ? error.message : "数据文件校验失败";
+      this.publish({
+        v: 1,
+        type: "fitness.data-invalid",
+        message: message.split(this.dataRoot).join(".").replaceAll("\\", "/"),
+        at: new Date().toISOString()
+      });
     } finally {
       this.checking = false;
       if (this.pending) {

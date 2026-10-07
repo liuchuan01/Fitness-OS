@@ -10,6 +10,7 @@ export function useDashboardData() {
   const [dataSyncStatus, setDataSyncStatus] = useState<"connected" | "disconnected" | "invalid">(
     "connected"
   );
+  const [dataSyncError, setDataSyncError] = useState<string | null>(null);
   const selectedDate = useRef<string | null>(null);
   const [refreshVersion, setRefreshVersion] = useState(0);
   const [dashboard, setDashboard] = useState<Dashboard | null>(null);
@@ -28,9 +29,11 @@ export function useDashboardData() {
         (event) => {
           if (event.type === "fitness.data-invalid") {
             setDataSyncStatus("invalid");
+            setDataSyncError(event.message ?? null);
             return;
           }
           setDataSyncStatus("connected");
+          setDataSyncError(null);
           setRefreshVersion((version) => version + 1);
         },
         () => setDataSyncStatus("disconnected")
@@ -147,6 +150,7 @@ export function useDashboardData() {
     focusedPlan,
     setFocusedPlan,
     dataSyncStatus,
+    dataSyncError,
     clearWorkout,
     dailyWorkout,
     dashboard,

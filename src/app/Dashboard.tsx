@@ -39,6 +39,7 @@ export function Dashboard() {
     isServiceOffline,
     loadWorkout,
     dataSyncStatus,
+    dataSyncError,
     search,
     setSearch,
     todayPlan,
@@ -153,7 +154,7 @@ export function Dashboard() {
         {dataSyncStatus !== "connected" ? (
           <p className="data-sync-notice glass-card" role="status">
             {dataSyncStatus === "invalid"
-              ? "数据文件尚未通过校验，暂时保留上次显示结果。"
+              ? `数据文件尚未通过校验，暂时保留上次显示结果。${dataSyncError ? ` ${dataSyncError}` : ""}`
               : "数据同步连接已断开，正在重连…"}
           </p>
         ) : null}

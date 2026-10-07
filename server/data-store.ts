@@ -222,41 +222,46 @@ export async function validateFitnessData(
     const relativePath = relative(options.dataRoot, file);
     if (relativePath.startsWith("..") || !relativePath.startsWith("plans/"))
       throw new Error("Plan path must be inside data/plans");
-    const { plan, hasForbiddenFields } = await readPlanYaml(file);
-    if (hasForbiddenFields) throw new Error(`${relativePath} contains workout-only fields`);
-    if (relativePath !== `plans/${plan.date.slice(0, 4)}/${plan.date}.generated.yaml`)
-      throw new Error(`${relativePath} does not match plan date`);
-    const expected = calculateStimulus(plan, muscleMap, stimulusRules).stimulus;
-    if (!sameJson(plan.computed_expected_stimulus, expected))
-      throw new Error(`${relativePath} has stale or missing computed_expected_stimulus`);
+    try {
+      const { plan, hasForbiddenFields } = await readPlanYaml(file);
+      if (hasForbiddenFields) throw new Error("contains workout-only fields");
+      if (relativePath !== `plans/${plan.date.slice(0, 4)}/${plan.date}.generated.yaml`)
+        throw new Error("does not match plan date");
+      const expected = calculateStimulus(plan, muscleMap, stimulusRules).stimulus;
+      if (!sameJson(plan.computed_expected_stimulus, expected))
+        throw new Error("has stale or missing computed_expected_stimulus");
+    } catch (error) {
+      throw withFileContext(relativePath, error);
+    }
   }
   for (const file of workoutFiles) {
-    const workout = await readYaml(file, workoutSchema, "workout");
-    if (
-      relative(options.dataRoot, file) !==
-      `workouts/${workout.date.slice(0, 4)}/${workout.date}.yaml`
-    )
-      throw new Error("Workout path does not match its date");
-    for (const [source, prefix] of [
-      [workout.source_plan_file, "plans/"],
-      [workout.source_import_file, "imports/raw/"]
-    ] as const) {
-      if (!source) continue;
-      const target = resolve(options.dataRoot, source);
-      if (
-        !source.startsWith(prefix) ||
-        relative(options.dataRoot, target).startsWith("..") ||
-        !(await pathExists(target))
-      )
-        throw new Error(`Invalid workout source reference: ${source}`);
-      const base = await realpath(options.dataRoot);
-      const actual = await realpath(target);
-      if (!(await lstat(target)).isFile() || !relative(base, actual).startsWith(prefix))
-        throw new Error(`Invalid workout source reference: ${source}`);
+    const relativePath = relative(options.dataRoot, file);
+    try {
+      const workout = await readYaml(file, workoutSchema, "workout");
+      if (relativePath !== `workouts/${workout.date.slice(0, 4)}/${workout.date}.yaml`)
+        throw new Error("does not match workout date");
+      for (const [source, prefix] of [
+        [workout.source_plan_file, "plans/"],
+        [workout.source_import_file, "imports/raw/"]
+      ] as const) {
+        if (!source) continue;
+        const target = resolve(options.dataRoot, source);
+        if (
+          !source.startsWith(prefix) ||
+          relative(options.dataRoot, target).startsWith("..") ||
+          !(await pathExists(target))
+        )
+          throw new Error(`Invalid workout source reference: ${source}`);
+        const base = await realpath(options.dataRoot);
+        const actual = await realpath(target);
+        if (!(await lstat(target)).isFile() || !relative(base, actual).startsWith(prefix))
+          throw new Error(`Invalid workout source reference: ${source}`);
+      }
+      const expected = calculateStimulus(workout, muscleMap, stimulusRules);
+      if (!sameJson(workout.computed, expected)) throw new Error("has stale or missing computed");
+    } catch (error) {
+      throw withFileContext(relativePath, error);
     }
-    const expected = calculateStimulus(workout, muscleMap, stimulusRules);
-    if (!sameJson(workout.computed, expected))
-      throw new Error(`${relative(options.dataRoot, file)} has stale or missing computed`);
   }
   if (!planPath) await validateOnboardingData({ fitnessRoot: options.dataRoot });
   return { plans: planFiles.length, workouts: workoutFiles.length };
@@ -306,6 +311,11 @@ export async function importWorkoutFromFile(
   await assertSafeParent(options.dataRoot, workoutFile);
   await writeYamlNew(workoutFile, workout);
   return { workout, workoutFile: relative(options.dataRoot, workoutFile), computed };
+}
+
+function withFileContext(path: string, error: unknown): Error {
+  const message = error instanceof Error ? error.message : "Unknown validation error";
+  return new Error(`${path}: ${message}`);
 }
 
 export async function finishWorkoutFromPlan(

@@ -11,6 +11,7 @@ export const dataSyncEventSchema = z.discriminatedUnion("type", [
   z.object({
     v: z.literal(1),
     type: z.literal("fitness.data-invalid"),
+    message: z.string().optional(),
     at: z.string()
   })
 ]);
