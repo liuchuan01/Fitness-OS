@@ -571,7 +571,7 @@ src/features/settings/
 
 ## 16. 可选文件解析与历史迁移（2026-10-07）
 
-设置模块增加 xparse 分区，首次进入才读取其配置与凭据，切换分区保留草稿。共享协议位于 shared/xparse.ts；普通开关复用 application settings 的分节锁和原子写入；凭据沿用 Fitness 同源 API → 认证 loopback bridge → DSH credentialsController，不建立平行凭据库。页面、设置写入和云端解析的成功状态分开。
+设置模块增加 xparse 分区，首次进入才读取其配置与凭据，切换分区保留草稿。共享协议位于 shared/xparse.ts；普通开关复用 application settings 的分节锁和原子写入；凭据沿用 Fitness 同源 API → 认证 loopback bridge → DSH credentialsController，不建立平行凭据库。页面、设置写入和云端解析的成功状态分开。 文件解析表单按本地开关草稿渐进展开：启用前禁用付费开关，关闭启用时同时将付费草稿设为 false；凭据区域仅在 enabled 与 allowPaid 均为 true 时挂载，凭据输入由原 hook 持有，收起不清空。保留显式保存和现有 API/Host 边界，页面收起不删除已存凭据，也不表示运行中配置已变更。
 
 原生技能及受控 CLI runner 位于 dsh-fitness/automation-bridge；CLI 是锁定版本的 production dependency，Docker 现有 node_modules 与 dsh-fitness 拷贝路径覆盖其平台包、Skill 及引用文件。目录注册、取消和凭据读取均属 Host，Fitness service 不持有会话消息副本。第三方 CLI 执行采用参数数组、超时/取消、输出上限与固定输出目录，密钥不进入 argv 或模型参数。
 

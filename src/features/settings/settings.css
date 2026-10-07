@@ -275,17 +275,17 @@
   flex-shrink: 0;
   color: var(--text);
 }
-.settings-card-content .dsh-intro {
+.settings-card-content :is(.dsh-intro, .settings-integration-intro) {
   font-size: 12px;
   line-height: 1.8;
   margin: -12px 0 20px;
 }
-.dsh-intro a {
+:is(.dsh-intro, .settings-integration-intro) a {
   color: var(--accent-mid);
   text-underline-offset: 3px;
   white-space: nowrap;
 }
-.dsh-intro a:focus-visible {
+:is(.dsh-intro, .settings-integration-intro) a:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 4px;
 }
@@ -302,36 +302,78 @@
   border-bottom: 1px solid var(--border);
 }
 
-.xparse-paid-option {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  margin-top: 22px;
+.settings-card:has(.settings-integration-intro) .settings-card-heading {
+  margin-bottom: 20px;
 }
-.xparse-paid-option input {
-  flex-shrink: 0;
-  margin-top: 6px;
+.settings-card-content .settings-integration-intro {
+  margin-bottom: 12px;
 }
-.xparse-paid-option small {
-  display: block;
+.settings-card-content .xparse-options .automation-toggle {
+  margin: 0;
+  padding: 16px 0;
+  gap: 24px;
+}
+.xparse-options .automation-toggle strong {
+  font-weight: 500;
+}
+.xparse-options .automation-toggle[aria-disabled="true"] strong {
   color: var(--muted);
-  line-height: 1.7;
-  margin-top: 4px;
+}
+.xparse-options .automation-toggle input {
+  margin: 0;
+}
+.xparse-options .automation-toggle input:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.settings-card-content .xparse-options footer {
+  border-top: 0;
+  margin-top: 0;
 }
 .xparse-credentials {
-  margin-top: 32px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+.xparse-credentials-heading,
+.xparse-load-error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 .xparse-credentials h4 {
+  margin: 0;
   font-size: 15px;
   font-weight: 500;
+}
+.settings-card-content .xparse-credential-status {
+  margin: 0 0 4px;
+  font-size: 12px;
+}
+.settings-card-content .xparse-credential-hint {
+  margin: 0 0 20px;
+  font-size: 12px;
 }
 .xparse-credentials a {
   color: var(--accent-mid);
   text-underline-offset: 3px;
 }
+.xparse-credentials a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+.settings-card-content .xparse-credentials footer {
+  border-top: 0;
+  margin-top: 16px;
+  padding-top: 0;
+}
 @media (max-width: 767px) {
   .xparse-credentials .automation-fields {
     grid-template-columns: minmax(0, 1fr);
+  }
+  .settings-card-content .xparse-options .automation-toggle {
+    gap: 16px;
   }
 }
 .model-preferences-heading {
