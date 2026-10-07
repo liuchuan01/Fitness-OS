@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getModelSettings, saveModelSettings } from "../../../api/client";
 import type { ModelSettings } from "../../../api/model-settings-schemas";
 import { ApiError } from "../../../api/http";
@@ -14,19 +14,27 @@ export function DeepSeekSettings() {
   const [modelBusy, setModelBusy] = useState(false);
   const [modelMessage, setModelMessage] = useState("");
 
+  const request = useRef<AbortController>();
   async function refreshModel() {
+    request.current?.abort();
+    const controller = new AbortController();
+    request.current = controller;
     setModelError("");
     setModelLoading(true);
     try {
-      setModel(await getModelSettings());
+      const value = await getModelSettings(controller.signal);
+      if (!controller.signal.aborted) setModel(value);
     } catch (cause) {
+      if (controller.signal.aborted) return;
       setModelError(
         cause instanceof ApiError && cause.status === 503
           ? "密钥服务暂未就绪，可稍后重新读取，或填写密钥后尝试保存。"
-          : "无法读取密钥状态，请确认开发服务已启动，再重新读取或尝试保存。"
+          : cause instanceof ApiError && cause.status === 408
+            ? "读取密钥状态超时，请稍后重新读取或尝试保存。"
+            : "无法读取密钥状态，请确认开发服务已启动，再重新读取或尝试保存。"
       );
     } finally {
-      setModelLoading(false);
+      if (!controller.signal.aborted) setModelLoading(false);
     }
   }
 
@@ -47,6 +55,7 @@ export function DeepSeekSettings() {
 
   useEffect(() => {
     void refreshModel();
+    return () => request.current?.abort();
   }, []);
   return (
     <SettingsCard
@@ -62,7 +71,7 @@ export function DeepSeekSettings() {
       </p>
       <p className="settings-connection-state" role="status">
         {modelLoading
-          ? "正在读取密钥状态…"
+          ? "正在读取密钥状态，首次启动需等待 DSH 就绪…"
           : model
             ? model.configured
               ? "已配置密钥"

@@ -31,7 +31,7 @@ export function ModelPreferences() {
       <p className="model-preferences-hint">
         用于新对话与新建自动任务会话；已有会话保留自己的模型选择。
       </p>
-      {loading ? <p role="status">正在读取 DSH 模型设置…</p> : null}
+      {loading ? <p role="status">正在读取 DSH 模型设置，首次启动需等待 DSH 就绪…</p> : null}
       {preferences && draft ? (
         <>
           <div className="automation-fields">

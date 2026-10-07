@@ -184,6 +184,8 @@ export function createLocalService(options: LocalServiceOptions) {
       )
     ) {
       response.setHeader("Cache-Control", "no-store");
+      const startedAt = performance.now();
+      let bridgeStartedAt: number | undefined;
       try {
         const body =
           request.method === "PUT" ? JSON.stringify(await readJsonBody(request)) : undefined;
@@ -203,6 +205,7 @@ export function createLocalService(options: LocalServiceOptions) {
             : url.pathname === "/api/model/preferences"
               ? "fitness-model-preferences"
               : "fitness-model-settings";
+        bridgeStartedAt = performance.now();
         const result = await fetch(`http://127.0.0.1:${dshPort}/${bridgePath}`, {
           method: request.method,
           headers: { "Content-Type": "application/json", "x-fitness-bridge-secret": bridgeSecret },
@@ -221,7 +224,19 @@ export function createLocalService(options: LocalServiceOptions) {
             ? "TextIn 凭据服务暂时不可用，请稍后重试。"
             : "模型配置服务暂时不可用，请稍后重试。"
         });
+      } finally {
+        const finishedAt = performance.now();
+        const elapsed = Math.round(finishedAt - startedAt);
+        if (elapsed >= 1000) {
+          const hostWait = Math.round((bridgeStartedAt ?? finishedAt) - startedAt);
+          const bridgeTime =
+            bridgeStartedAt === undefined ? 0 : Math.round(finishedAt - bridgeStartedAt);
+          console.info(
+            `[Fitness] ${request.method} ${url.pathname} ${response.statusCode}: ${elapsed} ms (Host wait ${hostWait} ms, bridge ${bridgeTime} ms)`
+          );
+        }
       }
+
       return;
     }
 

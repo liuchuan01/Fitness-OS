@@ -20,6 +20,7 @@ export function useXparseSettings() {
   const [busy, setBusy] = useState(false);
   const [credentialBusy, setCredentialBusy] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [credentialLoading, setCredentialLoading] = useState(true);
   const controller = useRef<AbortController>();
 
   async function refresh() {
@@ -29,20 +30,34 @@ export function useXparseSettings() {
     setLoading(true);
     setError("");
     setCredentialError("");
-    const [config, auth] = await Promise.allSettled([
-      getXparseSettings(next.signal),
-      getXparseCredentials(next.signal)
+    setCredentialLoading(true);
+    await Promise.all([
+      (async () => {
+        try {
+          const config = await getXparseSettings(next.signal);
+          if (next.signal.aborted) return;
+          setSaved(config);
+          setSettings((current) =>
+            !current || JSON.stringify(current) === JSON.stringify(saved) ? config : current
+          );
+        } catch {
+          if (!next.signal.aborted) setError("文件解析设置读取失败，请重新读取。");
+        } finally {
+          if (!next.signal.aborted) setLoading(false);
+        }
+      })(),
+      (async () => {
+        try {
+          const auth = await getXparseCredentials(next.signal);
+          if (!next.signal.aborted) setCredentials(auth);
+        } catch {
+          if (!next.signal.aborted)
+            setCredentialError("TextIn 凭据状态暂不可用，可重新读取或填写后尝试保存。");
+        } finally {
+          if (!next.signal.aborted) setCredentialLoading(false);
+        }
+      })()
     ]);
-    if (next.signal.aborted) return;
-    if (config.status === "fulfilled") {
-      setSaved(config.value);
-      setSettings((current) =>
-        !current || JSON.stringify(current) === JSON.stringify(saved) ? config.value : current
-      );
-    } else setError("文件解析设置读取失败，请重新读取。");
-    if (auth.status === "fulfilled") setCredentials(auth.value);
-    else setCredentialError("TextIn 凭据状态暂不可用，可重新读取或填写后尝试保存。");
-    setLoading(false);
   }
   useEffect(() => {
     void refresh();
@@ -99,6 +114,7 @@ export function useXparseSettings() {
     busy,
     credentialBusy,
     loading,
+    credentialLoading,
     refresh,
     save,
     saveCredentials

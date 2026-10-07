@@ -16,8 +16,10 @@ import { dshWebResponseSchema } from "./dsh-web-schemas";
 import { agentSettingsResponseSchema, type AgentSettings } from "./agent-settings-schemas";
 import { modelSettingsResponseSchema } from "./model-settings-schemas";
 
-export async function getModelSettings() {
-  return (await getJson("/api/model/settings", modelSettingsResponseSchema)).settings;
+export async function getModelSettings(signal?: AbortSignal) {
+  return (
+    await getJson("/api/model/settings", modelSettingsResponseSchema, { signal, timeoutMs: 25000 })
+  ).settings;
 }
 
 export async function saveModelSettings(apiKey: string) {

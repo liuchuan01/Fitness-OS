@@ -7,14 +7,20 @@ import {
 export type { XparseSettings, XparseCredentials } from "../../shared/xparse";
 
 export async function getXparseSettings(signal?: AbortSignal) {
-  return (await getJson("/api/xparse/settings", xparseSettingsResponseSchema, { signal })).settings;
+  return (
+    await getJson("/api/xparse/settings", xparseSettingsResponseSchema, { signal, timeoutMs: 5000 })
+  ).settings;
 }
 export async function saveXparseSettings(settings: XparseSettings) {
   return (await putJson("/api/xparse/settings", settings, xparseSettingsResponseSchema)).settings;
 }
 export async function getXparseCredentials(signal?: AbortSignal) {
-  return (await getJson("/api/xparse/credentials", xparseCredentialsResponseSchema, { signal }))
-    .credentials;
+  return (
+    await getJson("/api/xparse/credentials", xparseCredentialsResponseSchema, {
+      signal,
+      timeoutMs: 25000
+    })
+  ).credentials;
 }
 export async function saveXparseCredentials(
   input: { appId: string; secretCode: string } | { clear: true }

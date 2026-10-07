@@ -276,6 +276,16 @@ Fitness Host 仍不读取 `config/settings.yaml` 的旧 model 字段生成 `agen
 
 本地服务在 `npm run dev` 终端记录 DSH Host 启动、就绪和退出原因，以及 `/api/model/settings` 或 `/api/model/preferences` 返回 503 时的 Host 状态与对应 bridge 类型。Host 启动日志不输出带浏览器 token 的 URL；退出原因仅保留错误摘要并遮盖已知密钥。工作区从其他路径恢复时，`runtime/dsh` 可能包含无法在新路径使用的 Session 和安装目录缓存；若 Host 报目录类型冲突或 Session 所属路径冲突，先停止服务，归档整个 `runtime/dsh` 后再启动，保留 `fitness/` 和 `config/`。归档的旧 Session 不自动迁移。
 
+### 2026-10-07 开发冷启动与设置读取
+
+在隔离空工作区以真实 `npm run dev` 实测两次：本地 `/api/xparse/settings` 约 28–75 ms 返回，Host 启动约 11–12 秒，此间凭据/模型接口约 11.7–11.8 秒返回；同进程就绪后的首次复测为 9–15 ms，第二轮有 411–413 ms 的 bridge 波动。数值只代表本机测量，不是性能保证。配置读取路径不调用 TextIn 或 DeepSeek 云端；DSH 的 Web 就绪输出等待原生 loader 完成，凭据接口实际可访问时间与该输出相近。 修复后第三轮真实浏览器冷启动，从执行 npm run dev 起约 3.7 秒即可操作解析开关，此时凭据请求仍未完成；Host 于约 13 秒就绪（进程启动本身约 11.7 秒），本地配置 GET 为 36 ms，热请求为 7–16 ms。
+
+此前 xparse hook 等待 `Promise.allSettled` 全部完成才发布本地配置，放大了冷启动等待。现已分别维护配置和凭据读取状态；开关可独立显示/保存，凭据读取期间允许填写草稿，但保存/清除需等读取结束。读取失败继续允许手动恢复，环境凭据仍只读。模型和凭据加载文案说明首次启动需等待 DSH；没有提前伪造凭据或模型状态，也未改变 Host 内部启动流程。
+
+浏览器设置 GET 增加有限等待：本地 xparse 配置 5 秒，DSH 凭据/模型读取 25 秒（覆盖后端原有 15 秒 Host 等待及 5 秒 bridge 超时，并留传输余量）；超时结束 loading 并可重试，覆盖响应正文读取。离开页面或替换读取时取消旧请求，过期响应不覆盖新状态。此超时只用于设置读取，不为保存请求引入含糊的写入超时语义。
+
+`npm run dev` 的服务端日志增加 Host 启动到就绪的毫秒数，以及超过 1 秒的配置请求总耗时、Host 等待和 bridge 耗时。日志仅含固定路由、方法、状态码和耗时，不输出凭据、请求正文或浏览器 token。
+
 ## 2026-10-07 可选 TextIn 文件解析
 
 设置 → 文件解析管理 `config/settings.yaml` 的 `xparse.enabled` 与 `xparse.allowPaid`，旧配置缺少此分节时均默认为 false。开关与凭据分别保存，不覆盖教练、模型或自动计划设置。页面说明开启后在对话中提供 DSH 可访问的文件路径、链接或附件，由 DSH 解析和整理健身记录；用户电脑路径必须先上传或变为服务可访问的文件。PDF、图片与 Office 使用 TextIn 云端，结构化 CSV/JSON/YAML 可以直接本地读取。

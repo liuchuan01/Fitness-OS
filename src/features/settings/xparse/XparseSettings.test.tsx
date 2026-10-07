@@ -81,3 +81,21 @@ it("keeps environment credentials read-only while allowing the feature switch", 
   expect(screen.getByRole("button", { name: "清除凭据" })).toBeDisabled();
   expect(screen.getByRole("switch", { name: "启用文件解析" })).toBeEnabled();
 });
+
+it("shows and saves local switches while the Host credential read is still pending", async () => {
+  vi.mocked(api.getXparseCredentials).mockImplementation(() => new Promise(() => {}));
+  vi.mocked(api.saveXparseSettings).mockResolvedValue({ enabled: true, allowPaid: false });
+  render(<XparseSettings />);
+  const enabled = await screen.findByRole("switch", { name: "启用文件解析" });
+  expect(enabled).toBeEnabled();
+  expect(screen.queryByText("正在读取解析设置…")).not.toBeInTheDocument();
+  fireEvent.click(enabled);
+  fireEvent.click(screen.getByRole("button", { name: "保存解析设置" }));
+  await waitFor(() =>
+    expect(api.saveXparseSettings).toHaveBeenCalledWith({ enabled: true, allowPaid: false })
+  );
+  fireEvent.click(screen.getByRole("switch", { name: "允许使用付费解析" }));
+  expect(screen.getByText(/正在读取凭据状态/)).toBeVisible();
+  expect(screen.getByLabelText("TextIn App ID")).toBeEnabled();
+  expect(screen.getByRole("button", { name: "保存 TextIn 凭据" })).toBeDisabled();
+});

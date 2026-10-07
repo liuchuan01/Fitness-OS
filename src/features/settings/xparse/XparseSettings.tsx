@@ -106,13 +106,13 @@ export function XparseSettings() {
             <IconButton
               icon={RotateCw}
               label="重新读取凭据状态"
-              disabled={controlsDisabled}
+              disabled={controlsDisabled || state.credentialLoading}
               onClick={() => void state.refresh()}
             />
           </div>
           <p className="xparse-credential-status" role="status">
-            {state.loading
-              ? "正在读取凭据状态…"
+            {state.credentialLoading
+              ? "正在读取凭据状态，首次启动需等待 DSH 就绪…"
               : credentials
                 ? credentials.configured
                   ? "已配置 TextIn 凭据"
@@ -158,7 +158,9 @@ export function XparseSettings() {
             {credentials?.configured ? (
               <button
                 type="button"
-                disabled={credentials.writable === false || controlsDisabled}
+                disabled={
+                  credentials.writable === false || controlsDisabled || state.credentialLoading
+                }
                 onClick={() => void state.saveCredentials(true)}
               >
                 清除凭据
@@ -170,6 +172,7 @@ export function XparseSettings() {
               disabled={
                 credentials?.writable === false ||
                 controlsDisabled ||
+                state.credentialLoading ||
                 !state.appId.trim() ||
                 !state.secretCode.trim()
               }

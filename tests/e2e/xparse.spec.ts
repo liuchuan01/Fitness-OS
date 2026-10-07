@@ -114,3 +114,39 @@ for (const theme of ["Neon", "Graphite", "Orbital"]) {
     }
   });
 }
+
+test("a pending Host credential read does not block local settings or credential drafts", async ({
+  page
+}, testInfo) => {
+  let release!: () => void;
+  const pending = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  await page.route("**/api/xparse/credentials", async (route) => {
+    await pending;
+    await route.fulfill({ json: { ok: true, credentials: { configured: false, writable: true } } });
+  });
+  try {
+    await page.goto("/#/settings?section=xparse");
+    const enabled = page.getByRole("switch", { name: "启用文件解析" });
+    await expect(enabled).toBeEnabled();
+    await enabled.check();
+    await page.getByRole("button", { name: "保存解析设置" }).click();
+    await expect(page.getByText("文件解析已开启，从下一条对话起可用。")).toBeVisible();
+    await page.getByRole("switch", { name: "允许使用付费解析" }).check();
+    await expect(page.getByText(/正在读取凭据状态/)).toBeVisible();
+    await page.getByLabel("TextIn App ID").fill("draft-app");
+    await page.getByLabel("TextIn Secret Code").fill("draft-secret");
+    await expect(page.getByRole("button", { name: "保存 TextIn 凭据" })).toBeDisabled();
+    for (const width of [1440, 390]) {
+      await page.setViewportSize({ width, height: width === 1440 ? 900 : 844 });
+      await page.getByLabel("TextIn App ID").scrollIntoViewIfNeeded();
+      await page.screenshot({ path: testInfo.outputPath(`xparse-loading-${width}.png`) });
+    }
+    release();
+    await expect(page.getByRole("button", { name: "保存 TextIn 凭据" })).toBeEnabled();
+    await expect(page.getByLabel("TextIn Secret Code")).toHaveValue("draft-secret");
+  } finally {
+    release();
+  }
+});

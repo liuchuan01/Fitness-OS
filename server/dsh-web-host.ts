@@ -41,6 +41,7 @@ export class DshWebHost {
     const fitness = this.readFitnessConfig();
     this.prepareFitnessProfile(dshHome, bindHost);
     console.info(`[Fitness DSH] Starting Host on ${bindHost}:${this.options.port}`);
+    const startedAt = performance.now();
     const child = spawn(
       process.execPath,
       [
@@ -82,7 +83,9 @@ export class DshWebHost {
       const url = /dsh web: (http:\/\/[^\s]+)/u.exec(chunk)?.[1];
       if (url && this.child === child) {
         this.current = { status: "ready", url };
-        console.info(`[Fitness DSH] Host ready on ${bindHost}:${this.options.port}`);
+        console.info(
+          `[Fitness DSH] Host ready on ${bindHost}:${this.options.port} (${Math.round(performance.now() - startedAt)} ms)`
+        );
       }
     });
     child.stderr.on("data", (chunk: string) => {
